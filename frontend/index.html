@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Loom Library Pro - Biblioteca de Vídeos</title>
+    <title>SGP Loom Library</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts Inter -->
@@ -266,6 +266,51 @@
             color: #1e5f7a;
         }
 
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1a2c3e;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #1e5f7a;
+            color: white;
+            border-color: #1e5f7a;
+        }
+
+        .pagination button.active {
+            background: #1e5f7a;
+            color: white;
+            border-color: #1e5f7a;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #5b7a95;
+        }
+
         /* Modal */
         .modal-overlay {
             position: fixed;
@@ -372,6 +417,55 @@
             color: #8ba0b3;
         }
 
+        /* Modal de boas-vindas */
+        .welcome-modal .modal {
+            max-width: 500px;
+        }
+
+        .welcome-content {
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .welcome-content p {
+            margin-bottom: 1rem;
+        }
+
+        .welcome-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .welcome-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-highlight {
+            background: #eef2ff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #1e5f7a;
+        }
+
+        .btn-close-welcome {
+            background: #1e5f7a;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-close-welcome:hover {
+            background: #0f2b3d;
+        }
+
         @media (max-width: 680px) {
             .app-container {
                 padding: 1rem;
@@ -391,8 +485,8 @@
 <div class="app-container">
     <div class="header">
         <div class="logo-area">
-            <h1><i class="fas fa-play-circle" style="color:#1e5f7a;"></i> Loom Library Pro</h1>
-            <p>Biblioteca profissional de vídeos Loom</p>
+            <h1><i class="fas fa-play-circle" style="color:#1e5f7a;"></i> SGP Loom Library</h1>
+            <p>Biblioteca de vídeos Loom desenvolvida por Kleybson Felipe</p>
         </div>
         <button class="btn-primary" id="openAddModalBtn"><i class="fas fa-plus"></i> Novo vídeo</button>
     </div>
@@ -424,12 +518,47 @@
             <i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...
         </div>
     </div>
+
+    <!-- Pagination -->
+    <div id="paginationContainer" class="pagination"></div>
+    <div id="paginationInfo" class="pagination-info"></div>
+
     <footer>
         <i class="fas fa-link"></i> Player Loom incorporado • Categorias e subcategorias pré-definidas
     </footer>
 </div>
 
-<!-- Modal -->
+<!-- Modal de Boas-vindas -->
+<div id="welcomeModal" class="modal-overlay welcome-modal">
+    <div class="modal">
+        <h3><i class="fas fa-hand-wave"></i> Bem-vindo!</h3>
+        <div class="welcome-content">
+            <p>
+                Esta ferramenta foi desenvolvida por 
+                <strong class="welcome-highlight">Kleybson Felipe</strong> 
+                e atualmente encontra-se em 
+                <strong class="welcome-highlight">fase beta</strong>. 
+                Trata-se de uma solução criada sem fins lucrativos, 
+                com o objetivo de auxiliar na organização interna do setor de suporte de sistema.
+                Durante esse período, algumas funcionalidades podem apresentar instabilidades ou passar por melhorias.
+            </p>
+            
+            <p><strong>Orientações de uso:</strong></p>
+            <ul>
+                <li>Sempre preencha todos os campos ao cadastrar um video. No campo de observações, informe o nome de quem o gravou.</li>
+                <li>Antes de adicionar um novo vídeo, verifique se ele já está presente na biblioteca para evitar duplicidades.</li>
+                <li>Em caso de dúvidas, sugestões ou problemas, entre em contato por mensagem privada no Discord.</li>
+            </ul>
+            
+            <p>Agradecemos pela sua colaboração e compreensão!</p>
+        </div>
+        <button class="btn-close-welcome" id="closeWelcomeBtn">
+            <i class="fas fa-check-circle"></i> Entendi, vamos começar!
+        </button>
+    </div>
+</div>
+
+<!-- Modal de Vídeo -->
 <div id="videoModal" class="modal-overlay">
     <div class="modal">
         <h3 id="modalTitle"><i class="fas fa-plus-circle"></i> Adicionar vídeo</h3>
@@ -464,8 +593,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Descrição</label>
-                <textarea id="videoDescription" rows="3" placeholder="Descrição detalhada do conteúdo..."></textarea>
+                <label>Descrição / Observações</label>
+                <textarea id="videoDescription" rows="3" placeholder="Descreva o conteúdo do vídeo e informe o nome de quem gravou..."></textarea>
             </div>
             <div class="modal-buttons">
                 <button type="button" class="btn-outline" id="closeModalBtn">Cancelar</button>
@@ -477,9 +606,12 @@
 
 <script>
     // ==================== CONFIGURAÇÃO DA API ====================
-    // ATENÇÃO: Substitua pela URL do seu backend quando hospedar!
-    // Exemplo: https://seu-backend.onrender.com/api
     const API_URL = 'https://biblioteca-loom.onrender.com/api';
+    
+    // Configuração de paginação
+    const VIDEOS_PER_PAGE = 9;
+    let currentPage = 1;
+    let filteredVideos = [];
     
     // ==================== DADOS DE CATEGORIAS E SUBCATEGORIAS ====================
     const categoriesData = {
@@ -520,13 +652,31 @@
     // Array de vídeos (será preenchido pela API)
     let videos = [];
 
+    // ==================== MODAL DE BOAS-VINDAS ====================
+    function showWelcomeModal() {
+        // Verificar se o usuário já viu o modal antes (usando localStorage)
+        const hasSeenWelcome = localStorage.getItem('welcomeModalSeen');
+        
+        if (!hasSeenWelcome) {
+            const welcomeModal = document.getElementById('welcomeModal');
+            welcomeModal.classList.add('active');
+        }
+    }
+
+    function closeWelcomeModal() {
+        const welcomeModal = document.getElementById('welcomeModal');
+        welcomeModal.classList.remove('active');
+        // Salvar no localStorage que o usuário já viu o modal
+        localStorage.setItem('welcomeModalSeen', 'true');
+    }
+
     // ==================== FUNÇÕES DE API ====================
     async function loadVideos() {
         try {
             const response = await fetch(`${API_URL}/videos`);
             if (!response.ok) throw new Error('Erro ao carregar vídeos');
             videos = await response.json();
-            renderVideos();
+            applyFiltersAndRender();
         } catch (error) {
             console.error('Erro ao carregar vídeos:', error);
             const gridContainer = document.getElementById('videosGridContainer');
@@ -549,7 +699,7 @@
                 })
             });
             if (!response.ok) throw new Error('Erro ao adicionar vídeo');
-            await loadVideos(); // Recarregar lista
+            await loadVideos();
         } catch (error) {
             console.error('Erro ao adicionar vídeo:', error);
             alert('Erro ao salvar vídeo. Tente novamente.');
@@ -564,7 +714,7 @@
                 body: JSON.stringify(videoData)
             });
             if (!response.ok) throw new Error('Erro ao atualizar vídeo');
-            await loadVideos(); // Recarregar lista
+            await loadVideos();
         } catch (error) {
             console.error('Erro ao atualizar vídeo:', error);
             alert('Erro ao atualizar vídeo. Tente novamente.');
@@ -577,7 +727,7 @@
                 method: 'DELETE'
             });
             if (!response.ok) throw new Error('Erro ao deletar vídeo');
-            await loadVideos(); // Recarregar lista
+            await loadVideos();
         } catch (error) {
             console.error('Erro ao deletar vídeo:', error);
             alert('Erro ao deletar vídeo. Tente novamente.');
@@ -618,13 +768,13 @@
         }
     }
 
-    // Renderizar vídeos
-    function renderVideos() {
+    // Aplicar filtros e atualizar página
+    function applyFiltersAndRender() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const categoryFilter = document.getElementById('filterCategory').value;
         const subFilter = document.getElementById('filterSubcategory').value;
         
-        let filtered = videos.filter(video => {
+        filteredVideos = videos.filter(video => {
             const matchSearch = 
                 video.title.toLowerCase().includes(searchTerm) ||
                 (video.description && video.description.toLowerCase().includes(searchTerm)) ||
@@ -637,10 +787,22 @@
             return true;
         });
         
+        currentPage = 1;
+        renderVideos();
+        renderPagination();
+    }
+
+    // Renderizar vídeos com paginação
+    function renderVideos() {
+        const startIndex = (currentPage - 1) * VIDEOS_PER_PAGE;
+        const endIndex = startIndex + VIDEOS_PER_PAGE;
+        const videosToShow = filteredVideos.slice(startIndex, endIndex);
+        
         const gridContainer = document.getElementById('videosGridContainer');
+        const categoryFilter = document.getElementById('filterCategory').value;
         
         // Verificar se a categoria selecionada existe mas não tem vídeos
-        if(categoryFilter !== 'all' && filtered.length === 0) {
+        if(categoryFilter !== 'all' && filteredVideos.length === 0) {
             const categoryHasVideos = videos.some(v => v.category === categoryFilter);
             if(!categoryHasVideos) {
                 gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
@@ -652,7 +814,7 @@
             }
         }
         
-        if(filtered.length === 0 && videos.length === 0) {
+        if(filteredVideos.length === 0 && videos.length === 0) {
             gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
                 <i class="fas fa-video"></i>
                 <p>Nenhum vídeo cadastrado. Clique em "Novo vídeo" para começar.</p>
@@ -660,7 +822,7 @@
             return;
         }
         
-        if(filtered.length === 0) {
+        if(filteredVideos.length === 0) {
             gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
                 <i class="fas fa-search"></i>
                 <p>Nenhum vídeo encontrado com os filtros selecionados.</p>
@@ -670,7 +832,7 @@
         }
         
         gridContainer.innerHTML = '';
-        filtered.forEach(video => {
+        videosToShow.forEach(video => {
             const embedUrl = getLoomEmbedUrl(video.link);
             const card = document.createElement('div');
             card.className = 'video-card';
@@ -710,6 +872,70 @@
                 }
             });
         });
+        
+        // Atualizar info da paginação
+        const totalPages = Math.ceil(filteredVideos.length / VIDEOS_PER_PAGE);
+        const start = startIndex + 1;
+        const end = Math.min(endIndex, filteredVideos.length);
+        const paginationInfo = document.getElementById('paginationInfo');
+        paginationInfo.innerHTML = `Mostrando ${start} - ${end} de ${filteredVideos.length} vídeos`;
+    }
+
+    // Renderizar controles de paginação
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredVideos.length / VIDEOS_PER_PAGE);
+        const paginationContainer = document.getElementById('paginationContainer');
+        
+        if (totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
+        
+        let paginationHTML = '';
+        
+        // Botão anterior
+        paginationHTML += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+            <i class="fas fa-chevron-left"></i> Anterior
+        </button>`;
+        
+        // Números das páginas
+        const maxVisible = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+        
+        if (endPage - startPage + 1 < maxVisible) {
+            startPage = Math.max(1, endPage - maxVisible + 1);
+        }
+        
+        if (startPage > 1) {
+            paginationHTML += `<button onclick="changePage(1)">1</button>`;
+            if (startPage > 2) paginationHTML += `<button disabled>...</button>`;
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+            paginationHTML += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+        }
+        
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) paginationHTML += `<button disabled>...</button>`;
+            paginationHTML += `<button onclick="changePage(${totalPages})">${totalPages}</button>`;
+        }
+        
+        // Botão próximo
+        paginationHTML += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+            Próximo <i class="fas fa-chevron-right"></i>
+        </button>`;
+        
+        paginationContainer.innerHTML = paginationHTML;
+    }
+
+    function changePage(page) {
+        const totalPages = Math.ceil(filteredVideos.length / VIDEOS_PER_PAGE);
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
+        renderVideos();
+        renderPagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     
     function escapeHtml(str) {
@@ -817,15 +1043,19 @@
     });
     
     // Event listeners de filtros
-    document.getElementById('searchInput').addEventListener('input', () => renderVideos());
+    document.getElementById('searchInput').addEventListener('input', () => applyFiltersAndRender());
     document.getElementById('filterCategory').addEventListener('change', (e) => {
         updateFilterSubcategories(e.target.value);
-        renderVideos();
+        applyFiltersAndRender();
     });
-    document.getElementById('filterSubcategory').addEventListener('change', () => renderVideos());
+    document.getElementById('filterSubcategory').addEventListener('change', () => applyFiltersAndRender());
+    
+    // Event listeners do modal de boas-vindas
+    document.getElementById('closeWelcomeBtn').addEventListener('click', closeWelcomeModal);
     
     // Inicialização
     loadVideos();
+    showWelcomeModal();
     
     // Inicializar o filtro de subcategoria como desabilitado
     document.getElementById('filterSubcategory').disabled = true;

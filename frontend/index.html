@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Loom Library Pro - Biblioteca de Vídeos</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6f9fc;
+            color: #1a2c3e;
+            line-height: 1.4;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f2b3d, #1e5f7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-area p {
+            font-size: 0.85rem;
+            color: #5b7a95;
+        }
+
+        .btn-primary {
+            background: #0f2b3d;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary:hover {
+            background: #1a4b66;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #eef2f6;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            border-radius: 28px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #e9edf2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-wrapper {
+            flex: 3;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8ba0b3;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+            background: #ffffff;
+            transition: 0.2s;
+        }
+
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: #1e5f7a;
+            box-shadow: 0 0 0 3px rgba(30,95,122,0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.6rem 1rem;
+            border-radius: 32px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+            min-width: 160px;
+        }
+
+        .filter-select:disabled {
+            background: #f7f9fc;
+            cursor: not-allowed;
+            color: #94a3b8;
+        }
+
+        /* Videos Grid */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.25s ease;
+            border: 1px solid #edf2f7;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
+        }
+
+        .player-wrapper {
+            background: #0a1a24;
+            aspect-ratio: 16 / 9;
+            position: relative;
+        }
+
+        .loom-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .card-content {
+            padding: 1.2rem 1.2rem 1rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f2b3d;
+        }
+
+        .badge-cat {
+            background: #eef2ff;
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e5f7a;
+        }
+
+        .subcat {
+            font-size: 0.75rem;
+            color: #5f7f9e;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .description {
+            font-size: 0.85rem;
+            color: #2c4a6e;
+            margin: 0.7rem 0;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            margin-top: 0.6rem;
+            border-top: 1px solid #ecf3f9;
+            padding-top: 0.7rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #8ba0b3;
+            transition: 0.2s;
+        }
+
+        .icon-btn.danger:hover {
+            color: #e53e3e;
+        }
+
+        .icon-btn:hover {
+            color: #1e5f7a;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal {
+            background: white;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 32px;
+            padding: 1.8rem;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: #f8fafc;
+            border-radius: 40px;
+            color: #6b8aa8;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            margin-top: 0.5rem;
+        }
+
+        .empty-state .category-name {
+            font-weight: 700;
+            color: #1e5f7a;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #1e5f7a;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8ba0b3;
+        }
+
+        @media (max-width: 680px) {
+            .app-container {
+                padding: 1rem;
+            }
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <div class="logo-area">
+            <h1><i class="fas fa-play-circle" style="color:#1e5f7a;"></i> Loom Library Pro</h1>
+            <p>Biblioteca profissional de vídeos Loom</p>
+        </div>
+        <button class="btn-primary" id="openAddModalBtn"><i class="fas fa-plus"></i> Novo vídeo</button>
+    </div>
+
+    <div class="search-section">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Buscar por título, descrição ou categoria...">
+        </div>
+        <div class="filter-group">
+            <select id="filterCategory" class="filter-select">
+                <option value="all">Todas categorias</option>
+                <option value="Clientes">Clientes</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Fiscal">Fiscal</option>
+                <option value="Estoque">Estoque</option>
+                <option value="Relatórios">Relatórios</option>
+                <option value="Administração">Administração</option>
+                <option value="Sistema">Sistema</option>
+            </select>
+            <select id="filterSubcategory" class="filter-select" disabled>
+                <option value="all">Primeiro selecione uma categoria</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="videosGridContainer" class="videos-grid">
+        <div class="loading">
+            <i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...
+        </div>
+    </div>
+    <footer>
+        <i class="fas fa-link"></i> Player Loom incorporado • Categorias e subcategorias pré-definidas
+    </footer>
+</div>
+
+<!-- Modal -->
+<div id="videoModal" class="modal-overlay">
+    <div class="modal">
+        <h3 id="modalTitle"><i class="fas fa-plus-circle"></i> Adicionar vídeo</h3>
+        <form id="videoForm">
+            <input type="hidden" id="videoId" value="">
+            <div class="form-group">
+                <label>Título do vídeo *</label>
+                <input type="text" id="videoTitle" required placeholder="Ex: Tutorial de Configuração">
+            </div>
+            <div class="form-group">
+                <label>Link Loom *</label>
+                <input type="url" id="videoLink" required placeholder="https://www.loom.com/share/xxxxx">
+                <small style="color:#5f7f9e;">Cole o link de compartilhamento do Loom</small>
+            </div>
+            <div class="form-group">
+                <label>Categoria *</label>
+                <select id="videoCategory" required>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="Clientes">Clientes</option>
+                    <option value="Financeiro">Financeiro</option>
+                    <option value="Fiscal">Fiscal</option>
+                    <option value="Estoque">Estoque</option>
+                    <option value="Relatórios">Relatórios</option>
+                    <option value="Administração">Administração</option>
+                    <option value="Sistema">Sistema</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Subcategoria *</label>
+                <select id="videoSubcategory" required disabled>
+                    <option value="">Primeiro selecione uma categoria</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="videoDescription" rows="3" placeholder="Descrição detalhada do conteúdo..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-outline" id="closeModalBtn">Cancelar</button>
+                <button type="submit" class="btn-primary">Salvar vídeo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // ==================== CONFIGURAÇÃO DA API ====================
+    // ATENÇÃO: Substitua pela URL do seu backend quando hospedar!
+    // Exemplo: https://seu-backend.onrender.com/api
+    const API_URL = 'http://localhost:3001/api';
+    
+    // ==================== DADOS DE CATEGORIAS E SUBCATEGORIAS ====================
+    const categoriesData = {
+        "Clientes": [
+            "Consulta", "Cadastrar", "Viabilidade", "Pré cadastro", "CRM", 
+            "Suspender em Lote", "Ultimos Cadastros"
+        ],
+        "Financeiro": [
+            "Cadastros", "Títulos", "Carnês", "Protocolos", "Caixas", 
+            "Contas a Pagar", "Contas a Receber", "Declarações", "Acréscimos/Descontos", 
+            "Cobrança", "Pix"
+        ],
+        "Fiscal": [
+            "Cadastros", "Arquivos Fiscais", "NF 21/22", "NF 55", "CT-e", 
+            "NFCom", "Nota de Débito", "Nota de Serviço", "Código IBGE"
+        ],
+        "Estoque": [
+            "Cadastros", "Consultas", "Movimentações", "Veículo Lançamento"
+        ],
+        "Relatórios": [
+            "Financeiro", "Gráficos", "Mapas", "Contrato", "Atendimento", 
+            "Técnico", "FTTH", "Estoque", "Sistema", "Comissão"
+        ],
+        "Administração": [
+            "Pops", "Condomínios", "Cadastros", "Planos", "Integrações", 
+            "Aplicativos", "Certificados", "Vendedores", "Assinaturas Eletrônicas", 
+            "Importar Arquivo KML/KMZ", "Autorização de Contato"
+        ],
+        "Sistema": [
+            "Alterar senha", "Autenticação 2FA", "Alterar senha (Radius)", 
+            "Configurações (Beta)", "Configurações", "Ferramentas", "Gateways", 
+            "Backup", "SMS", "Email", "Monitoramento", "Gerenciador de CPE", 
+            "Usuários", "Grupos", "Dashboards", "Imagens", "SMTP", 
+            "Arquivos Públicos", "Manutenções", "Log (Radius)"
+        ]
+    };
+
+    // Array de vídeos (será preenchido pela API)
+    let videos = [];
+
+    // ==================== FUNÇÕES DE API ====================
+    async function loadVideos() {
+        try {
+            const response = await fetch(`${API_URL}/videos`);
+            if (!response.ok) throw new Error('Erro ao carregar vídeos');
+            videos = await response.json();
+            renderVideos();
+        } catch (error) {
+            console.error('Erro ao carregar vídeos:', error);
+            const gridContainer = document.getElementById('videosGridContainer');
+            gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Erro ao conectar com o servidor. Verifique se o backend está rodando em ${API_URL}</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Certifique-se de executar 'npm start' na pasta backend</p>
+            </div>`;
+        }
+    }
+
+    async function addVideo(videoData) {
+        try {
+            const response = await fetch(`${API_URL}/videos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: Date.now().toString(),
+                    ...videoData
+                })
+            });
+            if (!response.ok) throw new Error('Erro ao adicionar vídeo');
+            await loadVideos(); // Recarregar lista
+        } catch (error) {
+            console.error('Erro ao adicionar vídeo:', error);
+            alert('Erro ao salvar vídeo. Tente novamente.');
+        }
+    }
+
+    async function updateVideo(videoId, videoData) {
+        try {
+            const response = await fetch(`${API_URL}/videos/${videoId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(videoData)
+            });
+            if (!response.ok) throw new Error('Erro ao atualizar vídeo');
+            await loadVideos(); // Recarregar lista
+        } catch (error) {
+            console.error('Erro ao atualizar vídeo:', error);
+            alert('Erro ao atualizar vídeo. Tente novamente.');
+        }
+    }
+
+    async function deleteVideo(videoId) {
+        try {
+            const response = await fetch(`${API_URL}/videos/${videoId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Erro ao deletar vídeo');
+            await loadVideos(); // Recarregar lista
+        } catch (error) {
+            console.error('Erro ao deletar vídeo:', error);
+            alert('Erro ao deletar vídeo. Tente novamente.');
+        }
+    }
+
+    // Helper Loom Embed
+    function getLoomEmbedUrl(loomUrl) {
+        let url = loomUrl.trim();
+        const shareRegex = /loom\.com\/share\/([a-zA-Z0-9_-]+)/;
+        const match = url.match(shareRegex);
+        if(match) {
+            return `https://www.loom.com/embed/${match[1]}`;
+        }
+        return url;
+    }
+
+    // Atualizar subcategorias no filtro de busca
+    function updateFilterSubcategories(selectedCategory) {
+        const subFilter = document.getElementById('filterSubcategory');
+        
+        if(!selectedCategory || selectedCategory === 'all') {
+            subFilter.disabled = true;
+            subFilter.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
+            return;
+        }
+        
+        const subcategories = categoriesData[selectedCategory];
+        if(subcategories && subcategories.length > 0) {
+            subFilter.disabled = false;
+            subFilter.innerHTML = '<option value="all">Todas subcategorias</option>';
+            subcategories.forEach(sub => {
+                subFilter.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
+            });
+        } else {
+            subFilter.disabled = true;
+            subFilter.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
+        }
+    }
+
+    // Renderizar vídeos
+    function renderVideos() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const categoryFilter = document.getElementById('filterCategory').value;
+        const subFilter = document.getElementById('filterSubcategory').value;
+        
+        let filtered = videos.filter(video => {
+            const matchSearch = 
+                video.title.toLowerCase().includes(searchTerm) ||
+                (video.description && video.description.toLowerCase().includes(searchTerm)) ||
+                video.category.toLowerCase().includes(searchTerm) ||
+                (video.subcategory && video.subcategory.toLowerCase().includes(searchTerm));
+            
+            if(!matchSearch) return false;
+            if(categoryFilter !== 'all' && video.category !== categoryFilter) return false;
+            if(subFilter !== 'all' && video.subcategory !== subFilter) return false;
+            return true;
+        });
+        
+        const gridContainer = document.getElementById('videosGridContainer');
+        
+        // Verificar se a categoria selecionada existe mas não tem vídeos
+        if(categoryFilter !== 'all' && filtered.length === 0) {
+            const categoryHasVideos = videos.some(v => v.category === categoryFilter);
+            if(!categoryHasVideos) {
+                gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-folder-open"></i>
+                    <p>A categoria <strong class="category-name">${escapeHtml(categoryFilter)}</strong> não possui vídeos cadastrados ainda.</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Clique em "Novo vídeo" para adicionar o primeiro vídeo desta categoria.</p>
+                </div>`;
+                return;
+            }
+        }
+        
+        if(filtered.length === 0 && videos.length === 0) {
+            gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+                <i class="fas fa-video"></i>
+                <p>Nenhum vídeo cadastrado. Clique em "Novo vídeo" para começar.</p>
+            </div>`;
+            return;
+        }
+        
+        if(filtered.length === 0) {
+            gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+                <i class="fas fa-search"></i>
+                <p>Nenhum vídeo encontrado com os filtros selecionados.</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Tente ajustar sua busca ou filtros.</p>
+            </div>`;
+            return;
+        }
+        
+        gridContainer.innerHTML = '';
+        filtered.forEach(video => {
+            const embedUrl = getLoomEmbedUrl(video.link);
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.innerHTML = `
+                <div class="player-wrapper">
+                    <iframe class="loom-iframe" src="${embedUrl}" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                </div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <span class="video-title">${escapeHtml(video.title)}</span>
+                        <span class="badge-cat">${escapeHtml(video.category)}</span>
+                    </div>
+                    <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>
+                    <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
+                    <div class="card-actions">
+                        <button class="icon-btn edit-video" data-id="${video.id}" title="Editar"><i class="fas fa-pen"></i></button>
+                        <button class="icon-btn danger delete-video" data-id="${video.id}" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+        
+        // Adicionar eventos
+        document.querySelectorAll('.edit-video').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = btn.getAttribute('data-id');
+                openEditModal(id);
+            });
+        });
+        
+        document.querySelectorAll('.delete-video').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const id = btn.getAttribute('data-id');
+                if(confirm('Tem certeza que deseja excluir este vídeo permanentemente?')) {
+                    await deleteVideo(id);
+                }
+            });
+        });
+    }
+    
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Modal logic
+    const modal = document.getElementById('videoModal');
+    const openBtn = document.getElementById('openAddModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const form = document.getElementById('videoForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const videoIdField = document.getElementById('videoId');
+    const titleField = document.getElementById('videoTitle');
+    const linkField = document.getElementById('videoLink');
+    const categorySelect = document.getElementById('videoCategory');
+    const subcategorySelect = document.getElementById('videoSubcategory');
+    const descField = document.getElementById('videoDescription');
+    
+    // Atualizar subcategorias no modal
+    function updateModalSubcategories(selectedCategory) {
+        subcategorySelect.innerHTML = '<option value="">Selecione uma subcategoria</option>';
+        if(selectedCategory && categoriesData[selectedCategory]) {
+            categoriesData[selectedCategory].forEach(sub => {
+                subcategorySelect.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
+            });
+            subcategorySelect.disabled = false;
+        } else {
+            subcategorySelect.disabled = true;
+        }
+    }
+    
+    categorySelect.addEventListener('change', (e) => {
+        updateModalSubcategories(e.target.value);
+    });
+    
+    function resetForm() {
+        videoIdField.value = '';
+        titleField.value = '';
+        linkField.value = '';
+        categorySelect.value = '';
+        updateModalSubcategories('');
+        descField.value = '';
+        modalTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar vídeo';
+    }
+    
+    function openEditModal(id) {
+        const video = videos.find(v => v.id === id);
+        if(video) {
+            videoIdField.value = video.id;
+            titleField.value = video.title;
+            linkField.value = video.link;
+            categorySelect.value = video.category;
+            updateModalSubcategories(video.category);
+            subcategorySelect.value = video.subcategory;
+            descField.value = video.description || '';
+            modalTitle.innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
+            modal.classList.add('active');
+        }
+    }
+    
+    openBtn.addEventListener('click', () => {
+        resetForm();
+        modal.classList.add('active');
+    });
+    
+    function closeModal() {
+        modal.classList.remove('active');
+        resetForm();
+    }
+    
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if(e.target === modal) closeModal();
+    });
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if(!titleField.value.trim() || !linkField.value.trim() || !categorySelect.value || !subcategorySelect.value) {
+            alert('Por favor, preencha todos os campos obrigatórios: Título, Link, Categoria e Subcategoria.');
+            return;
+        }
+        
+        const videoData = {
+            title: titleField.value.trim(),
+            link: linkField.value.trim(),
+            category: categorySelect.value,
+            subcategory: subcategorySelect.value,
+            description: descField.value.trim()
+        };
+        
+        const existingId = videoIdField.value;
+        if(existingId) {
+            await updateVideo(existingId, videoData);
+        } else {
+            await addVideo(videoData);
+        }
+        closeModal();
+    });
+    
+    // Event listeners de filtros
+    document.getElementById('searchInput').addEventListener('input', () => renderVideos());
+    document.getElementById('filterCategory').addEventListener('change', (e) => {
+        updateFilterSubcategories(e.target.value);
+        renderVideos();
+    });
+    document.getElementById('filterSubcategory').addEventListener('change', () => renderVideos());
+    
+    // Inicialização
+    loadVideos();
+    
+    // Inicializar o filtro de subcategoria como desabilitado
+    document.getElementById('filterSubcategory').disabled = true;
+</script>
+</body>
+</html>

@@ -15,6 +15,17 @@ const supabase = createClient(
 );
 
 // Rotas da API
+
+app.get('/', (req, res) => {
+    res.json({ 
+        message: 'API da Loom Library está funcionando!',
+        endpoints: {
+            videos: '/api/videos',
+            documentacao: 'Use GET, POST, PUT, DELETE em /api/videos'
+        }
+    });
+});
+
 app.get('/api/videos', async (req, res) => {
     const { data, error } = await supabase.from('videos').select('*');
     if (error) return res.status(500).json({ error: error.message });

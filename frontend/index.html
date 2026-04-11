@@ -4,68 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>SGP Loom Library</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f6f9fc; color: #1a2c3e; line-height: 1.4; }
-        .app-container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
-        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; }
-        .logo-area h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, #0f2b3d, #1e5f7a); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .logo-area p { font-size: 0.85rem; color: #5b7a95; }
-        .btn-primary { background: #0f2b3d; color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 40px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .btn-primary:hover { background: #1a4b66; transform: translateY(-2px); }
-        .btn-outline { background: transparent; border: 1px solid #cbd5e1; padding: 0.5rem 1rem; border-radius: 30px; font-weight: 500; cursor: pointer; transition: 0.2s; }
-        .btn-outline:hover { background: #eef2f6; }
-        .search-section { background: white; border-radius: 28px; padding: 1rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #e9edf2; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
-        .search-wrapper { flex: 3; min-width: 200px; position: relative; }
-        .search-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #8ba0b3; }
-        .search-wrapper input { width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border-radius: 40px; border: 1px solid #e2e8f0; font-size: 0.95rem; }
-        .filter-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-        .filter-select { padding: 0.6rem 1rem; border-radius: 32px; border: 1px solid #e2e8f0; background: white; font-weight: 500; cursor: pointer; min-width: 160px; }
-        .videos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.8rem; margin-top: 0.5rem; }
-        .video-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: all 0.25s ease; border: 1px solid #edf2f7; display: flex; flex-direction: column; }
-        .video-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15); }
-        .player-wrapper { background: #0a1a24; aspect-ratio: 16 / 9; position: relative; }
-        .loom-iframe { width: 100%; height: 100%; border: none; }
-        .card-content { padding: 1.2rem 1.2rem 1rem; }
-        .card-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; }
-        .video-title { font-size: 1.1rem; font-weight: 700; color: #0f2b3d; }
-        .badge-cat { background: #eef2ff; padding: 0.2rem 0.7rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; color: #1e5f7a; }
-        .subcat { font-size: 0.75rem; color: #5f7f9e; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.3rem; }
-        .description { font-size: 0.85rem; color: #2c4a6e; margin: 0.7rem 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-actions { display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 0.6rem; border-top: 1px solid #ecf3f9; padding-top: 0.7rem; }
-        .icon-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: #8ba0b3; transition: 0.2s; }
-        .icon-btn.danger:hover { color: #e53e3e; }
-        .icon-btn:hover { color: #1e5f7a; }
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
-        .pagination button { background: white; border: 1px solid #e2e8f0; padding: 0.6rem 1rem; border-radius: 10px; font-weight: 500; cursor: pointer; transition: 0.2s; color: #1a2c3e; }
-        .pagination button:hover:not(:disabled) { background: #1e5f7a; color: white; border-color: #1e5f7a; }
-        .pagination button.active { background: #1e5f7a; color: white; border-color: #1e5f7a; }
-        .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .pagination-info { text-align: center; margin-top: 1rem; font-size: 0.85rem; color: #5b7a95; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; }
-        .modal-overlay.active { visibility: visible; opacity: 1; }
-        .modal { background: white; width: 90%; max-width: 550px; border-radius: 32px; padding: 1.8rem; box-shadow: 0 25px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-        .modal h3 { font-size: 1.6rem; margin-bottom: 1rem; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.85rem; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.7rem; border-radius: 16px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 0.9rem; }
-        .modal-buttons { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
-        .empty-state { text-align: center; padding: 4rem 1rem; background: #f8fafc; border-radius: 40px; color: #6b8aa8; }
-        .empty-state i { font-size: 3rem; opacity: 0.5; margin-bottom: 1rem; }
-        .loading { text-align: center; padding: 3rem; color: #1e5f7a; }
-        footer { margin-top: 3rem; text-align: center; font-size: 0.8rem; color: #8ba0b3; }
-        .welcome-modal .modal { max-width: 500px; }
-        .welcome-content { text-align: left; line-height: 1.6; }
-        .welcome-content p { margin-bottom: 1rem; }
-        .welcome-content ul { margin: 1rem 0; padding-left: 1.5rem; }
-        .welcome-content li { margin-bottom: 0.5rem; }
-        .welcome-highlight { background: #eef2ff; padding: 0.2rem 0.4rem; border-radius: 6px; font-weight: 600; color: #1e5f7a; }
-        .btn-close-welcome { background: #1e5f7a; color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 40px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 1rem; }
-        @media (max-width: 680px) { .app-container { padding: 1rem; } .search-section { flex-direction: column; align-items: stretch; } .filter-select { width: 100%; } }
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#f6f9fc;color:#1a2c3e;line-height:1.4}.app-container{max-width:1400px;margin:0 auto;padding:2rem 1.5rem}.header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;border-bottom:2px solid #e2e8f0;padding-bottom:1rem}.logo-area h1{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#0f2b3d,#1e5f7a);-webkit-background-clip:text;background-clip:text;color:transparent}.logo-area p{font-size:.85rem;color:#5b7a95}.btn-primary{background:#0f2b3d;color:#fff;border:none;padding:.7rem 1.5rem;border-radius:40px;font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:.5rem}.btn-primary:hover{background:#1a4b66;transform:translateY(-2px)}.btn-outline{background:transparent;border:1px solid #cbd5e1;padding:.5rem 1rem;border-radius:30px;font-weight:500;cursor:pointer;transition:.2s}.btn-outline:hover{background:#eef2f6}.search-section{background:#fff;border-radius:28px;padding:1rem 1.5rem;margin-bottom:2rem;box-shadow:0 4px 12px rgba(0,0,0,.03);border:1px solid #e9edf2;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}.search-wrapper{flex:3;min-width:200px;position:relative}.search-wrapper i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8ba0b3}.search-wrapper input{width:100%;padding:.8rem 1rem .8rem 2.8rem;border-radius:40px;border:1px solid #e2e8f0;font-size:.95rem}.filter-group{display:flex;gap:.8rem;flex-wrap:wrap}.filter-select{padding:.6rem 1rem;border-radius:32px;border:1px solid #e2e8f0;background:#fff;font-weight:500;cursor:pointer;min-width:160px}.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.8rem;margin-top:.5rem}.video-card{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.05);transition:all .25s ease;border:1px solid #edf2f7;display:flex;flex-direction:column}.video-card:hover{transform:translateY(-5px);box-shadow:0 20px 30px -12px rgba(0,0,0,.15)}.player-wrapper{background:#0a1a24;aspect-ratio:16/9;position:relative}.loom-iframe{width:100%;height:100%;border:none}.card-content{padding:1.2rem 1.2rem 1rem}.card-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem}.video-title{font-size:1.1rem;font-weight:700;color:#0f2b3d}.badge-cat{background:#eef2ff;padding:.2rem .7rem;border-radius:50px;font-size:.7rem;font-weight:600;color:#1e5f7a}.subcat{font-size:.75rem;color:#5f7f9e;margin-bottom:.5rem;display:flex;align-items:center;gap:.3rem}.description{font-size:.85rem;color:#2c4a6e;margin:.7rem 0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card-actions{display:flex;justify-content:flex-end;gap:.8rem;margin-top:.6rem;border-top:1px solid #ecf3f9;padding-top:.7rem}.icon-btn{background:none;border:none;font-size:1rem;cursor:pointer;color:#8ba0b3;transition:.2s}.icon-btn.danger:hover{color:#e53e3e}.icon-btn:hover{color:#1e5f7a}.pagination{display:flex;justify-content:center;align-items:center;gap:.5rem;margin-top:2.5rem;flex-wrap:wrap}.pagination button{background:#fff;border:1px solid #e2e8f0;padding:.6rem 1rem;border-radius:10px;font-weight:500;cursor:pointer;transition:.2s;color:#1a2c3e}.pagination button:hover:not(:disabled){background:#1e5f7a;color:#fff;border-color:#1e5f7a}.pagination button.active{background:#1e5f7a;color:#fff;border-color:#1e5f7a}.pagination button:disabled{opacity:.5;cursor:not-allowed}.pagination-info{text-align:center;margin-top:1rem;font-size:.85rem;color:#5b7a95}.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:1000;visibility:hidden;opacity:0;transition:.2s}.modal-overlay.active{visibility:visible;opacity:1}.modal{background:#fff;width:90%;max-width:550px;border-radius:32px;padding:1.8rem;box-shadow:0 25px 40px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}.modal h3{font-size:1.6rem;margin-bottom:1rem}.form-group{margin-bottom:1rem}.form-group label{display:block;font-weight:600;margin-bottom:.4rem;font-size:.85rem}.form-group input,.form-group select,.form-group textarea{width:100%;padding:.7rem;border-radius:16px;border:1px solid #cbd5e1;font-family:inherit;font-size:.9rem}.modal-buttons{display:flex;justify-content:flex-end;gap:1rem;margin-top:1.5rem}.empty-state{text-align:center;padding:4rem 1rem;background:#f8fafc;border-radius:40px;color:#6b8aa8}.empty-state i{font-size:3rem;opacity:.5;margin-bottom:1rem}.loading{text-align:center;padding:3rem;color:#1e5f7a}footer{margin-top:3rem;text-align:center;font-size:.8rem;color:#8ba0b3}.welcome-modal .modal{max-width:500px}.welcome-content{text-align:left;line-height:1.6}.welcome-content p{margin-bottom:1rem}.welcome-content ul{margin:1rem 0;padding-left:1.5rem}.welcome-content li{margin-bottom:.5rem}.welcome-highlight{background:#eef2ff;padding:.2rem .4rem;border-radius:6px;font-weight:600;color:#1e5f7a}.btn-close-welcome{background:#1e5f7a;color:#fff;border:none;padding:.7rem 1.5rem;border-radius:40px;font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s;width:100%;margin-top:1rem}@media(max-width:680px){.app-container{padding:1rem}.search-section{flex-direction:column;align-items:stretch}.filter-select{width:100%}}
     </style>
 </head>
 <body>
@@ -111,12 +53,11 @@
     <footer><i class="fas fa-link"></i> Player Loom incorporado • Categorias e subcategorias pré-definidas</footer>
 </div>
 
-<!-- Modal de Boas-vindas -->
 <div id="welcomeModal" class="modal-overlay welcome-modal">
     <div class="modal">
         <h3><i class="fas fa-hand-wave"></i> Bem-vindo!</h3>
         <div class="welcome-content">
-            <p>Esta ferramenta foi desenvolvida por <strong class="welcome-highlight">Kleybson Felipe</strong> e atualmente encontra-se em <strong class="welcome-highlight">fase beta</strong>. Durante esse período, algumas funcionalidades podem apresentar instabilidades ou passar por melhorias.</p>
+            <p>Esta ferramenta foi desenvolvida por <strong class="welcome-highlight">Kleybson Felipe</strong> e atualmente encontra-se em <strong class="welcome-highlight">fase beta</strong>.</p>
             <p><strong>Orientações de uso:</strong></p>
             <ul>
                 <li>Sempre preencha todos os campos obrigatórios. No campo de observações, informe o nome de quem gravou o vídeo.</li>
@@ -129,7 +70,6 @@
     </div>
 </div>
 
-<!-- Modal de Vídeo -->
 <div id="videoModal" class="modal-overlay">
     <div class="modal">
         <h3 id="modalTitle"><i class="fas fa-plus-circle"></i> Adicionar vídeo</h3>
@@ -176,16 +116,14 @@
 </div>
 
 <script>
-    // ==================== CONFIGURAÇÃO ====================
+(function() {
     const API_URL = 'https://biblioteca-loom.onrender.com/api';
     const VIDEOS_PER_PAGE = 9;
     
     let currentPage = 1;
     let totalPages = 1;
     let totalVideos = 0;
-    let allVideosForFilters = []; // Para os filtros (categorias)
     
-    // ==================== DADOS DE CATEGORIAS ====================
     const categoriesData = {
         "Clientes": ["Consulta", "Cadastrar", "Viabilidade", "Pré cadastro", "CRM", "Suspender em Lote", "Ultimos Cadastros"],
         "Financeiro": ["Cadastros", "Títulos", "Carnês", "Protocolos", "Caixas", "Contas a Pagar", "Contas a Receber", "Declarações", "Acréscimos/Descontos", "Cobrança", "Pix"],
@@ -196,61 +134,38 @@
         "Sistema": ["Alterar senha", "Autenticação 2FA", "Alterar senha (Radius)", "Configurações (Beta)", "Configurações", "Ferramentas", "Gateways", "Backup", "SMS", "Email", "Monitoramento", "Gerenciador de CPE", "Usuários", "Grupos", "Dashboards", "Imagens", "SMTP", "Arquivos Públicos", "Manutenções", "Log (Radius)"]
     };
 
-    // ==================== FUNÇÕES DE API COM PAGINAÇÃO ====================
-    async function loadVideos(page = 1) {
-        const gridContainer = document.getElementById('videosGridContainer');
-        gridContainer.innerHTML = `<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>`;
-        
-        const searchTerm = document.getElementById('searchInput').value;
-        const categoryFilter = document.getElementById('filterCategory').value;
-        const subFilter = document.getElementById('filterSubcategory').value;
-        
-        let url = `${API_URL}/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
-        
-        // Adicionar filtros à URL se estiverem ativos
-        if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
-        if (categoryFilter !== 'all') url += `&category=${encodeURIComponent(categoryFilter)}`;
-        if (subFilter !== 'all') url += `&subcategory=${encodeURIComponent(subFilter)}`;
-        
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Erro ao carregar vídeos');
-            
-            const result = await response.json();
-            
-            const videosData = result.data || result;
-            totalVideos = result.total || videosData.length;
-            totalPages = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
-            currentPage = page;
-            
-            renderVideos(videosData);
-            renderPagination();
-            updateURLHash(page);
-            
-        } catch (error) {
-            console.error('Erro ao carregar vídeos:', error);
-            gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao conectar com o servidor.</p>
-            </div>`;
-        }
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function getLoomEmbedUrl(loomUrl) {
+        var match = loomUrl.trim().match(/loom\.com\/share\/([a-zA-Z0-9_-]+)/);
+        return match ? 'https://www.loom.com/embed/' + match[1] : loomUrl;
+    }
+
+    function updateURLHash(page) {
+        window.location.hash = 'page=' + page;
     }
 
     function renderVideos(videos) {
-        const gridContainer = document.getElementById('videosGridContainer');
+        var gridContainer = document.getElementById('videosGridContainer');
         
         if (!videos || videos.length === 0) {
-            gridContainer.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-                <i class="fas fa-video"></i>
-                <p>Nenhum vídeo encontrado nesta página.</p>
-            </div>`;
+            gridContainer.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-video"></i><p>Nenhum vídeo encontrado nesta página.</p></div>';
             return;
         }
         
         gridContainer.innerHTML = '';
-        videos.forEach(video => {
-            const embedUrl = getLoomEmbedUrl(video.link);
-            const card = document.createElement('div');
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            var embedUrl = getLoomEmbedUrl(video.link);
+            var card = document.createElement('div');
             card.className = 'video-card';
             card.innerHTML = `
                 <div class="player-wrapper">
@@ -270,16 +185,15 @@
                 </div>
             `;
             gridContainer.appendChild(card);
+        }
+        
+        document.querySelectorAll('.edit-video').forEach(function(btn) {
+            btn.addEventListener('click', function() { openEditModal(btn.getAttribute('data-id')); });
         });
         
-        // Adicionar eventos
-        document.querySelectorAll('.edit-video').forEach(btn => {
-            btn.addEventListener('click', () => openEditModal(btn.getAttribute('data-id')));
-        });
-        
-        document.querySelectorAll('.delete-video').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                if(confirm('Tem certeza que deseja excluir este vídeo permanentemente?')) {
+        document.querySelectorAll('.delete-video').forEach(function(btn) {
+            btn.addEventListener('click', async function() {
+                if (confirm('Tem certeza que deseja excluir este vídeo permanentemente?')) {
                     await deleteVideo(btn.getAttribute('data-id'));
                     await loadVideos(currentPage);
                 }
@@ -288,76 +202,91 @@
     }
 
     function renderPagination() {
-        const paginationContainer = document.getElementById('paginationContainer');
-        const paginationInfo = document.getElementById('paginationInfo');
+        var paginationContainer = document.getElementById('paginationContainer');
+        var paginationInfo = document.getElementById('paginationInfo');
         
         if (totalPages <= 1) {
             paginationContainer.innerHTML = '';
-            paginationInfo.innerHTML = `Total de ${totalVideos} vídeo${totalVideos !== 1 ? 's' : ''}`;
+            paginationInfo.innerHTML = 'Total de ' + totalVideos + ' video' + (totalVideos !== 1 ? 's' : '');
             return;
         }
         
-        let paginationHTML = '';
-        paginationHTML += `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-            <i class="fas fa-chevron-left"></i> Anterior
-        </button>`;
+        var paginationHTML = '';
+        paginationHTML += '<button onclick="window.goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i> Anterior</button>';
         
-        const maxVisible = 5;
-        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-        let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+        var maxVisible = 5;
+        var startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        var endPage = Math.min(totalPages, startPage + maxVisible - 1);
         
         if (endPage - startPage + 1 < maxVisible) {
             startPage = Math.max(1, endPage - maxVisible + 1);
         }
         
         if (startPage > 1) {
-            paginationHTML += `<button onclick="goToPage(1)">1</button>`;
-            if (startPage > 2) paginationHTML += `<button disabled>...</button>`;
+            paginationHTML += '<button onclick="window.goToPage(1)">1</button>';
+            if (startPage > 2) paginationHTML += '<button disabled>...</button>';
         }
         
-        for (let i = startPage; i <= endPage; i++) {
-            paginationHTML += `<button onclick="goToPage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+        for (var i = startPage; i <= endPage; i++) {
+            paginationHTML += '<button onclick="window.goToPage(' + i + ')" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
         }
         
         if (endPage < totalPages) {
-            if (endPage < totalPages - 1) paginationHTML += `<button disabled>...</button>`;
-            paginationHTML += `<button onclick="goToPage(${totalPages})">${totalPages}</button>`;
+            if (endPage < totalPages - 1) paginationHTML += '<button disabled>...</button>';
+            paginationHTML += '<button onclick="window.goToPage(' + totalPages + ')">' + totalPages + '</button>';
         }
         
-        paginationHTML += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
-            Próximo <i class="fas fa-chevron-right"></i>
-        </button>`;
+        paginationHTML += '<button onclick="window.goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Próximo <i class="fas fa-chevron-right"></i></button>';
         
         paginationContainer.innerHTML = paginationHTML;
         
-        const start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
-        const end = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
-        paginationInfo.innerHTML = `Mostrando ${start} - ${end} de ${totalVideos} vídeos`;
+        var start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
+        var end = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
+        paginationInfo.innerHTML = 'Mostrando ' + start + ' - ' + end + ' de ' + totalVideos + ' vídeos';
     }
 
-    function goToPage(page) {
+    window.goToPage = function(page) {
         if (page < 1 || page > totalPages) return;
         loadVideos(page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    };
 
-    function updateURLHash(page) {
-        window.location.hash = `page=${page}`;
-    }
-
-    function handleHashChange() {
-        const hash = window.location.hash;
-        const match = hash.match(/page=(\d+)/);
-        const page = match ? parseInt(match[1]) : 1;
-        if (page !== currentPage) {
-            loadVideos(page);
+    async function loadVideos(page) {
+        page = page || 1;
+        var gridContainer = document.getElementById('videosGridContainer');
+        gridContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
+        
+        var searchTerm = document.getElementById('searchInput').value;
+        var categoryFilter = document.getElementById('filterCategory').value;
+        var subFilter = document.getElementById('filterSubcategory').value;
+        
+        var url = API_URL + '/videos?page=' + page + '&limit=' + VIDEOS_PER_PAGE;
+        if (searchTerm) url += '&search=' + encodeURIComponent(searchTerm);
+        if (categoryFilter !== 'all') url += '&category=' + encodeURIComponent(categoryFilter);
+        if (subFilter !== 'all') url += '&subcategory=' + encodeURIComponent(subFilter);
+        
+        try {
+            var response = await fetch(url);
+            if (!response.ok) throw new Error('Erro ao carregar vídeos');
+            
+            var result = await response.json();
+            var videosData = result.data || result;
+            totalVideos = result.total || videosData.length;
+            totalPages = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
+            currentPage = page;
+            
+            renderVideos(videosData);
+            renderPagination();
+            updateURLHash(page);
+        } catch (error) {
+            console.error('Erro ao carregar vídeos:', error);
+            gridContainer.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-exclamation-triangle"></i><p>Erro ao conectar com o servidor.</p></div>';
         }
     }
 
-    // ==================== CRUD ====================
     async function addVideo(videoData) {
         try {
-            const response = await fetch(`${API_URL}/videos`, {
+            var response = await fetch(API_URL + '/videos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: Date.now().toString(), ...videoData })
@@ -372,7 +301,7 @@
 
     async function updateVideo(videoId, videoData) {
         try {
-            const response = await fetch(`${API_URL}/videos/${videoId}`, {
+            var response = await fetch(API_URL + '/videos/' + videoId, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(videoData)
@@ -387,7 +316,7 @@
 
     async function deleteVideo(videoId) {
         try {
-            const response = await fetch(`${API_URL}/videos/${videoId}`, { method: 'DELETE' });
+            var response = await fetch(API_URL + '/videos/' + videoId, { method: 'DELETE' });
             if (!response.ok) throw new Error('Erro ao deletar vídeo');
         } catch (error) {
             console.error('Erro ao deletar vídeo:', error);
@@ -395,92 +324,72 @@
         }
     }
 
-    // ==================== UTILIDADES ====================
-    function getLoomEmbedUrl(loomUrl) {
-        const match = loomUrl.trim().match(/loom\.com\/share\/([a-zA-Z0-9_-]+)/);
-        return match ? `https://www.loom.com/embed/${match[1]}` : loomUrl;
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-    }
-
-    // ==================== FILTROS ====================
     function updateFilterSubcategories(selectedCategory) {
-        const subFilter = document.getElementById('filterSubcategory');
+        var subFilter = document.getElementById('filterSubcategory');
         if (!selectedCategory || selectedCategory === 'all') {
             subFilter.disabled = true;
             subFilter.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
             return;
         }
-        const subcategories = categoriesData[selectedCategory];
+        var subcategories = categoriesData[selectedCategory];
         if (subcategories && subcategories.length > 0) {
             subFilter.disabled = false;
             subFilter.innerHTML = '<option value="all">Todas subcategorias</option>';
-            subcategories.forEach(sub => {
-                subFilter.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
-            });
+            for (var i = 0; i < subcategories.length; i++) {
+                subFilter.innerHTML += '<option value="' + escapeHtml(subcategories[i]) + '">' + escapeHtml(subcategories[i]) + '</option>';
+            }
         } else {
             subFilter.disabled = true;
             subFilter.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
         }
     }
 
-    // ==================== MODAL DE VÍDEO ====================
-    const modal = document.getElementById('videoModal');
-    const openBtn = document.getElementById('openAddModalBtn');
-    const closeBtn = document.getElementById('closeModalBtn');
-    const form = document.getElementById('videoForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const videoIdField = document.getElementById('videoId');
-    const titleField = document.getElementById('videoTitle');
-    const linkField = document.getElementById('videoLink');
-    const categorySelect = document.getElementById('videoCategory');
-    const subcategorySelect = document.getElementById('videoSubcategory');
-    const descField = document.getElementById('videoDescription');
-
     function updateModalSubcategories(selectedCategory) {
+        var subcategorySelect = document.getElementById('videoSubcategory');
         subcategorySelect.innerHTML = '<option value="">Selecione uma subcategoria</option>';
         if (selectedCategory && categoriesData[selectedCategory]) {
-            categoriesData[selectedCategory].forEach(sub => {
-                subcategorySelect.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
-            });
+            for (var i = 0; i < categoriesData[selectedCategory].length; i++) {
+                subcategorySelect.innerHTML += '<option value="' + escapeHtml(categoriesData[selectedCategory][i]) + '">' + escapeHtml(categoriesData[selectedCategory][i]) + '</option>';
+            }
             subcategorySelect.disabled = false;
         } else {
             subcategorySelect.disabled = true;
         }
     }
 
-    categorySelect.addEventListener('change', (e) => updateModalSubcategories(e.target.value));
-
     function resetForm() {
-        videoIdField.value = '';
-        titleField.value = '';
-        linkField.value = '';
-        categorySelect.value = '';
+        document.getElementById('videoId').value = '';
+        document.getElementById('videoTitle').value = '';
+        document.getElementById('videoLink').value = '';
+        document.getElementById('videoCategory').value = '';
         updateModalSubcategories('');
-        descField.value = '';
-        modalTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar vídeo';
+        document.getElementById('videoDescription').value = '';
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar vídeo';
     }
 
     async function openEditModal(id) {
         try {
-            const response = await fetch(`${API_URL}/videos?page=1&limit=1000`);
-            const result = await response.json();
-            const videos = result.data || result;
-            const video = videos.find(v => v.id === id);
+            var response = await fetch(API_URL + '/videos?page=1&limit=1000');
+            var result = await response.json();
+            var videos = result.data || result;
+            var video = null;
+            for (var i = 0; i < videos.length; i++) {
+                if (videos[i].id === id) {
+                    video = videos[i];
+                    break;
+                }
+            }
             
             if (video) {
-                videoIdField.value = video.id;
-                titleField.value = video.title;
-                linkField.value = video.link;
-                categorySelect.value = video.category;
+                document.getElementById('videoId').value = video.id;
+                document.getElementById('videoTitle').value = video.title;
+                document.getElementById('videoLink').value = video.link;
+                document.getElementById('videoCategory').value = video.category;
                 updateModalSubcategories(video.category);
-                subcategorySelect.value = video.subcategory;
-                descField.value = video.description || '';
-                modalTitle.innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
-                modal.classList.add('active');
+                document.getElementById('videoSubcategory').value = video.subcategory;
+                document.getElementById('videoDescription').value = video.description || '';
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
+                document.getElementById('videoModal').classList.add('active');
             }
         } catch (error) {
             console.error('Erro ao buscar vídeo:', error);
@@ -488,61 +397,95 @@
         }
     }
 
-    openBtn.addEventListener('click', () => { resetForm(); modal.classList.add('active'); });
-    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (!titleField.value.trim() || !linkField.value.trim() || !categorySelect.value || !subcategorySelect.value) {
-            alert('Preencha todos os campos obrigatórios.');
-            return;
+    function handleHashChange() {
+        var hash = window.location.hash;
+        var match = hash.match(/page=(\d+)/);
+        var page = match ? parseInt(match[1]) : 1;
+        if (page !== currentPage) {
+            loadVideos(page);
         }
-        
-        const videoData = {
-            title: titleField.value.trim(),
-            link: linkField.value.trim(),
-            category: categorySelect.value,
-            subcategory: subcategorySelect.value,
-            description: descField.value.trim()
-        };
-        
-        if (videoIdField.value) {
-            await updateVideo(videoIdField.value, videoData);
-        } else {
-            await addVideo(videoData);
-        }
-        modal.classList.remove('active');
-    });
+    }
 
-    // ==================== MODAL DE BOAS-VINDAS ====================
     function showWelcomeModal() {
         if (!localStorage.getItem('welcomeModalSeen')) {
             document.getElementById('welcomeModal').classList.add('active');
         }
     }
 
-    document.getElementById('closeWelcomeBtn').addEventListener('click', () => {
+    document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
         document.getElementById('welcomeModal').classList.remove('active');
         localStorage.setItem('welcomeModalSeen', 'true');
     });
 
-    // ==================== EVENT LISTENERS ====================
-    document.getElementById('filterCategory').addEventListener('change', (e) => {
+    document.getElementById('openAddModalBtn').addEventListener('click', function() {
+        resetForm();
+        document.getElementById('videoModal').classList.add('active');
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        document.getElementById('videoModal').classList.remove('active');
+    });
+
+    document.getElementById('videoModal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('videoModal')) {
+            document.getElementById('videoModal').classList.remove('active');
+        }
+    });
+
+    document.getElementById('videoForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var title = document.getElementById('videoTitle').value.trim();
+        var link = document.getElementById('videoLink').value.trim();
+        var category = document.getElementById('videoCategory').value;
+        var subcategory = document.getElementById('videoSubcategory').value;
+        
+        if (!title || !link || !category || !subcategory) {
+            alert('Preencha todos os campos obrigatórios.');
+            return;
+        }
+        
+        var videoData = {
+            title: title,
+            link: link,
+            category: category,
+            subcategory: subcategory,
+            description: document.getElementById('videoDescription').value.trim()
+        };
+        
+        var existingId = document.getElementById('videoId').value;
+        if (existingId) {
+            await updateVideo(existingId, videoData);
+        } else {
+            await addVideo(videoData);
+        }
+        document.getElementById('videoModal').classList.remove('active');
+    });
+
+    document.getElementById('filterCategory').addEventListener('change', function(e) {
         updateFilterSubcategories(e.target.value);
         loadVideos(1);
     });
-    document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos(1));
-    document.getElementById('searchInput').addEventListener('input', () => {
-        clearTimeout(window.searchTimeout);
-        window.searchTimeout = setTimeout(() => loadVideos(1), 500);
+
+    document.getElementById('filterSubcategory').addEventListener('change', function() {
+        loadVideos(1);
     });
 
-    // ==================== INICIALIZAÇÃO ====================
+    var searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() { loadVideos(1); }, 500);
+    });
+
+    document.getElementById('videoCategory').addEventListener('change', function(e) {
+        updateModalSubcategories(e.target.value);
+    });
+
     window.addEventListener('hashchange', handleHashChange);
-    handleHashChange();
+    
+    loadVideos(1);
     showWelcomeModal();
     document.getElementById('filterSubcategory').disabled = true;
+})();
 </script>
 </body>
 </html>

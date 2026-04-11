@@ -1,5 +1,4 @@
 require('dotenv').config({ path: './supabase.env' });
-
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
@@ -14,30 +13,42 @@ const supabase = createClient(
     process.env.SUPABASE_KEY
 );
 
-// Rotas da API
-
-app.get('/', (req, res) => {
-    res.json({ 
-        message: 'API da Loom Library está funcionando!',
-        endpoints: {
-            videos: '/api/videos',
-            documentacao: 'Use GET, POST, PUT, DELETE em /api/videos'
-        }
-    });
-});
-
+// Rota GET com paginação
 app.get('/api/videos', async (req, res) => {
-    const { data, error } = await supabase.from('videos').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+    const offset = (page - 1) * limit;
+    
+    try {
+        const { data, error, count } = await supabase
+            .from('videos')
+            .select('*', { count: 'exact' })
+            .range(offset, offset + limit - 1)
+            .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        
+        res.json({
+            success: true,
+            data: data,
+            total: count,
+            page: page,
+            limit: limit,
+            totalPages: Math.ceil(count / limit)
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
+// Rota POST
 app.post('/api/videos', async (req, res) => {
     const { data, error } = await supabase.from('videos').insert([req.body]);
     if (error) return res.status(500).json({ error: error.message });
     res.json(data);
 });
 
+// Rota PUT
 app.put('/api/videos/:id', async (req, res) => {
     const { error } = await supabase
         .from('videos')
@@ -47,6 +58,7 @@ app.put('/api/videos/:id', async (req, res) => {
     res.json({ message: 'Updated' });
 });
 
+// Rota DELETE
 app.delete('/api/videos/:id', async (req, res) => {
     const { error } = await supabase
         .from('videos')

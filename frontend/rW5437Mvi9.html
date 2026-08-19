@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SGP Library</title>
+    <title>SGP Loom Library</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
@@ -85,6 +85,28 @@
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 400;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e8590c, #aa502a);
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.3);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(232, 89, 12, 0.4);
         }
 
         .hero-title {
@@ -321,7 +343,35 @@
             overflow: hidden;
         }
 
-        /* SEM BOTÕES DE AÇÃO - APENAS VISUALIZAÇÃO */
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+            border-top: 1px solid #f0f2f5;
+            padding-top: 0.6rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #8a9bb5;
+            transition: all 0.2s ease;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        .icon-btn:hover {
+            color: #e8590c;
+            background: #fef0e8;
+        }
+
+        .icon-btn.danger:hover {
+            color: #e53e3e;
+            background: #fde8e8;
+        }
 
         /* PAGINATION */
         .pagination-wrapper {
@@ -377,6 +427,116 @@
             color: #8a9bb5;
         }
 
+        /* MODALS */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(23, 26, 34, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal {
+            background: #fff;
+            width: 90%;
+            max-width: 520px;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: #1a2332;
+        }
+
+        .modal h3 i {
+            color: #e8590c;
+            margin-right: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.85rem;
+            color: #1a2332;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 1.5px solid #e8edf4;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            color: #1a2332;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #e8590c;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(232, 89, 12, 0.08);
+        }
+
+        .form-group small {
+            color: #8a9bb5;
+            font-size: 0.75rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #e8edf4;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            color: #1a2332;
+        }
+
+        .btn-outline:hover {
+            background: #f0f2f5;
+        }
+
         /* Empty & Loading */
         .empty-state {
             text-align: center;
@@ -400,6 +560,60 @@
             padding: 3rem;
             color: #e8590c;
             grid-column: 1/-1;
+        }
+
+        /* Welcome Modal */
+        .welcome-modal .modal {
+            max-width: 500px;
+        }
+
+        .welcome-content {
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .welcome-content p {
+            margin-bottom: 1rem;
+            color: #1a2332;
+        }
+
+        .welcome-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .welcome-content li {
+            margin-bottom: 0.5rem;
+            color: #1a2332;
+        }
+
+        .welcome-highlight {
+            background: #fef0e8;
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #e8590c;
+        }
+
+        .btn-close-welcome {
+            background: linear-gradient(135deg, #e8590c, #aa502a);
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.3);
+        }
+
+        .btn-close-welcome:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(232, 89, 12, 0.4);
         }
 
         /* Footer */
@@ -461,6 +675,11 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+
+            .modal {
+                padding: 1.5rem;
+                width: 95%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -493,7 +712,9 @@
                         <p>Biblioteca de vídeos SGP</p>
                     </div>
                 </div>
-                <!-- SEM BOTÃO DE NOVO VÍDEO -->
+                <button class="btn-primary" id="openAddModalBtn">
+                    <i class="fas fa-plus"></i> Novo vídeo
+                </button>
             </div>
 
             <div class="hero-title">
@@ -548,6 +769,70 @@
     <!-- FOOTER -->
     <div class="footer">
         <i class="fas fa-play-circle"></i> Player Loom incorporado • Categorias e subcategorias pré-definidas
+    </div>
+
+    <!-- WELCOME MODAL -->
+    <div id="welcomeModal" class="modal-overlay welcome-modal">
+        <div class="modal">
+            <h3><i class="fas fa-hand-wave"></i> Bem-vindo!</h3>
+            <div class="welcome-content">
+                <p>Esta ferramenta foi desenvolvida por <strong class="welcome-highlight">Kleybson Felipe</strong> e atualmente encontra-se em <strong class="welcome-highlight">fase beta</strong>.</p>
+                <p><strong>Orientações de uso:</strong></p>
+                <ul>
+                    <li>Sempre preencha todos os campos obrigatórios. No campo de observações, informe o nome de quem gravou o vídeo.</li>
+                    <li>Antes de adicionar um novo vídeo, verifique se ele já está presente na biblioteca para evitar duplicidades.</li>
+                    <li>Em caso de dúvidas, sugestões ou problemas, entre em contato por mensagem privada no Discord.</li>
+                </ul>
+                <p>Agradecemos pela sua colaboração e compreensão!</p>
+            </div>
+            <button class="btn-close-welcome" id="closeWelcomeBtn"><i class="fas fa-check-circle"></i> Entendi, vamos começar!</button>
+        </div>
+    </div>
+
+    <!-- VIDEO MODAL -->
+    <div id="videoModal" class="modal-overlay">
+        <div class="modal">
+            <h3 id="modalTitle"><i class="fas fa-plus-circle"></i> Adicionar vídeo</h3>
+            <form id="videoForm">
+                <input type="hidden" id="videoId" value="">
+                <div class="form-group">
+                    <label>Título do vídeo *</label>
+                    <input type="text" id="videoTitle" required placeholder="Ex: Tutorial de Configuração">
+                </div>
+                <div class="form-group">
+                    <label>Link Loom *</label>
+                    <input type="url" id="videoLink" required placeholder="https://www.loom.com/share/xxxxx">
+                    <small>Cole o link de compartilhamento do Loom</small>
+                </div>
+                <div class="form-group">
+                    <label>Categoria *</label>
+                    <select id="videoCategory" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="Clientes">Clientes</option>
+                        <option value="Financeiro">Financeiro</option>
+                        <option value="Fiscal">Fiscal</option>
+                        <option value="Estoque">Estoque</option>
+                        <option value="Relatórios">Relatórios</option>
+                        <option value="Administração">Administração</option>
+                        <option value="Sistema">Sistema</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Subcategoria *</label>
+                    <select id="videoSubcategory" required disabled>
+                        <option value="">Primeiro selecione uma categoria</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição / Observações</label>
+                    <textarea id="videoDescription" rows="3" placeholder="Descreva o conteúdo do vídeo e informe o nome de quem gravou..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-outline" id="closeModalBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar vídeo</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -622,17 +907,41 @@
                         </div>
                         <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>
                         <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
-                        <!-- SEM BOTÕES DE AÇÃO (EDITAR/EXCLUIR) -->
+                        <div class="card-actions">
+                            <button class="icon-btn edit-video" data-id="${video.id}" title="Editar"><i class="fas fa-pen"></i></button>
+                            <button class="icon-btn danger delete-video" data-id="${video.id}" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+                        </div>
                     </div>
                 `;
                 
                 card.addEventListener('click', function(e) {
+                    if (e.target.closest('.icon-btn') || e.target.closest('.card-actions')) {
+                        return;
+                    }
                     var videoId = this.getAttribute('data-id');
                     openVideoPlayer(videoId);
                 });
                 
                 gridContainer.appendChild(card);
             }
+            
+            document.querySelectorAll('.edit-video').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openEditModal(btn.getAttribute('data-id'));
+                });
+            });
+            
+            document.querySelectorAll('.delete-video').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('Tem certeza que deseja excluir este vídeo permanentemente?')) {
+                        deleteVideo(btn.getAttribute('data-id')).then(function() {
+                            loadVideos(currentPage);
+                        });
+                    }
+                });
+            });
         }
 
         function renderPagination() {
@@ -718,6 +1027,47 @@
             }
         }
 
+        // ===== CRUD =====
+        async function addVideo(videoData) {
+            try {
+                var response = await fetch(API_URL + '/videos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: Date.now().toString(), ...videoData })
+                });
+                if (!response.ok) throw new Error('Erro ao adicionar vídeo');
+                await loadVideos(currentPage);
+            } catch (error) {
+                console.error('Erro ao adicionar vídeo:', error);
+                alert('Erro ao salvar vídeo.');
+            }
+        }
+
+        async function updateVideo(videoId, videoData) {
+            try {
+                var response = await fetch(API_URL + '/videos/' + videoId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(videoData)
+                });
+                if (!response.ok) throw new Error('Erro ao atualizar vídeo');
+                await loadVideos(currentPage);
+            } catch (error) {
+                console.error('Erro ao atualizar vídeo:', error);
+                alert('Erro ao atualizar vídeo.');
+            }
+        }
+
+        async function deleteVideo(videoId) {
+            try {
+                var response = await fetch(API_URL + '/videos/' + videoId, { method: 'DELETE' });
+                if (!response.ok) throw new Error('Erro ao deletar vídeo');
+            } catch (error) {
+                console.error('Erro ao deletar vídeo:', error);
+                alert('Erro ao deletar vídeo.');
+            }
+        }
+
         // ===== FILTROS =====
         function updateFilterSubcategories(selectedCategory) {
             var subFilter = document.getElementById('filterSubcategory');
@@ -739,6 +1089,59 @@
             }
         }
 
+        function updateModalSubcategories(selectedCategory) {
+            var subcategorySelect = document.getElementById('videoSubcategory');
+            subcategorySelect.innerHTML = '<option value="">Selecione uma subcategoria</option>';
+            if (selectedCategory && categoriesData[selectedCategory]) {
+                for (var i = 0; i < categoriesData[selectedCategory].length; i++) {
+                    subcategorySelect.innerHTML += '<option value="' + escapeHtml(categoriesData[selectedCategory][i]) + '">' + escapeHtml(categoriesData[selectedCategory][i]) + '</option>';
+                }
+                subcategorySelect.disabled = false;
+            } else {
+                subcategorySelect.disabled = true;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('videoId').value = '';
+            document.getElementById('videoTitle').value = '';
+            document.getElementById('videoLink').value = '';
+            document.getElementById('videoCategory').value = '';
+            updateModalSubcategories('');
+            document.getElementById('videoDescription').value = '';
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar vídeo';
+        }
+
+        async function openEditModal(id) {
+            try {
+                var response = await fetch(API_URL + '/videos?page=1&limit=1000');
+                var result = await response.json();
+                var videos = result.data || result;
+                var video = null;
+                for (var i = 0; i < videos.length; i++) {
+                    if (videos[i].id === id) {
+                        video = videos[i];
+                        break;
+                    }
+                }
+                
+                if (video) {
+                    document.getElementById('videoId').value = video.id;
+                    document.getElementById('videoTitle').value = video.title;
+                    document.getElementById('videoLink').value = video.link;
+                    document.getElementById('videoCategory').value = video.category;
+                    updateModalSubcategories(video.category);
+                    document.getElementById('videoSubcategory').value = video.subcategory;
+                    document.getElementById('videoDescription').value = video.description || '';
+                    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
+                    document.getElementById('videoModal').classList.add('active');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar vídeo:', error);
+                alert('Erro ao carregar dados do vídeo.');
+            }
+        }
+
         function handleHashChange() {
             var hash = window.location.hash;
             var match = hash.match(/page=(\d+)/);
@@ -748,7 +1151,62 @@
             }
         }
 
+        function showWelcomeModal() {
+            if (!localStorage.getItem('welcomeModalSeen')) {
+                document.getElementById('welcomeModal').classList.add('active');
+            }
+        }
+
         // ===== EVENT LISTENERS =====
+        document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
+            document.getElementById('welcomeModal').classList.remove('active');
+            localStorage.setItem('welcomeModalSeen', 'true');
+        });
+
+        document.getElementById('openAddModalBtn').addEventListener('click', function() {
+            resetForm();
+            document.getElementById('videoModal').classList.add('active');
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            document.getElementById('videoModal').classList.remove('active');
+        });
+
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === document.getElementById('videoModal')) {
+                document.getElementById('videoModal').classList.remove('active');
+            }
+        });
+
+        document.getElementById('videoForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var title = document.getElementById('videoTitle').value.trim();
+            var link = document.getElementById('videoLink').value.trim();
+            var category = document.getElementById('videoCategory').value;
+            var subcategory = document.getElementById('videoSubcategory').value;
+            
+            if (!title || !link || !category || !subcategory) {
+                alert('Preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            var videoData = {
+                title: title,
+                link: link,
+                category: category,
+                subcategory: subcategory,
+                description: document.getElementById('videoDescription').value.trim()
+            };
+            
+            var existingId = document.getElementById('videoId').value;
+            if (existingId) {
+                await updateVideo(existingId, videoData);
+            } else {
+                await addVideo(videoData);
+            }
+            document.getElementById('videoModal').classList.remove('active');
+        });
+
         document.getElementById('filterCategory').addEventListener('change', function(e) {
             updateFilterSubcategories(e.target.value);
             loadVideos(1);
@@ -764,9 +1222,14 @@
             searchTimeout = setTimeout(function() { loadVideos(1); }, 500);
         });
 
+        document.getElementById('videoCategory').addEventListener('change', function(e) {
+            updateModalSubcategories(e.target.value);
+        });
+
         window.addEventListener('hashchange', handleHashChange);
         
         loadVideos(1);
+        showWelcomeModal();
         document.getElementById('filterSubcategory').disabled = true;
     })();
     </script>

@@ -5,28 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Assistir Vídeo — SGP Library</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Clash Display via Fontshare -->
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="">
+    <link rel="stylesheet" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap"></noscript>
+    
+    <!-- Space Grotesk via Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="stylesheet" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap"></noscript>
+    
+    <!-- Tailwind CDN & Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: { 600: '#e8641b' },
+              signal: '#e8641b',
+              ink: '#090909',
+              charcoal: '#2b2b2b',
+              smoke: '#5f5f5f',
+              fog: '#b2b2b2',
+              mist: '#dedede',
+              cloud: '#f1f5f9',
+              paper: '#f8fafc',
+            },
+            fontFamily: {
+              sans: ['"Space Grotesk"', '"Arial"', 'sans-serif'],
+              display: ['"Clash Display"', '"Arial"', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .container-shell {
+        width: min(1180px, 100vw - 2.5rem);
+        margin-inline: auto;
+      }
+      .section-space {
+        padding-block: clamp(3rem, 6vw, 7rem);
+      }
+    </style>
+    
     <link rel="stylesheet" href="css/shared.css">
     <style>
         /* ── Player layout ── */
         .player-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1.5rem 2rem;
+            padding: 2rem;
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 2rem;
+            grid-template-columns: 1fr 400px;
+            gap: 2.5rem;
+            flex: 1;
         }
 
         .player-main { min-width: 0; }
 
         .player-wrapper {
-            background: #0a1628;
-            border-radius: 16px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
             overflow: hidden;
             aspect-ratio: 16/9;
-            border: 1px solid #e8edf4;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-base);
+            position: relative;
         }
 
         .player-wrapper iframe {
@@ -44,124 +92,136 @@
             align-items: center;
             justify-content: center;
             gap: 1rem;
-            color: #8a9bb5;
+            color: var(--text-muted);
         }
 
-        .loading-state i { font-size: 2rem; color: #e8590c; }
+        .loading-state i { font-size: 2.5rem; color: var(--color-brand); }
 
         /* ── Video info ── */
         .video-info {
-            background: #fff;
-            border-radius: 16px;
-            margin-top: 1rem;
-            border: 1px solid #e8edf4;
-            padding: 1.2rem 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-base);
         }
 
         .video-info h1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #1a2332;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+            font-family: var(--font-heading);
+            line-height: 1.3;
         }
 
         .video-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.8rem;
+            gap: 1rem;
             align-items: center;
-            color: #5a6b85;
-            font-size: 0.85rem;
-            border-bottom: 1px solid #f0f2f5;
-            padding-bottom: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
         }
 
         .video-meta .badge {
-            background: #f0f2f5;
-            padding: 0.2rem 0.8rem;
+            background: var(--color-brand-muted);
+            padding: 0.3rem 1rem;
             border-radius: 50px;
-            color: #e8590c;
+            color: var(--color-brand);
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(232, 100, 27, 0.3);
         }
 
         .video-meta .subcat-badge {
-            background: #f0f2f5;
-            padding: 0.2rem 0.8rem;
+            background: var(--bg-surface-elevated);
+            padding: 0.3rem 1rem;
             border-radius: 50px;
-            color: #5a6b85;
+            color: var(--text-muted);
             font-weight: 500;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            border: 1px solid var(--border-color);
         }
 
-        .video-meta .date { color: #8a9bb5; font-size: 0.75rem; }
+        .video-meta .date { color: var(--text-muted); font-size: 0.8rem; }
 
         .video-description {
-            margin-top: 1rem;
-            background: #f8fafc;
-            padding: 1rem 1.2rem;
-            border-radius: 12px;
-            color: #2c3a50;
-            font-size: 0.95rem;
+            margin-top: 1.5rem;
+            background: var(--bg-surface-elevated);
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 1rem;
             line-height: 1.7;
             white-space: pre-wrap;
             word-wrap: break-word;
-            border: 1px solid #f0f2f5;
+            border: 1px solid var(--border-color);
         }
 
-        .video-description.empty { color: #8a9bb5; font-style: italic; }
+        .video-description.empty { color: var(--text-muted); font-style: italic; background: transparent; border: none; padding: 0; }
 
         /* ── Sidebar ── */
         .player-sidebar { min-width: 0; }
 
         .player-sidebar h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1a2332;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            font-family: var(--font-heading);
         }
 
-        .player-sidebar h3 i { color: #e8590c; }
+        .player-sidebar h3 i { color: var(--color-brand); }
 
         .suggestions-list {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
         .suggestion-item {
             display: flex;
-            gap: 0.8rem;
-            background: #fff;
-            border-radius: 14px;
+            gap: 1rem;
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 0.5rem;
-            border: 1px solid #e8edf4;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
         }
 
         .suggestion-item:hover {
-            background: #f8fafc;
-            transform: scale(1.02);
-            border-color: #e8590c;
-            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.12);
+            background: var(--bg-surface-hover);
+            transform: translateX(4px);
+            border-color: var(--color-brand);
+            box-shadow: 0 4px 15px rgba(232, 100, 27, 0.15);
         }
 
         .suggestion-item.active {
-            background: #fef0e8;
-            border: 1px solid #e8590c;
+            background: var(--color-brand-muted);
+            border: 1px solid var(--color-brand);
             cursor: default;
+        }
+        
+        .suggestion-item.active:hover {
+            transform: none;
+            box-shadow: none;
         }
 
         /* Thumbnail na sidebar — menor */
         .suggestion-item .video-thumbnail {
-            width: 120px;
-            min-height: 67px;
+            width: 140px;
+            min-height: 78px;
             flex-shrink: 0;
             border-radius: 8px;
         }
@@ -176,70 +236,128 @@
         }
 
         .suggestion-info .title {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            color: #1a2332;
+            color: var(--text-main);
+            font-family: var(--font-heading);
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.3;
+            transition: color 0.3s;
+        }
+        
+        .suggestion-item:hover .suggestion-info .title {
+            color: var(--color-brand);
         }
 
         .suggestion-info .meta {
-            font-size: 0.7rem;
-            color: #8a9bb5;
-            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
         }
 
         .previous-tag {
-            font-size: 0.6rem;
-            background: #e8590c;
+            font-size: 0.65rem;
+            background: var(--color-brand);
             color: #fff;
-            padding: 0.05rem 0.5rem;
+            padding: 0.1rem 0.5rem;
             border-radius: 50px;
             display: inline-block;
-            margin-left: 0.3rem;
+            margin-left: 0.4rem;
+            vertical-align: middle;
+            font-family: var(--font-body);
         }
 
         /* ── Responsive ── */
         @media (max-width: 1024px) {
             .player-container {
                 grid-template-columns: 1fr;
-                padding: 1rem;
+                padding: 1.5rem;
             }
             .player-sidebar { margin-top: 1rem; }
             .suggestions-list {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             }
         }
 
         @media (max-width: 600px) {
-            .hero-compact { flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem 1rem; }
-            .logo-text-sm { font-size: 0.9rem; }
-            .btn-back { font-size: 0.75rem; padding: 0.4rem 0.8rem; }
-            .video-info h1 { font-size: 1.1rem; }
-            .suggestion-item .video-thumbnail { width: 90px; min-height: 50px; }
+            .hero-compact { flex-wrap: wrap; gap: 0.5rem; padding: 1rem; }
+            .video-info h1 { font-size: 1.4rem; }
+            .suggestion-item .video-thumbnail { width: 100px; min-height: 56px; }
             .suggestions-list { grid-template-columns: 1fr; }
-            .player-container { padding: 0.5rem; }
-            .video-info { padding: 1rem; }
+            .player-container { padding: 1rem; }
+            .video-info { padding: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
     <!-- HEADER -->
-    <header class="hero-compact">
-        <a href="index_roblox.html" class="logo-area">
-            <div class="logo-icon sm">
-                <i class="fas fa-play"></i>
+    <header class="sticky top-0 z-20" data-topbar="">
+      <div class="border-b border-white/10 bg-[#060606]/85 text-white backdrop-blur-md transition-all duration-300">
+        <div class="max-w-[1400px] w-full mx-auto px-8 flex items-center justify-between gap-4 transition-all duration-300 min-h-20 lg:min-h-24 py-4 lg:py-0" data-topbar-inner="">
+          <a href="/" class="flex items-center" aria-label="TSMX">
+            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" data-topbar-logo="true" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="w-auto transition-all duration-300 h-[2.3rem] sm:h-[2.59rem]">
+          </a>
+          <div class="flex items-center gap-6">
+            <nav aria-label="Navegação principal" class="hidden flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70 lg:flex md:text-[0.95rem]">
+              <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="transition-colors duration-200 hover:text-white" style="font-family: var(--font-body);">Wiki</a>
+            </nav>
+            <div class="flex items-center gap-3 lg:hidden">
+              <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5" style="font-family: var(--font-body);">
+                Fale com o time
+              </a>
+              <button type="button" aria-label="Abrir menu" aria-expanded="false" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer" data-menu-trigger="">
+                <span class="flex flex-col gap-1.5">
+                  <span class="h-0.5 w-5 rounded-full bg-current"></span>
+                  <span class="h-0.5 w-5 rounded-full bg-current"></span>
+                  <span class="h-0.5 w-5 rounded-full bg-current"></span>
+                </span>
+              </button>
             </div>
-            <span class="logo-text-sm">SGP <span>Library</span></span>
-        </a>
-        <button class="btn-back" onclick="history.length > 1 ? history.back() : window.location.href='index_roblox.html'">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </button>
+            <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex" style="font-family: var(--font-body);">
+              Fale com o time
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="pointer-events-none fixed inset-0 z-40 bg-black/50 opacity-0 transition-opacity duration-300" data-menu-overlay=""></div>
+      <aside class="pointer-events-none fixed inset-y-0 right-0 z-50 flex w-full max-w-[24rem] translate-x-full flex-col overflow-y-auto bg-[#0d0d0d] text-white transition-transform duration-300" aria-hidden="true" inert="" data-menu-drawer="">
+        <div class="flex items-center justify-between border-b border-white/8 px-5 py-5">
+          <a href="/" class="flex items-center" aria-label="TSMX">
+            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-[2.3rem] w-auto">
+          </a>
+          <button type="button" aria-label="Fechar menu" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer" data-menu-close="">
+            <span class="relative block h-4 w-4">
+              <span class="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-current"></span>
+              <span class="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-current"></span>
+            </span>
+          </button>
+        </div>
+        <div class="border-b border-white/8 px-5 py-5">
+          <p class="eyebrow mb-4 text-signal" style="font-family: var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; font-size: 0.74rem; font-weight: 600;">Suporte</p>
+          <div class="grid gap-2">
+            <a href="#contato" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/74 transition-colors duration-200 hover:bg-white/10 hover:text-white">Suporte</a>
+            <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/74 transition-colors duration-200 hover:bg-white/10 hover:text-white">Wiki</a>
+            <a href="#status" class="inline-flex items-center gap-2 rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/88 transition-colors duration-200 hover:bg-white/10 hover:text-white">
+              <span class="relative flex h-2.5 w-2.5 items-center justify-center">
+                <span class="absolute inline-flex h-2.5 w-2.5 rounded-full animate-ping bg-emerald-400/60" style="background-color: #00d29499;"></span>
+                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" style="background-color: #34d399;"></span>
+              </span>
+              <span>Status</span>
+            </a>
+            <a href="https://tsmx.sgp.net.br/central/" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white px-4 py-3 text-sm font-semibold text-black transition-colors duration-200 hover:bg-white/90">Área do Cliente</a>
+          </div>
+        </div>
+        <nav aria-label="Navegação principal" class="flex flex-col gap-3 px-5 py-5">
+          <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10">Wiki</a>
+        </nav>
+      </aside>
+      <script type="module">const r=document.querySelector("[data-menu-trigger]"),s=document.querySelector("[data-menu-close]"),t=document.querySelector("[data-menu-drawer]"),a=document.querySelector("[data-menu-overlay]"),i=document.querySelectorAll("[data-menu-drawer] a");function n(e){!t||!a||!r||(t.classList.toggle("translate-x-full",!e),t.classList.toggle("pointer-events-none",!e),a.classList.toggle("opacity-0",!e),a.classList.toggle("pointer-events-none",!e),r.setAttribute("aria-expanded",String(e)),t.setAttribute("aria-hidden",String(!e)),t.toggleAttribute("inert",!e),document.body.classList.toggle("overflow-hidden",e),requestAnimationFrame(e?()=>s?.focus():()=>r?.focus()))}r?.addEventListener("click",()=>n(!0));s?.addEventListener("click",()=>n(!1));a?.addEventListener("click",()=>n(!1));i.forEach(e=>e.addEventListener("click",()=>n(!1)));window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script>
+      <script type="module">const o=document.querySelector("[data-topbar-inner]"),t=document.querySelector("[data-topbar-logo]");function e(){const s=window.scrollY>10;o&&(o.classList.toggle("py-4",!s),o.classList.toggle("lg:py-0",!s),o.classList.toggle("py-2",s)),t&&(t.classList.toggle("h-[2.3rem]",!s),t.classList.toggle("sm:h-[2.59rem]",!s),t.classList.toggle("h-[1.75rem]",s),t.classList.toggle("sm:h-[1.9rem]",s))}window.addEventListener("scroll",e,{passive:!0});e();</script>
     </header>
 
     <!-- CONTEÚDO -->
@@ -274,6 +392,20 @@
         </div>
     </div>
 
+    <!-- FOOTER -->
+    <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
+      <div class="max-w-[1400px] mx-auto px-8 py-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <a href="/" aria-label="TSMX">
+            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
+        </a>
+        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[0.85rem] text-white/50" style="font-family: var(--font-body);">
+          <p>Todos os direitos reservados.</p>
+          <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
     <script>
     (function() {
@@ -369,9 +501,9 @@
             if (!videoId) {
                 document.getElementById('playerWrapper').innerHTML = `
                     <div class="empty-state" style="padding:4rem 1rem;text-align:center;background:transparent;border:none;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#e53e3e;display:block;margin-bottom:1rem;"></i>
-                        <p style="color:#1a2332;">Nenhum vídeo selecionado.</p>
-                        <a href="index_roblox.html" style="color:#e8590c;font-weight:600;">Voltar para a biblioteca</a>
+                        <i class="fas fa-exclamation-triangle" style="font-size:3.5rem;color:var(--color-brand);display:block;margin-bottom:1.5rem;"></i>
+                        <p style="color:var(--text-main);font-size:1.1rem;">Nenhum vídeo selecionado.</p>
+                        <a href="index.html" style="color:var(--color-brand);font-weight:600;margin-top:1rem;display:inline-block;">Voltar para a biblioteca</a>
                     </div>`;
                 document.getElementById('videoTitle').textContent = 'Vídeo não selecionado';
                 document.getElementById('suggestionsList').innerHTML = '';
@@ -393,9 +525,9 @@
                 console.error('Erro ao carregar player:', error);
                 document.getElementById('playerWrapper').innerHTML = `
                     <div class="empty-state" style="padding:4rem 1rem;text-align:center;background:transparent;border:none;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#e53e3e;display:block;margin-bottom:1rem;"></i>
-                        <p style="color:#1a2332;">Vídeo não encontrado ou erro ao carregar.</p>
-                        <a href="index_roblox.html" style="color:#e8590c;font-weight:600;">Voltar para a biblioteca</a>
+                        <i class="fas fa-exclamation-triangle" style="font-size:3.5rem;color:var(--color-brand);display:block;margin-bottom:1.5rem;"></i>
+                        <p style="color:var(--text-main);font-size:1.1rem;">Vídeo não encontrado ou erro ao carregar.</p>
+                        <a href="index.html" style="color:var(--color-brand);font-weight:600;margin-top:1rem;display:inline-block;">Voltar para a biblioteca</a>
                     </div>`;
                 document.getElementById('videoTitle').textContent = 'Erro ao carregar';
             }

@@ -1,32 +1,7 @@
 /**
  * utils.js — Utilitários compartilhados por todas as páginas
- * Biblioteca Loom
+ * Biblioteca Loom TSMX (Local)
  */
-
-// ── Configuração da API ──────────────────────────────────────
-const API_URL = 'https://biblioteca-loom.onrender.com/api';
-
-// ── Autenticação ─────────────────────────────────────────────
-function getAuthToken() {
-    return sessionStorage.getItem('loom_admin_token') || '';
-}
-
-function getAuthHeader() {
-    const token = getAuthToken();
-    return token ? { 'Authorization': 'Bearer ' + token } : {};
-}
-
-function isLoggedIn() {
-    return !!getAuthToken();
-}
-
-function saveToken(token) {
-    sessionStorage.setItem('loom_admin_token', token);
-}
-
-function clearToken() {
-    sessionStorage.removeItem('loom_admin_token');
-}
 
 // ── Escape HTML (seguro para atributos e conteúdo) ───────────
 function escapeHtml(str) {
@@ -59,10 +34,6 @@ function getLoomThumbnailUrl(loomUrl) {
 }
 
 // ── Renderiza thumbnail estática com fallback ─────────────────
-/**
- * @param {string} loomUrl  - URL do loom
- * @returns {string}        - HTML do elemento .video-thumbnail
- */
 function buildThumbnailHtml(loomUrl) {
     const thumbUrl = getLoomThumbnailUrl(loomUrl);
     const imgTag = thumbUrl
@@ -87,14 +58,6 @@ function formatDate(dateStr) {
 }
 
 // ── Paginação ─────────────────────────────────────────────────
-/**
- * Renderiza botões de paginação com ellipsis
- * @param {number} currentPage
- * @param {number} totalPages
- * @param {Function} onPageClick  - callback(page)
- * @param {number} maxVisible
- * @returns {HTMLElement} - container com os botões
- */
 function buildPagination(currentPage, totalPages, onPageClick, maxVisible = 5) {
     const container = document.createElement('div');
     container.className = 'pagination';
@@ -133,34 +96,43 @@ function buildPagination(currentPage, totalPages, onPageClick, maxVisible = 5) {
     return container;
 }
 
-// ── API Helpers ───────────────────────────────────────────────
-async function apiFetch(path, options = {}) {
-    const url = API_URL + path;
-    const res = await fetch(url, options);
-    if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: res.statusText }));
-        throw new Error(err.error || 'Erro ' + res.status);
+// ── API ────────────────────────────────────────────────────────
+const API_BASE_URL = 'http://localhost:3001/api';
+
+async function apiFetch(endpoint, options = {}) {
+    try {
+        const response = await fetch(API_BASE_URL + endpoint, options);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Erro HTTP: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
     }
-    return res.json();
 }
 
 async function apiGet(path) {
-    return apiFetch(path);
-}
-
-async function apiPost(path, body) {
     return apiFetch(path, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify(body)
+        method: 'GET',
+        headers: { ...getAuthHeader() }
     });
 }
 
-async function apiPut(path, body) {
+async function apiPost(path, data) {
+    return apiFetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+        body: JSON.stringify(data)
+    });
+}
+
+async function apiPut(path, data) {
     return apiFetch(path, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify(body)
+        body: JSON.stringify(data)
     });
 }
 
@@ -171,9 +143,32 @@ async function apiDelete(path) {
     });
 }
 
+// ── Autenticação (Admin) ──────────────────────────────────────
+const TOKEN_KEY = 'loom_admin_token';
+
+function saveToken(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+}
+
+function clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
+}
+
+function getAuthToken() {
+    return localStorage.getItem(TOKEN_KEY);
+}
+
+function getAuthHeader() {
+    const token = getAuthToken();
+    return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
+function isLoggedIn() {
+    return !!getAuthToken();
+}
+
 // ── Categorias (cache em memória) ─────────────────────────────
 let _categoriesCache = null;
-
 async function fetchCategories() {
     if (_categoriesCache) return _categoriesCache;
     const data = await apiGet('/categories');
@@ -183,7 +178,6 @@ async function fetchCategories() {
 
 // ── Exporta tudo no escopo global (sem módulos ES) ────────────
 window.LoomLib = {
-    API_URL,
     escapeHtml,
     getLoomId,
     getLoomEmbedUrl,
@@ -191,7 +185,7 @@ window.LoomLib = {
     buildThumbnailHtml,
     formatDate,
     buildPagination,
-    apiFetch, apiGet, apiPost, apiPut, apiDelete,
+    apiGet, apiPost, apiPut, apiDelete,
     fetchCategories,
     getAuthToken, getAuthHeader, isLoggedIn, saveToken, clearToken
 };

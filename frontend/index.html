@@ -3,480 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SGP Library</title>
+    <title>SGP Library — Central de Vídeos</title>
+    <meta name="description" content="Biblioteca de vídeos tutoriais do SGP, organizada por categorias e subcategorias.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            color: #1a2332;
-            line-height: 1.6;
-        }
-
-        /* HERO / HEADER - ESTILO SGP */
-        .hero {
-            background: #171a22;
-            padding: 2rem 2rem 2.5rem;
-            position: relative;
-            border-bottom: 3px solid #e8590c;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: #e8590c;
-        }
-
-        .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .hero-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #e8590c, #aa502a);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.4rem;
-            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.3);
-        }
-
-        .logo-text h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-text h1 span {
-            color: #e8590c;
-        }
-
-        .logo-text p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 400;
-        }
-
-        .hero-title {
-            text-align: center;
-            padding: 1.5rem 0 0.5rem;
-        }
-
-        .hero-title h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .hero-title h2 i {
-            color: #e8590c;
-            margin-right: 0.5rem;
-        }
-
-        .hero-title p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.95rem;
-            font-weight: 400;
-            margin-top: 0.2rem;
-        }
-
-        /* SEARCH SECTION */
-        .search-section {
-            max-width: 1400px;
-            margin: -1.5rem auto 0;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .search-wrapper {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e8edf4;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .search-input-wrap {
-            flex: 3;
-            min-width: 200px;
-            position: relative;
-        }
-
-        .search-input-wrap i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8a9bb5;
-            font-size: 0.9rem;
-        }
-
-        .search-input-wrap input {
-            width: 100%;
-            padding: 0.7rem 1rem 0.7rem 2.8rem;
-            border-radius: 12px;
-            border: 1.5px solid #e8edf4;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-            color: #1a2332;
-        }
-
-        .search-input-wrap input:focus {
-            outline: none;
-            border-color: #e8590c;
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(232, 89, 12, 0.08);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-select {
-            padding: 0.5rem 1.2rem;
-            border-radius: 12px;
-            border: 1.5px solid #e8edf4;
-            background: #f8fafc;
-            font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            color: #1a2332;
-            transition: all 0.3s ease;
-            min-width: 140px;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #e8590c;
-            box-shadow: 0 0 0 4px rgba(232, 89, 12, 0.08);
-        }
-
-        .filter-select:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* VIDEOS GRID */
-        .videos-container {
-            max-width: 1400px;
-            margin: 2rem auto 0;
-            padding: 0 2rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-header h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a2332;
-        }
-
-        .section-header h3 i {
-            color: #e8590c;
-            margin-right: 0.5rem;
-        }
-
-        .section-header span {
-            color: #8a9bb5;
-            font-size: 0.85rem;
-        }
-
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .video-card {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            border: 1px solid #e8edf4;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .video-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(232, 89, 12, 0.1);
-            border-color: rgba(232, 89, 12, 0.2);
-        }
-
-        .player-wrapper {
-            background: #0a1628;
-            aspect-ratio: 16/9;
-            position: relative;
-            pointer-events: none;
-        }
-
-        .player-wrapper iframe {
-            pointer-events: none;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .card-content {
-            padding: 1rem 1.2rem 1rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 0.5rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .video-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #1a2332;
-            line-height: 1.3;
-            flex: 1;
-        }
-
-        .badge-cat {
-            background: #f0f2f5;
-            padding: 0.15rem 0.7rem;
-            border-radius: 50px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #e8590c;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .subcat {
-            font-size: 0.75rem;
-            color: #8a9bb5;
-            margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .subcat i {
-            font-size: 0.6rem;
-        }
-
-        .description {
-            font-size: 0.85rem;
-            color: #5a6b85;
-            margin: 0.5rem 0;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* SEM BOTÕES DE AÇÃO - APENAS VISUALIZAÇÃO */
-
-        /* PAGINATION */
-        .pagination-wrapper {
-            max-width: 1400px;
-            margin: 2rem auto 0;
-            padding: 0 2rem 2rem;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .pagination button {
-            background: #fff;
-            border: 1px solid #e8edf4;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #1a2332;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            background: #e8590c;
-            color: #fff;
-            border-color: #e8590c;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(232, 89, 12, 0.25);
-        }
-
-        .pagination button.active {
-            background: #e8590c;
-            color: #fff;
-            border-color: #e8590c;
-        }
-
-        .pagination button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .pagination-info {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: #8a9bb5;
-        }
-
-        /* Empty & Loading */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 1rem;
-            background: #fff;
-            border-radius: 16px;
-            color: #8a9bb5;
-            grid-column: 1/-1;
-            border: 1px solid #e8edf4;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            opacity: 0.4;
-            margin-bottom: 1rem;
-            color: #e8590c;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #e8590c;
-            grid-column: 1/-1;
-        }
-
-        /* Footer */
-        .footer {
-            max-width: 1400px;
-            margin: 2rem auto 0;
-            padding: 1.5rem 2rem;
-            text-align: center;
-            border-top: 1px solid #e8edf4;
-            color: #8a9bb5;
-            font-size: 0.8rem;
-        }
-
-        .footer i {
-            color: #e8590c;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 1.5rem 1rem 2rem;
-            }
-
-            .hero-title h2 {
-                font-size: 1.4rem;
-            }
-
-            .search-section {
-                padding: 0 1rem;
-            }
-
-            .search-wrapper {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 1rem;
-            }
-
-            .filter-group {
-                flex-direction: column;
-            }
-
-            .filter-select {
-                width: 100%;
-            }
-
-            .videos-container {
-                padding: 0 1rem;
-            }
-
-            .videos-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pagination-wrapper {
-                padding: 0 1rem 1rem;
-            }
-
-            .hero-top {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo-text h1 {
-                font-size: 1.2rem;
-            }
-
-            .hero-title h2 {
-                font-size: 1.2rem;
-            }
-
-            .video-title {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/shared.css">
 </head>
 <body>
 
@@ -493,7 +24,6 @@
                         <p>Biblioteca de vídeos SGP</p>
                     </div>
                 </div>
-                <!-- SEM BOTÃO DE NOVO VÍDEO -->
             </div>
 
             <div class="hero-title">
@@ -508,22 +38,18 @@
         <div class="search-wrapper">
             <div class="search-input-wrap">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por título ou descrição...">
+                <input type="text" id="searchInput" placeholder="Buscar por título ou descrição..." autocomplete="off">
             </div>
             <div class="filter-group">
                 <select id="filterCategory" class="filter-select">
                     <option value="all">Todas categorias</option>
-                    <option value="Clientes">Clientes</option>
-                    <option value="Financeiro">Financeiro</option>
-                    <option value="Fiscal">Fiscal</option>
-                    <option value="Estoque">Estoque</option>
-                    <option value="Relatórios">Relatórios</option>
-                    <option value="Administração">Administração</option>
-                    <option value="Sistema">Sistema</option>
                 </select>
                 <select id="filterSubcategory" class="filter-select" disabled>
                     <option value="all">Primeiro selecione uma categoria</option>
                 </select>
+                <button id="btnClearFilters" class="btn-clear-filters hidden">
+                    <i class="fas fa-times"></i> Limpar filtros
+                </button>
             </div>
         </div>
     </div>
@@ -541,80 +67,109 @@
 
     <!-- PAGINATION -->
     <div class="pagination-wrapper">
-        <div id="paginationContainer" class="pagination"></div>
+        <div id="paginationContainer"></div>
         <div id="paginationInfo" class="pagination-info"></div>
     </div>
 
     <!-- FOOTER -->
     <div class="footer">
-        <i class="fas fa-play-circle"></i> Player Loom incorporado • Categorias e subcategorias pré-definidas
+        <i class="fas fa-play-circle"></i> SGP Library &bull; Vídeos organizados por categoria
     </div>
 
+    <script src="js/utils.js"></script>
     <script>
     (function() {
-        const API_URL = 'https://biblioteca-loom.onrender.com/api';
+        const { escapeHtml, buildThumbnailHtml, buildPagination, apiGet, fetchCategories } = LoomLib;
+
         const VIDEOS_PER_PAGE = 9;
-        
-        let currentPage = 1;
-        let totalPages = 1;
-        let totalVideos = 0;
-        
-        const categoriesData = {
-            "Clientes": ["Consulta", "Cadastrar", "Viabilidade", "Pré cadastro", "CRM", "Suspender em Lote", "Ultimos Cadastros"],
-            "Financeiro": ["Cadastros", "Títulos", "Carnês", "Protocolos", "Caixas", "Contas a Pagar", "Contas a Receber", "Declarações", "Acréscimos/Descontos", "Cobrança", "Pix"],
-            "Fiscal": ["Cadastros", "Arquivos Fiscais", "NF 21/22", "NF 55", "CT-e", "NFCom", "Nota de Débito", "Nota de Serviço", "Código IBGE"],
-            "Estoque": ["Cadastros", "Consultas", "Movimentações", "Veículo Lançamento"],
-            "Relatórios": ["Financeiro", "Gráficos", "Mapas", "Contrato", "Atendimento", "Técnico", "FTTH", "Estoque", "Sistema", "Comissão"],
-            "Administração": ["Pops", "Condomínios", "Cadastros", "Planos", "Integrações", "Aplicativos", "Certificados", "Vendedores", "Assinaturas Eletrônicas", "Importar Arquivo KML/KMZ", "Autorização de Contato"],
-            "Sistema": ["Alterar senha", "Autenticação 2FA", "Alterar senha (Radius)", "Configurações (Beta)", "Configurações", "Ferramentas", "Gateways", "Backup", "SMS", "Email", "Monitoramento", "Gerenciador de CPE", "Usuários", "Grupos", "Dashboards", "Imagens", "SMTP", "Arquivos Públicos", "Manutenções", "Log (Radius)"]
-        };
+        let currentPage  = 1;
+        let totalPages   = 1;
+        let totalVideos  = 0;
+        let categoriesMap = {};
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
+        async function initCategories() {
+            try {
+                const data = await fetchCategories();
+                const catSelect = document.getElementById('filterCategory');
+                catSelect.innerHTML = '<option value="all">Todas categorias</option>';
+                for (const item of data) {
+                    categoriesMap[item.category] = item.subcategories;
+                    const opt = document.createElement('option');
+                    opt.value = item.category;
+                    opt.textContent = item.category;
+                    catSelect.appendChild(opt);
+                }
+            } catch (e) {
+                console.warn('Não foi possível carregar categorias:', e);
+            }
         }
 
-        function getLoomEmbedUrl(loomUrl) {
-            var match = loomUrl.trim().match(/loom\.com\/share\/([a-zA-Z0-9_-]+)/);
-            return match ? 'https://www.loom.com/embed/' + match[1] : loomUrl;
+        function updateSubcategoryFilter(category) {
+            const subSelect = document.getElementById('filterSubcategory');
+            if (!category || category === 'all') {
+                subSelect.disabled = true;
+                subSelect.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
+                return;
+            }
+            const subs = categoriesMap[category] || [];
+            if (subs.length > 0) {
+                subSelect.disabled = false;
+                subSelect.innerHTML = '<option value="all">Todas subcategorias</option>';
+                subs.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s; opt.textContent = s;
+                    subSelect.appendChild(opt);
+                });
+            } else {
+                subSelect.disabled = true;
+                subSelect.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
+            }
         }
 
-        function updateURLHash(page) {
-            window.location.hash = 'page=' + page;
+        function updateClearButton() {
+            const btn    = document.getElementById('btnClearFilters');
+            const search = document.getElementById('searchInput').value;
+            const cat    = document.getElementById('filterCategory').value;
+            const sub    = document.getElementById('filterSubcategory').value;
+            btn.classList.toggle('hidden', !(search || cat !== 'all' || sub !== 'all'));
         }
 
-        function openVideoPlayer(videoId) {
-            window.location.href = 'player.html?id=' + encodeURIComponent(videoId);
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterCategory').value = 'all';
+            updateSubcategoryFilter('all');
+            updateClearButton();
+            loadVideos(1);
         }
 
         function renderVideos(videos) {
-            var gridContainer = document.getElementById('videosGridContainer');
-            var countSpan = document.getElementById('videoCount');
-            
+            const grid      = document.getElementById('videosGridContainer');
+            const countSpan = document.getElementById('videoCount');
+
             if (!videos || videos.length === 0) {
-                gridContainer.innerHTML = '<div class="empty-state"><i class="fas fa-video"></i><p>Nenhum vídeo encontrado nesta página.</p></div>';
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-video"></i>
+                        <p>Nenhum vídeo encontrado com esses filtros.</p>
+                        <p style="margin-top:0.5rem;font-size:0.85rem;">
+                            <a href="#" id="emptyStateClear">Limpar filtros</a>
+                        </p>
+                    </div>`;
+                grid.querySelector('#emptyStateClear')?.addEventListener('click', (e) => {
+                    e.preventDefault(); clearFilters();
+                });
                 countSpan.textContent = '0 vídeos';
                 return;
             }
-            
+
             countSpan.textContent = totalVideos + ' vídeo' + (totalVideos !== 1 ? 's' : '');
-            
-            gridContainer.innerHTML = '';
-            for (var i = 0; i < videos.length; i++) {
-                var video = videos[i];
-                var embedUrl = getLoomEmbedUrl(video.link);
-                var card = document.createElement('div');
+            grid.innerHTML = '';
+
+            for (const video of videos) {
+                const card = document.createElement('div');
                 card.className = 'video-card';
                 card.setAttribute('data-id', video.id);
-                card.innerHTML = `
-                    <div class="player-wrapper">
-                        <iframe class="loom-iframe" src="${embedUrl}" frameborder="0" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
-                    </div>
+                card.innerHTML = buildThumbnailHtml(video.link) + `
                     <div class="card-content">
                         <div class="card-header">
                             <span class="video-title">${escapeHtml(video.title)}</span>
@@ -622,152 +177,90 @@
                         </div>
                         <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>
                         <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
-                        <!-- SEM BOTÕES DE AÇÃO (EDITAR/EXCLUIR) -->
                     </div>
                 `;
-                
-                card.addEventListener('click', function(e) {
-                    var videoId = this.getAttribute('data-id');
-                    openVideoPlayer(videoId);
+                card.addEventListener('click', () => {
+                    window.location.href = 'player.html?id=' + encodeURIComponent(video.id);
                 });
-                
-                gridContainer.appendChild(card);
+                grid.appendChild(card);
             }
         }
 
         function renderPagination() {
-            var paginationContainer = document.getElementById('paginationContainer');
-            var paginationInfo = document.getElementById('paginationInfo');
-            
-            if (totalPages <= 1) {
-                paginationContainer.innerHTML = '';
-                paginationInfo.innerHTML = '';
-                return;
-            }
-            
-            var paginationHTML = '';
-            paginationHTML += '<button onclick="window.goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i> Anterior</button>';
-            
-            var maxVisible = 5;
-            var startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            var endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            
-            if (endPage - startPage + 1 < maxVisible) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-            }
-            
-            if (startPage > 1) {
-                paginationHTML += '<button onclick="window.goToPage(1)">1</button>';
-                if (startPage > 2) paginationHTML += '<button disabled>...</button>';
-            }
-            
-            for (var i = startPage; i <= endPage; i++) {
-                paginationHTML += '<button onclick="window.goToPage(' + i + ')" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
-            }
-            
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) paginationHTML += '<button disabled>...</button>';
-                paginationHTML += '<button onclick="window.goToPage(' + totalPages + ')">' + totalPages + '</button>';
-            }
-            
-            paginationHTML += '<button onclick="window.goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Próximo <i class="fas fa-chevron-right"></i></button>';
-            
-            paginationContainer.innerHTML = paginationHTML;
-            
-            var start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
-            var end = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
-            paginationInfo.innerHTML = 'Mostrando ' + start + ' - ' + end + ' de ' + totalVideos + ' vídeos';
+            const container = document.getElementById('paginationContainer');
+            const info      = document.getElementById('paginationInfo');
+            if (totalPages <= 1) { container.innerHTML = ''; info.textContent = ''; return; }
+            container.innerHTML = '';
+            container.appendChild(buildPagination(currentPage, totalPages, (page) => {
+                loadVideos(page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }));
+            const start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
+            const end   = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
+            info.textContent = `Mostrando ${start}–${end} de ${totalVideos} vídeos`;
         }
-
-        window.goToPage = function(page) {
-            if (page < 1 || page > totalPages) return;
-            loadVideos(page);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
 
         async function loadVideos(page) {
             page = page || 1;
-            var gridContainer = document.getElementById('videosGridContainer');
-            gridContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
-            
-            var searchTerm = document.getElementById('searchInput').value;
-            var categoryFilter = document.getElementById('filterCategory').value;
-            var subFilter = document.getElementById('filterSubcategory').value;
-            
-            var url = API_URL + '/videos?page=' + page + '&limit=' + VIDEOS_PER_PAGE;
-            if (searchTerm) url += '&search=' + encodeURIComponent(searchTerm);
-            if (categoryFilter !== 'all') url += '&category=' + encodeURIComponent(categoryFilter);
-            if (subFilter !== 'all') url += '&subcategory=' + encodeURIComponent(subFilter);
-            
+            const grid = document.getElementById('videosGridContainer');
+            grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
+
+            const search = document.getElementById('searchInput').value.trim();
+            const cat    = document.getElementById('filterCategory').value;
+            const sub    = document.getElementById('filterSubcategory').value;
+
+            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
+            if (search)        url += '&search='      + encodeURIComponent(search);
+            if (cat !== 'all') url += '&category='    + encodeURIComponent(cat);
+            if (sub !== 'all') url += '&subcategory=' + encodeURIComponent(sub);
+
+            document.title = (cat !== 'all' ? cat + ' — ' : '') + 'SGP Library';
+
             try {
-                var response = await fetch(url);
-                if (!response.ok) throw new Error('Erro ao carregar vídeos');
-                
-                var result = await response.json();
-                var videosData = result.data || result;
-                totalVideos = result.total || videosData.length;
-                totalPages = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
+                const result    = await apiGet(url);
+                const videosData = result.data || result;
+                totalVideos = result.total      || videosData.length;
+                totalPages  = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
                 currentPage = page;
-                
                 renderVideos(videosData);
                 renderPagination();
-                updateURLHash(page);
+                updateClearButton();
+                window.location.hash = 'page=' + page;
             } catch (error) {
-                console.error('Erro ao carregar vídeos:', error);
-                gridContainer.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao conectar com o servidor.</p></div>';
+                console.error(error);
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Erro ao conectar com o servidor.</p>
+                        <p style="font-size:0.85rem;margin-top:0.5rem;">
+                            O servidor pode estar iniciando. <a href="#" id="retryBtn">Tentar novamente</a>.
+                        </p>
+                    </div>`;
+                document.getElementById('retryBtn')?.addEventListener('click', (e) => {
+                    e.preventDefault(); loadVideos(page);
+                });
             }
         }
 
-        // ===== FILTROS =====
-        function updateFilterSubcategories(selectedCategory) {
-            var subFilter = document.getElementById('filterSubcategory');
-            if (!selectedCategory || selectedCategory === 'all') {
-                subFilter.disabled = true;
-                subFilter.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
-                return;
-            }
-            var subcategories = categoriesData[selectedCategory];
-            if (subcategories && subcategories.length > 0) {
-                subFilter.disabled = false;
-                subFilter.innerHTML = '<option value="all">Todas subcategorias</option>';
-                for (var i = 0; i < subcategories.length; i++) {
-                    subFilter.innerHTML += '<option value="' + escapeHtml(subcategories[i]) + '">' + escapeHtml(subcategories[i]) + '</option>';
-                }
-            } else {
-                subFilter.disabled = true;
-                subFilter.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
-            }
+        function handleHash() {
+            const match = window.location.hash.match(/page=(\d+)/);
+            const page  = match ? parseInt(match[1]) : 1;
+            if (page !== currentPage) loadVideos(page);
         }
 
-        function handleHashChange() {
-            var hash = window.location.hash;
-            var match = hash.match(/page=(\d+)/);
-            var page = match ? parseInt(match[1]) : 1;
-            if (page !== currentPage) {
-                loadVideos(page);
-            }
-        }
-
-        // ===== EVENT LISTENERS =====
-        document.getElementById('filterCategory').addEventListener('change', function(e) {
-            updateFilterSubcategories(e.target.value);
-            loadVideos(1);
+        document.getElementById('filterCategory').addEventListener('change', function() {
+            updateSubcategoryFilter(this.value); loadVideos(1);
         });
-
-        document.getElementById('filterSubcategory').addEventListener('change', function() {
-            loadVideos(1);
-        });
-
-        var searchTimeout;
+        document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos(1));
+        let searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function() { loadVideos(1); }, 500);
+            searchTimeout = setTimeout(() => loadVideos(1), 500);
         });
+        document.getElementById('btnClearFilters').addEventListener('click', clearFilters);
+        window.addEventListener('hashchange', handleHash);
 
-        window.addEventListener('hashchange', handleHashChange);
-        
-        loadVideos(1);
-        document.getElementById('filterSubcategory').disabled = true;
+        initCategories().then(() => loadVideos(1));
     })();
     </script>
 </body>

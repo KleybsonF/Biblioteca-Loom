@@ -3,89 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Assistir Vídeo - SGP Loom Library</title>
+    <title>Assistir Vídeo — SGP Library</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            color: #1a2332;
-            line-height: 1.6;
-        }
-
-        /* HEADER - ESTILO SGP */
-        .player-header {
-            background: #171a22;
-            padding: 0.8rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 3px solid #e8590c;
-        }
-
-        .player-header .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            text-decoration: none;
-        }
-
-        .player-header .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #e8590c, #aa502a);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(232, 89, 12, 0.3);
-        }
-
-        .player-header .logo-text {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .player-header .logo-text span {
-            color: #e8590c;
-        }
-
-        .btn-back {
-            background: linear-gradient(135deg, #e8590c, #aa502a);
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 12px rgba(232, 89, 12, 0.3);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-back:hover {
-            transform: translateX(-2px);
-            box-shadow: 0 6px 20px rgba(232, 89, 12, 0.4);
-        }
-
-        /* CONTEÚDO */
+        /* ── Player layout ── */
         .player-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -95,16 +18,13 @@
             gap: 2rem;
         }
 
-        .player-main {
-            min-width: 0;
-        }
+        .player-main { min-width: 0; }
 
         .player-wrapper {
             background: #0a1628;
             border-radius: 16px;
             overflow: hidden;
             aspect-ratio: 16/9;
-            position: relative;
             border: 1px solid #e8edf4;
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
@@ -113,8 +33,23 @@
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
         }
 
+        .loading-state {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #8a9bb5;
+        }
+
+        .loading-state i { font-size: 2rem; color: #e8590c; }
+
+        /* ── Video info ── */
         .video-info {
             background: #fff;
             border-radius: 16px;
@@ -160,10 +95,7 @@
             font-size: 0.7rem;
         }
 
-        .video-meta .date {
-            color: #8a9bb5;
-            font-size: 0.75rem;
-        }
+        .video-meta .date { color: #8a9bb5; font-size: 0.75rem; }
 
         .video-description {
             margin-top: 1rem;
@@ -178,15 +110,10 @@
             border: 1px solid #f0f2f5;
         }
 
-        .video-description.empty {
-            color: #8a9bb5;
-            font-style: italic;
-        }
+        .video-description.empty { color: #8a9bb5; font-style: italic; }
 
-        /* SIDEBAR */
-        .player-sidebar {
-            min-width: 0;
-        }
+        /* ── Sidebar ── */
+        .player-sidebar { min-width: 0; }
 
         .player-sidebar h3 {
             font-size: 1rem;
@@ -198,9 +125,7 @@
             gap: 0.5rem;
         }
 
-        .player-sidebar h3 i {
-            color: #e8590c;
-        }
+        .player-sidebar h3 i { color: #e8590c; }
 
         .suggestions-list {
             display: flex;
@@ -218,7 +143,6 @@
             transition: all 0.3s ease;
             padding: 0.5rem;
             border: 1px solid #e8edf4;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
         .suggestion-item:hover {
@@ -228,22 +152,18 @@
             box-shadow: 0 4px 16px rgba(232, 89, 12, 0.12);
         }
 
-        .suggestion-thumbnail {
-            width: 168px;
-            min-height: 94px;
-            background: #0a1628;
-            border-radius: 10px;
-            overflow: hidden;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #5a6b85;
-            font-size: 2rem;
+        .suggestion-item.active {
+            background: #fef0e8;
+            border: 1px solid #e8590c;
+            cursor: default;
         }
 
-        .suggestion-thumbnail i {
-            opacity: 0.4;
+        /* Thumbnail na sidebar — menor */
+        .suggestion-item .video-thumbnail {
+            width: 120px;
+            min-height: 67px;
+            flex-shrink: 0;
+            border-radius: 8px;
         }
 
         .suggestion-info {
@@ -269,21 +189,10 @@
         .suggestion-info .meta {
             font-size: 0.7rem;
             color: #8a9bb5;
-            margin-top: 0.2rem;
+            margin-top: 0.3rem;
         }
 
-        .suggestion-info .meta span {
-            display: inline-block;
-            margin-right: 0.3rem;
-        }
-
-        .suggestion-item.active {
-            background: #fef0e8;
-            border: 1px solid #e8590c;
-            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.1);
-        }
-
-        .suggestion-item .previous-tag {
+        .previous-tag {
             font-size: 0.6rem;
             background: #e8590c;
             color: #fff;
@@ -293,108 +202,42 @@
             margin-left: 0.3rem;
         }
 
-        /* LOADING & EMPTY */
-        .loading-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #8a9bb5;
-        }
-
-        .loading-state i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            display: block;
-            color: #e8590c;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #8a9bb5;
-            background: #fff;
-            border-radius: 14px;
-            border: 1px solid #e8edf4;
-        }
-
-        .empty-state i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-            opacity: 0.4;
-            color: #e8590c;
-        }
-
-        /* RESPONSIVO */
+        /* ── Responsive ── */
         @media (max-width: 1024px) {
             .player-container {
                 grid-template-columns: 1fr;
                 padding: 1rem;
             }
-
-            .player-sidebar {
-                margin-top: 1rem;
-            }
-
+            .player-sidebar { margin-top: 1rem; }
             .suggestions-list {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
-
-            .suggestion-item {
-                padding: 0.5rem;
-            }
         }
 
         @media (max-width: 600px) {
-            .player-header {
-                padding: 0.5rem 1rem;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .player-header .logo-text {
-                font-size: 0.9rem;
-            }
-
-            .btn-back {
-                font-size: 0.75rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .video-info h1 {
-                font-size: 1.1rem;
-            }
-
-            .suggestion-thumbnail {
-                width: 120px;
-                min-height: 67px;
-            }
-
-            .suggestions-list {
-                grid-template-columns: 1fr;
-            }
-
-            .player-container {
-                padding: 0.5rem;
-            }
-
-            .video-info {
-                padding: 1rem;
-            }
+            .hero-compact { flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem 1rem; }
+            .logo-text-sm { font-size: 0.9rem; }
+            .btn-back { font-size: 0.75rem; padding: 0.4rem 0.8rem; }
+            .video-info h1 { font-size: 1.1rem; }
+            .suggestion-item .video-thumbnail { width: 90px; min-height: 50px; }
+            .suggestions-list { grid-template-columns: 1fr; }
+            .player-container { padding: 0.5rem; }
+            .video-info { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
     <!-- HEADER -->
-    <header class="player-header">
-        <a href="index.html" class="logo">
-            <div class="logo-icon">
+    <header class="hero-compact">
+        <a href="index_roblox.html" class="logo-area">
+            <div class="logo-icon sm">
                 <i class="fas fa-play"></i>
             </div>
-            <span class="logo-text">SGP <span>Library</span></span>
+            <span class="logo-text-sm">SGP <span>Library</span></span>
         </a>
-        <button class="btn-back" onclick="window.location.href='index.html'">
+        <button class="btn-back" onclick="history.length > 1 ? history.back() : window.location.href='index_roblox.html'">
             <i class="fas fa-arrow-left"></i> Voltar
         </button>
     </header>
@@ -412,9 +255,9 @@
             <div class="video-info">
                 <h1 id="videoTitle">Carregando...</h1>
                 <div class="video-meta">
-                    <span class="badge" id="videoCategory">Categoria</span>
+                    <span class="badge"    id="videoCategory">Categoria</span>
                     <span class="subcat-badge" id="videoSubcategory">Subcategoria</span>
-                    <span class="date" id="videoDate"></span>
+                    <span class="date"     id="videoDate"></span>
                 </div>
                 <div class="video-description" id="videoDescription">Carregando descrição...</div>
             </div>
@@ -431,244 +274,135 @@
         </div>
     </div>
 
+    <script src="js/utils.js"></script>
     <script>
-        (function() {
-            const API_URL = 'https://biblioteca-loom.onrender.com/api';
-            const MAX_SUGGESTIONS = 10;
+    (function() {
+        const { escapeHtml, getLoomEmbedUrl, buildThumbnailHtml, formatDate, apiGet } = LoomLib;
 
-            function getLoomEmbedUrl(loomUrl) {
-                if (!loomUrl) return '';
-                var match = loomUrl.trim().match(/loom\.com\/share\/([a-zA-Z0-9_-]+)/);
-                return match ? 'https://www.loom.com/embed/' + match[1] : loomUrl;
+        function getParam(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        // ── Renderiza o player principal ────────────────────────
+        function renderMainVideo(video) {
+            const wrapper     = document.getElementById('playerWrapper');
+            const titleEl     = document.getElementById('videoTitle');
+            const categoryEl  = document.getElementById('videoCategory');
+            const subcatEl    = document.getElementById('videoSubcategory');
+            const descEl      = document.getElementById('videoDescription');
+            const dateEl      = document.getElementById('videoDate');
+
+            const iframe = document.createElement('iframe');
+            iframe.src  = getLoomEmbedUrl(video.link);
+            iframe.allow = 'fullscreen';
+            iframe.allowFullscreen = true;
+            iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+            wrapper.innerHTML = '';
+            wrapper.appendChild(iframe);
+
+            titleEl.textContent    = video.title      || 'Sem título';
+            categoryEl.textContent = video.category   || 'Sem categoria';
+            subcatEl.textContent   = video.subcategory|| 'Sem subcategoria';
+            dateEl.textContent     = formatDate(video.created_at || video.createdAt);
+
+            if (video.description && video.description.trim()) {
+                descEl.textContent = video.description;
+                descEl.classList.remove('empty');
+            } else {
+                descEl.textContent = 'Nenhuma descrição fornecida para este vídeo.';
+                descEl.classList.add('empty');
             }
 
-            function escapeHtml(str) {
-                if (!str) return '';
-                return str.replace(/[&<>]/g, function(m) {
-                    if (m === '&') return '&amp;';
-                    if (m === '<') return '&lt;';
-                    if (m === '>') return '&gt;';
-                    return m;
-                });
+            document.title = (video.title || 'Vídeo') + ' — SGP Library';
+        }
+
+        // ── Renderiza sidebar de sugestões ───────────────────────
+        function renderSuggestions(videos, currentId, previousId) {
+            const list = document.getElementById('suggestionsList');
+
+            if (!videos || videos.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state" style="border:none;padding:2rem 1rem;">
+                        <i class="fas fa-video"></i>
+                        <p>Nenhum vídeo relacionado encontrado.</p>
+                    </div>`;
+                return;
             }
 
-            function formatDate(dateStr) {
-                if (!dateStr) return '';
-                var date = new Date(dateStr);
-                return 'Adicionado em ' + date.toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-            }
+            list.innerHTML = '';
+            for (const video of videos) {
+                const isActive   = video.id === currentId;
+                const isPrevious = previousId && video.id === previousId;
 
-            function getVideoIdFromUrl() {
-                var params = new URLSearchParams(window.location.search);
-                return params.get('id');
-            }
+                const item = document.createElement('div');
+                item.className = 'suggestion-item' + (isActive ? ' active' : '');
+                item.setAttribute('data-id', video.id);
+                item.innerHTML = buildThumbnailHtml(video.link) + `
+                    <div class="suggestion-info">
+                        <div class="title">
+                            ${escapeHtml(video.title)}
+                            ${isPrevious ? '<span class="previous-tag">← Anterior</span>' : ''}
+                        </div>
+                        <div class="meta">
+                            ${escapeHtml(video.category)} &bull; ${escapeHtml(video.subcategory)}
+                        </div>
+                    </div>
+                `;
 
-            async function fetchAllVideos() {
-                try {
-                    var response = await fetch(API_URL + '/videos?page=1&limit=1000');
-                    var result = await response.json();
-                    return result.data || result;
-                } catch (error) {
-                    console.error('Erro ao buscar vídeos:', error);
-                    return [];
-                }
-            }
-
-            function getRelatedVideos(allVideos, currentVideo, previousVideoId) {
-                var related = [];
-
-                if (previousVideoId) {
-                    var previous = allVideos.find(function(v) { return v.id === previousVideoId; });
-                    if (previous && previous.id !== currentVideo.id) {
-                        related.push(previous);
-                    }
-                }
-
-                var sameCategory = allVideos.filter(function(v) {
-                    if (v.id === currentVideo.id) return false;
-                    if (previousVideoId && v.id === previousVideoId) return false;
-                    return v.category === currentVideo.category;
-                });
-
-                sameCategory.sort(function(a, b) {
-                    if (a.subcategory === currentVideo.subcategory && b.subcategory !== currentVideo.subcategory) {
-                        return -1;
-                    }
-                    if (b.subcategory === currentVideo.subcategory && a.subcategory !== currentVideo.subcategory) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                related = related.concat(sameCategory);
-
-                if (related.length < MAX_SUGGESTIONS) {
-                    var moreFromCategory = allVideos.filter(function(v) {
-                        if (v.id === currentVideo.id) return false;
-                        if (related.some(function(r) { return r.id === v.id; })) return false;
-                        return v.category === currentVideo.category;
+                if (!isActive) {
+                    item.addEventListener('click', () => {
+                        const from = getParam('id');
+                        window.location.href = 'player.html?id=' + encodeURIComponent(video.id)
+                            + (from ? '&previous=' + encodeURIComponent(from) : '');
                     });
-                    related = related.concat(moreFromCategory);
                 }
 
-                var uniqueRelated = [];
-                var seenIds = {};
-                for (var i = 0; i < related.length; i++) {
-                    var video = related[i];
-                    if (!seenIds[video.id]) {
-                        seenIds[video.id] = true;
-                        uniqueRelated.push(video);
-                    }
-                    if (uniqueRelated.length >= MAX_SUGGESTIONS) break;
-                }
+                list.appendChild(item);
+            }
+        }
 
-                return uniqueRelated;
+        // ── Carrega vídeo e relacionados ─────────────────────────
+        async function loadPlayer() {
+            const videoId    = getParam('id');
+            const previousId = getParam('previous');
+
+            if (!videoId) {
+                document.getElementById('playerWrapper').innerHTML = `
+                    <div class="empty-state" style="padding:4rem 1rem;text-align:center;background:transparent;border:none;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#e53e3e;display:block;margin-bottom:1rem;"></i>
+                        <p style="color:#1a2332;">Nenhum vídeo selecionado.</p>
+                        <a href="index_roblox.html" style="color:#e8590c;font-weight:600;">Voltar para a biblioteca</a>
+                    </div>`;
+                document.getElementById('videoTitle').textContent = 'Vídeo não selecionado';
+                document.getElementById('suggestionsList').innerHTML = '';
+                return;
             }
 
-            function renderMainVideo(video) {
-                var wrapper = document.getElementById('playerWrapper');
-                var title = document.getElementById('videoTitle');
-                var category = document.getElementById('videoCategory');
-                var subcategory = document.getElementById('videoSubcategory');
-                var description = document.getElementById('videoDescription');
-                var date = document.getElementById('videoDate');
+            try {
+                // Busca vídeo individual e relacionados em paralelo
+                const [video, related] = await Promise.all([
+                    apiGet('/videos/' + encodeURIComponent(videoId)),
+                    apiGet('/videos/' + encodeURIComponent(videoId) + '/related?limit=10')
+                        .catch(() => [])
+                ]);
 
-                wrapper.innerHTML = '';
+                renderMainVideo(video);
+                renderSuggestions(related, videoId, previousId);
 
-                var embedUrl = getLoomEmbedUrl(video.link);
-                var iframe = document.createElement('iframe');
-                iframe.src = embedUrl;
-                iframe.allow = 'fullscreen';
-                iframe.allowFullscreen = true;
-                iframe.loading = 'lazy';
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.style.border = 'none';
-
-                wrapper.appendChild(iframe);
-
-                title.textContent = video.title || 'Sem título';
-                category.textContent = video.category || 'Sem categoria';
-                subcategory.textContent = video.subcategory || 'Sem subcategoria';
-                date.textContent = video.createdAt ? formatDate(video.createdAt) : '';
-
-                if (video.description && video.description.trim() !== '') {
-                    description.textContent = video.description;
-                    description.classList.remove('empty');
-                } else {
-                    description.textContent = 'Nenhuma descrição fornecida para este vídeo.';
-                    description.classList.add('empty');
-                }
-
-                document.title = video.title + ' - Loom Library';
+            } catch (error) {
+                console.error('Erro ao carregar player:', error);
+                document.getElementById('playerWrapper').innerHTML = `
+                    <div class="empty-state" style="padding:4rem 1rem;text-align:center;background:transparent;border:none;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#e53e3e;display:block;margin-bottom:1rem;"></i>
+                        <p style="color:#1a2332;">Vídeo não encontrado ou erro ao carregar.</p>
+                        <a href="index_roblox.html" style="color:#e8590c;font-weight:600;">Voltar para a biblioteca</a>
+                    </div>`;
+                document.getElementById('videoTitle').textContent = 'Erro ao carregar';
             }
+        }
 
-            function renderSuggestions(videos, currentVideoId, previousVideoId) {
-                var list = document.getElementById('suggestionsList');
-
-                if (!videos || videos.length === 0) {
-                    list.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-video"></i>
-                            <p>Nenhum vídeo relacionado encontrado nesta categoria.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                list.innerHTML = '';
-
-                for (var i = 0; i < videos.length; i++) {
-                    var video = videos[i];
-                    var isActive = video.id === currentVideoId;
-                    var isPrevious = previousVideoId && video.id === previousVideoId;
-
-                    var item = document.createElement('div');
-                    item.className = 'suggestion-item' + (isActive ? ' active' : '');
-                    item.innerHTML = `
-                        <div class="suggestion-thumbnail">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="suggestion-info">
-                            <div class="title">
-                                ${escapeHtml(video.title)}
-                                ${isPrevious ? '<span class="previous-tag">← Anterior</span>' : ''}
-                            </div>
-                            <div class="meta">
-                                <span>${escapeHtml(video.category)}</span>
-                                <span>•</span>
-                                <span>${escapeHtml(video.subcategory)}</span>
-                            </div>
-                        </div>
-                    `;
-
-                    if (!isActive) {
-                        item.addEventListener('click', function() {
-                            var id = this.getAttribute('data-id');
-                            var currentId = getVideoIdFromUrl();
-                            window.location.href = 'player.html?id=' + encodeURIComponent(id) + '&previous=' + encodeURIComponent(currentId);
-                        });
-                    }
-
-                    item.setAttribute('data-id', video.id);
-                    list.appendChild(item);
-                }
-            }
-
-            async function loadPlayer() {
-                var videoId = getVideoIdFromUrl();
-                var previousVideoId = new URLSearchParams(window.location.search).get('previous');
-
-                if (!videoId) {
-                    document.getElementById('playerWrapper').innerHTML = `
-                        <div class="empty-state" style="padding:4rem 1rem; text-align:center; background:transparent; border:none;">
-                            <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#e53e3e;"></i>
-                            <p style="margin-top:1rem; color:#1a2332;">Nenhum vídeo selecionado.</p>
-                            <a href="index.html" style="color:#e8590c; text-decoration:underline; font-weight:600;">Voltar para a biblioteca</a>
-                        </div>
-                    `;
-                    document.getElementById('videoTitle').textContent = 'Vídeo não encontrado';
-                    document.getElementById('suggestionsList').innerHTML = '';
-                    return;
-                }
-
-                try {
-                    var allVideos = await fetchAllVideos();
-                    var currentVideo = allVideos.find(function(v) { return v.id === videoId; });
-
-                    if (!currentVideo) {
-                        document.getElementById('playerWrapper').innerHTML = `
-                            <div class="empty-state" style="padding:4rem 1rem; text-align:center; background:transparent; border:none;">
-                                <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#e53e3e;"></i>
-                                <p style="margin-top:1rem; color:#1a2332;">Vídeo não encontrado.</p>
-                                <a href="index.html" style="color:#e8590c; text-decoration:underline; font-weight:600;">Voltar para a biblioteca</a>
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    renderMainVideo(currentVideo);
-                    var relatedVideos = getRelatedVideos(allVideos, currentVideo, previousVideoId);
-                    renderSuggestions(relatedVideos, currentVideo.id, previousVideoId);
-
-                } catch (error) {
-                    console.error('Erro ao carregar player:', error);
-                    document.getElementById('playerWrapper').innerHTML = `
-                        <div class="empty-state" style="padding:4rem 1rem; text-align:center; background:transparent; border:none;">
-                            <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#e53e3e;"></i>
-                            <p style="margin-top:1rem; color:#1a2332;">Erro ao carregar o vídeo.</p>
-                            <p style="color:#8a9bb5; font-size:0.9rem;">Tente novamente mais tarde.</p>
-                        </div>
-                    `;
-                }
-            }
-
-            loadPlayer();
-        })();
+        loadPlayer();
+    })();
     </script>
 </body>
 </html>

@@ -3,590 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SGP Loom Library</title>
+    <title>SGP Library — Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            color: #1a2332;
-            line-height: 1.6;
-        }
-
-        /* HERO / HEADER - ESTILO SGP */
-        .hero {
+        /* ── Login overlay ── */
+        #loginOverlay {
+            position: fixed;
+            inset: 0;
             background: #171a22;
-            padding: 2rem 2rem 2.5rem;
-            position: relative;
-            border-bottom: 3px solid #e8590c;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: #e8590c;
-        }
-
-        .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .hero-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo-area {
+            z-index: 9999;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
         }
 
-        .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #e8590c, #e8590c);
-            border-radius: 12px;
+        .login-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .login-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #e8590c, #aa502a);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 1.4rem;
-            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.3);
-        }
-
-        .logo-text h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-text h1 span {
-            color: #e8590c;
-        }
-
-        .logo-text p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 400;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #e8590c, #aa502a);
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.3);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(232, 89, 12, 0.4);
-        }
-
-        .hero-title {
-            text-align: center;
-            padding: 1.5rem 0 0.5rem;
-        }
-
-        .hero-title h2 {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.5px;
+            margin: 0 auto 1.2rem;
+            box-shadow: 0 8px 24px rgba(232, 89, 12, 0.35);
         }
 
-        .hero-title h2 i {
-            color: #e8590c;
-            margin-right: 0.5rem;
-        }
-
-        .hero-title p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.95rem;
-            font-weight: 400;
-            margin-top: 0.2rem;
-        }
-
-        /* SEARCH SECTION */
-        .search-section {
-            max-width: 1400px;
-            margin: -1.5rem auto 0;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .search-wrapper {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e8edf4;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .search-input-wrap {
-            flex: 3;
-            min-width: 200px;
-            position: relative;
-        }
-
-        .search-input-wrap i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8a9bb5;
-            font-size: 0.9rem;
-        }
-
-        .search-input-wrap input {
-            width: 100%;
-            padding: 0.7rem 1rem 0.7rem 2.8rem;
-            border-radius: 12px;
-            border: 1.5px solid #e8edf4;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
-            background: #f8fafc;
+        .login-card h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
             color: #1a2332;
+            margin-bottom: 0.3rem;
         }
 
-        .search-input-wrap input:focus {
-            outline: none;
-            border-color: #e8590c;
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(232, 89, 12, 0.08);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-select {
-            padding: 0.5rem 1.2rem;
-            border-radius: 12px;
-            border: 1.5px solid #e8edf4;
-            background: #f8fafc;
-            font-weight: 500;
+        .login-card p {
             font-size: 0.85rem;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            color: #1a2332;
-            transition: all 0.3s ease;
-            min-width: 140px;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #e8590c;
-            box-shadow: 0 0 0 4px rgba(232, 89, 12, 0.08);
-        }
-
-        .filter-select:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* VIDEOS GRID */
-        .videos-container {
-            max-width: 1400px;
-            margin: 2rem auto 0;
-            padding: 0 2rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: #8a9bb5;
             margin-bottom: 1.5rem;
         }
 
-        .section-header h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a2332;
-        }
-
-        .section-header h3 i {
-            color: #e8590c;
-            margin-right: 0.5rem;
-        }
-
-        .section-header span {
-            color: #8a9bb5;
-            font-size: 0.85rem;
-        }
-
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .video-card {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            border: 1px solid #e8edf4;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .video-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(232, 89, 12, 0.1);
-            border-color: rgba(232, 89, 12, 0.2);
-        }
-
-        .player-wrapper {
-            background: #0a1628;
-            aspect-ratio: 16/9;
-            position: relative;
-            pointer-events: none;
-        }
-
-        .player-wrapper iframe {
-            pointer-events: none;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .card-content {
-            padding: 1rem 1.2rem 1rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 0.5rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .video-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #1a2332;
-            line-height: 1.3;
-            flex: 1;
-        }
-
-        .badge-cat {
-            background: #f0f2f5;
-            padding: 0.15rem 0.7rem;
-            border-radius: 50px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #e8590c;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .subcat {
-            font-size: 0.75rem;
-            color: #8a9bb5;
-            margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .subcat i {
-            font-size: 0.6rem;
-        }
-
-        .description {
-            font-size: 0.85rem;
-            color: #5a6b85;
-            margin: 0.5rem 0;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-            margin-top: 0.6rem;
-            border-top: 1px solid #f0f2f5;
-            padding-top: 0.6rem;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            font-size: 0.85rem;
-            cursor: pointer;
-            color: #8a9bb5;
-            transition: all 0.2s ease;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-        }
-
-        .icon-btn:hover {
-            color: #e8590c;
-            background: #fef0e8;
-        }
-
-        .icon-btn.danger:hover {
-            color: #e53e3e;
+        #loginError {
             background: #fde8e8;
-        }
-
-        /* PAGINATION */
-        .pagination-wrapper {
-            max-width: 1400px;
-            margin: 2rem auto 0;
-            padding: 0 2rem 2rem;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .pagination button {
-            background: #fff;
-            border: 1px solid #e8edf4;
-            padding: 0.5rem 1rem;
+            color: #c53030;
             border-radius: 10px;
-            font-weight: 500;
+            padding: 0.6rem 1rem;
             font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #1a2332;
-            font-family: 'Inter', sans-serif;
+            margin-bottom: 1rem;
+            display: none;
         }
 
-        .pagination button:hover:not(:disabled) {
-            background: #e8590c;
-            color: #fff;
-            border-color: #e8590c;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(232, 89, 12, 0.25);
-        }
+        #loginError.visible { display: block; }
 
-        .pagination button.active {
-            background: #e8590c;
-            color: #fff;
-            border-color: #e8590c;
-        }
+        .login-card .form-group { text-align: left; }
 
-        .pagination button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .pagination-info {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: #8a9bb5;
-        }
-
-        /* MODALS */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        #btnLogin {
             width: 100%;
-            height: 100%;
-            background: rgba(23, 26, 34, 0.7);
-            backdrop-filter: blur(8px);
+            margin-top: 0.5rem;
+            justify-content: center;
+        }
+
+        /* ── Admin header extras ── */
+        .admin-hero-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
+            gap: 0.8rem;
         }
 
-        .modal-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .modal {
-            background: #fff;
-            width: 90%;
-            max-width: 520px;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1.2rem;
-            color: #1a2332;
-        }
-
-        .modal h3 i {
+        .admin-badge {
+            background: rgba(232, 89, 12, 0.15);
             color: #e8590c;
-            margin-right: 0.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-            color: #1a2332;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            border: 1.5px solid #e8edf4;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-            color: #1a2332;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #e8590c;
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(232, 89, 12, 0.08);
-        }
-
-        .form-group small {
-            color: #8a9bb5;
-            font-size: 0.75rem;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid #e8edf4;
-            padding: 0.6rem 1.5rem;
+            padding: 0.25rem 0.8rem;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-            color: #1a2332;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
 
-        .btn-outline:hover {
-            background: #f0f2f5;
-        }
-
-        /* Empty & Loading */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 1rem;
-            background: #fff;
-            border-radius: 16px;
-            color: #8a9bb5;
-            grid-column: 1/-1;
-            border: 1px solid #e8edf4;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            opacity: 0.4;
-            margin-bottom: 1rem;
-            color: #e8590c;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #e8590c;
-            grid-column: 1/-1;
-        }
-
-        /* Welcome Modal */
-        .welcome-modal .modal {
-            max-width: 500px;
-        }
-
-        .welcome-content {
-            text-align: left;
-            line-height: 1.7;
-        }
-
-        .welcome-content p {
-            margin-bottom: 1rem;
-            color: #1a2332;
-        }
-
-        .welcome-content ul {
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-        }
-
-        .welcome-content li {
-            margin-bottom: 0.5rem;
-            color: #1a2332;
-        }
-
+        /* Welcome modal */
+        .welcome-content { text-align: left; line-height: 1.7; }
+        .welcome-content p { margin-bottom: 1rem; color: #1a2332; }
+        .welcome-content ul { margin: 1rem 0; padding-left: 1.5rem; }
+        .welcome-content li { margin-bottom: 0.5rem; color: #1a2332; }
         .welcome-highlight {
             background: #fef0e8;
             padding: 0.15rem 0.5rem;
@@ -594,112 +105,30 @@
             font-weight: 600;
             color: #e8590c;
         }
-
-        .btn-close-welcome {
-            background: linear-gradient(135deg, #e8590c, #aa502a);
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 1rem;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 16px rgba(232, 89, 12, 0.3);
-        }
-
-        .btn-close-welcome:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(232, 89, 12, 0.4);
-        }
-
-        /* Footer */
-        .footer {
-            max-width: 1400px;
-            margin: 2rem auto 0;
-            padding: 1.5rem 2rem;
-            text-align: center;
-            border-top: 1px solid #e8edf4;
-            color: #8a9bb5;
-            font-size: 0.8rem;
-        }
-
-        .footer i {
-            color: #e8590c;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 1.5rem 1rem 2rem;
-            }
-
-            .hero-title h2 {
-                font-size: 1.4rem;
-            }
-
-            .search-section {
-                padding: 0 1rem;
-            }
-
-            .search-wrapper {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 1rem;
-            }
-
-            .filter-group {
-                flex-direction: column;
-            }
-
-            .filter-select {
-                width: 100%;
-            }
-
-            .videos-container {
-                padding: 0 1rem;
-            }
-
-            .videos-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pagination-wrapper {
-                padding: 0 1rem 1rem;
-            }
-
-            .hero-top {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .modal {
-                padding: 1.5rem;
-                width: 95%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo-text h1 {
-                font-size: 1.2rem;
-            }
-
-            .hero-title h2 {
-                font-size: 1.2rem;
-            }
-
-            .video-title {
-                font-size: 0.9rem;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <!-- HERO -->
+    <!-- ── LOGIN OVERLAY ── -->
+    <div id="loginOverlay">
+        <div class="login-card">
+            <div class="login-icon"><i class="fas fa-lock"></i></div>
+            <h2>Área Administrativa</h2>
+            <p>Digite a senha para acessar o painel de gerenciamento</p>
+
+            <div id="loginError"></div>
+
+            <div class="form-group">
+                <label for="adminPassword">Senha</label>
+                <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button class="btn-primary" id="btnLogin">
+                <i class="fas fa-sign-in-alt"></i> Entrar
+            </button>
+        </div>
+    </div>
+
+    <!-- ── HERO ── -->
     <section class="hero">
         <div class="hero-content">
             <div class="hero-top">
@@ -712,14 +141,20 @@
                         <p>Biblioteca de vídeos SGP</p>
                     </div>
                 </div>
-                <button class="btn-primary" id="openAddModalBtn">
-                    <i class="fas fa-plus"></i> Novo vídeo
-                </button>
+                <div class="admin-hero-actions">
+                    <span class="admin-badge"><i class="fas fa-shield-alt"></i> Admin</span>
+                    <button class="btn-primary" id="openAddModalBtn">
+                        <i class="fas fa-plus"></i> Novo vídeo
+                    </button>
+                    <button class="btn-ghost" id="btnLogout">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
             </div>
 
             <div class="hero-title">
                 <h2><i class="fas fa-play-circle"></i> Central de Vídeos do SGP</h2>
-                <p>Encontre tutoriais e materiais de apoio organizados por categoria</p>
+                <p>Gerencie tutoriais e materiais de apoio organizados por categoria</p>
             </div>
         </div>
     </section>
@@ -729,22 +164,18 @@
         <div class="search-wrapper">
             <div class="search-input-wrap">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por título, descrição ou categoria...">
+                <input type="text" id="searchInput" placeholder="Buscar por título, descrição ou categoria..." autocomplete="off">
             </div>
             <div class="filter-group">
                 <select id="filterCategory" class="filter-select">
                     <option value="all">Todas categorias</option>
-                    <option value="Clientes">Clientes</option>
-                    <option value="Financeiro">Financeiro</option>
-                    <option value="Fiscal">Fiscal</option>
-                    <option value="Estoque">Estoque</option>
-                    <option value="Relatórios">Relatórios</option>
-                    <option value="Administração">Administração</option>
-                    <option value="Sistema">Sistema</option>
                 </select>
                 <select id="filterSubcategory" class="filter-select" disabled>
                     <option value="all">Primeiro selecione uma categoria</option>
                 </select>
+                <button id="btnClearFilters" class="btn-clear-filters hidden">
+                    <i class="fas fa-times"></i> Limpar filtros
+                </button>
             </div>
         </div>
     </div>
@@ -762,21 +193,21 @@
 
     <!-- PAGINATION -->
     <div class="pagination-wrapper">
-        <div id="paginationContainer" class="pagination"></div>
+        <div id="paginationContainer"></div>
         <div id="paginationInfo" class="pagination-info"></div>
     </div>
 
     <!-- FOOTER -->
     <div class="footer">
-        <i class="fas fa-play-circle"></i> Player Loom incorporado • Categorias e subcategorias pré-definidas
+        <i class="fas fa-play-circle"></i> SGP Library &bull; Painel Administrativo
     </div>
 
     <!-- WELCOME MODAL -->
-    <div id="welcomeModal" class="modal-overlay welcome-modal">
+    <div id="welcomeModal" class="modal-overlay">
         <div class="modal">
-            <h3><i class="fas fa-hand-wave"></i> Bem-vindo!</h3>
+            <h3><i class="fas fa-hand-sparkles"></i> Bem-vindo!</h3>
             <div class="welcome-content">
-                <p>Esta ferramenta foi desenvolvida por <strong class="welcome-highlight">Kleybson Felipe</strong> e atualmente encontra-se em <strong class="welcome-highlight">fase beta</strong>.</p>
+                <p>Esta ferramenta foi desenvolvida por <strong class="welcome-highlight">Kleybson Felipe</strong> e encontra-se em <strong class="welcome-highlight">fase beta</strong>.</p>
                 <p><strong>Orientações de uso:</strong></p>
                 <ul>
                     <li>Sempre preencha todos os campos obrigatórios. No campo de observações, informe o nome de quem gravou o vídeo.</li>
@@ -785,121 +216,240 @@
                 </ul>
                 <p>Agradecemos pela sua colaboração e compreensão!</p>
             </div>
-            <button class="btn-close-welcome" id="closeWelcomeBtn"><i class="fas fa-check-circle"></i> Entendi, vamos começar!</button>
+            <div class="modal-buttons">
+                <button class="btn-primary" id="closeWelcomeBtn" style="width:100%;justify-content:center;">
+                    <i class="fas fa-check-circle"></i> Entendi, vamos começar!
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- VIDEO MODAL -->
+    <!-- VIDEO MODAL (add/edit) -->
     <div id="videoModal" class="modal-overlay">
         <div class="modal">
             <h3 id="modalTitle"><i class="fas fa-plus-circle"></i> Adicionar vídeo</h3>
-            <form id="videoForm">
+            <form id="videoForm" novalidate>
                 <input type="hidden" id="videoId" value="">
+
                 <div class="form-group">
-                    <label>Título do vídeo *</label>
+                    <label for="videoTitle">Título do vídeo *</label>
                     <input type="text" id="videoTitle" required placeholder="Ex: Tutorial de Configuração">
+                    <div class="form-error" id="errTitle">Preencha o título.</div>
                 </div>
+
                 <div class="form-group">
-                    <label>Link Loom *</label>
+                    <label for="videoLink">Link Loom *</label>
                     <input type="url" id="videoLink" required placeholder="https://www.loom.com/share/xxxxx">
                     <small>Cole o link de compartilhamento do Loom</small>
+                    <div class="form-error" id="errLink">Cole um link válido do Loom.</div>
                 </div>
+
                 <div class="form-group">
-                    <label>Categoria *</label>
+                    <label for="videoCategory">Categoria *</label>
                     <select id="videoCategory" required>
                         <option value="">Selecione uma categoria</option>
-                        <option value="Clientes">Clientes</option>
-                        <option value="Financeiro">Financeiro</option>
-                        <option value="Fiscal">Fiscal</option>
-                        <option value="Estoque">Estoque</option>
-                        <option value="Relatórios">Relatórios</option>
-                        <option value="Administração">Administração</option>
-                        <option value="Sistema">Sistema</option>
                     </select>
+                    <div class="form-error" id="errCategory">Selecione uma categoria.</div>
                 </div>
+
                 <div class="form-group">
-                    <label>Subcategoria *</label>
+                    <label for="videoSubcategory">Subcategoria *</label>
                     <select id="videoSubcategory" required disabled>
                         <option value="">Primeiro selecione uma categoria</option>
                     </select>
+                    <div class="form-error" id="errSubcategory">Selecione uma subcategoria.</div>
                 </div>
+
                 <div class="form-group">
-                    <label>Descrição / Observações</label>
+                    <label for="videoDescription">Descrição / Observações</label>
                     <textarea id="videoDescription" rows="3" placeholder="Descreva o conteúdo do vídeo e informe o nome de quem gravou..."></textarea>
                 </div>
+
                 <div class="modal-buttons">
                     <button type="button" class="btn-outline" id="closeModalBtn">Cancelar</button>
-                    <button type="submit" class="btn-primary">Salvar vídeo</button>
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i> Salvar vídeo
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
+    <script src="js/utils.js"></script>
     <script>
     (function() {
-        const API_URL = 'https://biblioteca-loom.onrender.com/api';
-        const VIDEOS_PER_PAGE = 9;
-        
-        let currentPage = 1;
-        let totalPages = 1;
-        let totalVideos = 0;
-        
-        const categoriesData = {
-            "Clientes": ["Consulta", "Cadastrar", "Viabilidade", "Pré cadastro", "CRM", "Suspender em Lote", "Ultimos Cadastros"],
-            "Financeiro": ["Cadastros", "Títulos", "Carnês", "Protocolos", "Caixas", "Contas a Pagar", "Contas a Receber", "Declarações", "Acréscimos/Descontos", "Cobrança", "Pix"],
-            "Fiscal": ["Cadastros", "Arquivos Fiscais", "NF 21/22", "NF 55", "CT-e", "NFCom", "Nota de Débito", "Nota de Serviço", "Código IBGE"],
-            "Estoque": ["Cadastros", "Consultas", "Movimentações", "Veículo Lançamento"],
-            "Relatórios": ["Financeiro", "Gráficos", "Mapas", "Contrato", "Atendimento", "Técnico", "FTTH", "Estoque", "Sistema", "Comissão"],
-            "Administração": ["Pops", "Condomínios", "Cadastros", "Planos", "Integrações", "Aplicativos", "Certificados", "Vendedores", "Assinaturas Eletrônicas", "Importar Arquivo KML/KMZ", "Autorização de Contato"],
-            "Sistema": ["Alterar senha", "Autenticação 2FA", "Alterar senha (Radius)", "Configurações (Beta)", "Configurações", "Ferramentas", "Gateways", "Backup", "SMS", "Email", "Monitoramento", "Gerenciador de CPE", "Usuários", "Grupos", "Dashboards", "Imagens", "SMTP", "Arquivos Públicos", "Manutenções", "Log (Radius)"]
-        };
+        const {
+            escapeHtml, buildThumbnailHtml, buildPagination,
+            apiGet, apiPost, apiPut, apiDelete,
+            fetchCategories, saveToken, clearToken, isLoggedIn
+        } = LoomLib;
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
+        const VIDEOS_PER_PAGE = 9;
+        let currentPage  = 1;
+        let totalPages   = 1;
+        let totalVideos  = 0;
+        let categoriesMap = {};
+
+        // ════════════════════════════════════════════════════════
+        // LOGIN
+        // ════════════════════════════════════════════════════════
+        async function tryLogin() {
+            const password = document.getElementById('adminPassword').value;
+            const errEl    = document.getElementById('loginError');
+            const btnLogin = document.getElementById('btnLogin');
+
+            if (!password) {
+                errEl.textContent = 'Digite a senha.';
+                errEl.classList.add('visible');
+                return;
+            }
+
+            btnLogin.disabled = true;
+            btnLogin.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verificando...';
+
+            try {
+                const res = await fetch(LoomLib.API_URL + '/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) throw new Error(data.error || 'Senha incorreta.');
+
+                saveToken(data.token);
+                document.getElementById('loginOverlay').style.display = 'none';
+                errEl.classList.remove('visible');
+                initApp();
+
+            } catch (e) {
+                errEl.textContent = e.message;
+                errEl.classList.add('visible');
+                btnLogin.disabled = false;
+                btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
+        document.getElementById('btnLogin').addEventListener('click', tryLogin);
+        document.getElementById('adminPassword').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') tryLogin();
+        });
+
+        // Já logado? Pular login
+        if (isLoggedIn()) {
+            document.getElementById('loginOverlay').style.display = 'none';
+            initApp();
+        } else {
+            document.getElementById('adminPassword').focus();
+        }
+
+        // ════════════════════════════════════════════════════════
+        // APP (só roda após login)
+        // ════════════════════════════════════════════════════════
+        function initApp() {
+            loadCategories();
+            loadVideos(1);
+            showWelcomeModal();
+
+            document.getElementById('btnLogout').addEventListener('click', () => {
+                clearToken();
+                window.location.reload();
             });
         }
 
-        function getLoomEmbedUrl(loomUrl) {
-            var match = loomUrl.trim().match(/loom\.com\/share\/([a-zA-Z0-9_-]+)/);
-            return match ? 'https://www.loom.com/embed/' + match[1] : loomUrl;
+        // ── Categorias ───────────────────────────────────────────
+        async function loadCategories() {
+            try {
+                const data = await fetchCategories();
+                const catSelect      = document.getElementById('filterCategory');
+                const modalCatSelect = document.getElementById('videoCategory');
+
+                catSelect.innerHTML      = '<option value="all">Todas categorias</option>';
+                modalCatSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
+
+                for (const item of data) {
+                    categoriesMap[item.category] = item.subcategories;
+                    [catSelect, modalCatSelect].forEach(sel => {
+                        const opt = document.createElement('option');
+                        opt.value = item.category;
+                        opt.textContent = item.category;
+                        sel.appendChild(opt);
+                    });
+                }
+            } catch (e) {
+                console.warn('Erro ao carregar categorias:', e);
+            }
         }
 
-        function updateURLHash(page) {
-            window.location.hash = 'page=' + page;
+        function updateSubcategorySelect(selectEl, category, required = false) {
+            const subs = categoriesMap[category] || [];
+            selectEl.innerHTML = required
+                ? '<option value="">Selecione uma subcategoria</option>'
+                : '<option value="all">Todas subcategorias</option>';
+
+            if (subs.length > 0) {
+                selectEl.disabled = false;
+                subs.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s; opt.textContent = s;
+                    selectEl.appendChild(opt);
+                });
+            } else {
+                selectEl.disabled = true;
+                selectEl.innerHTML = required
+                    ? '<option value="">Nenhuma subcategoria</option>'
+                    : '<option value="all">Nenhuma subcategoria disponível</option>';
+            }
         }
 
-        function openVideoPlayer(videoId) {
-            window.location.href = 'player.html?id=' + encodeURIComponent(videoId);
+        function updateClearButton() {
+            const btn    = document.getElementById('btnClearFilters');
+            const search = document.getElementById('searchInput').value;
+            const cat    = document.getElementById('filterCategory').value;
+            const sub    = document.getElementById('filterSubcategory').value;
+            btn.classList.toggle('hidden', !(search || cat !== 'all' || sub !== 'all'));
         }
 
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterCategory').value = 'all';
+            const subSel = document.getElementById('filterSubcategory');
+            subSel.disabled = true;
+            subSel.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
+            updateClearButton();
+            loadVideos(1);
+        }
+
+        // ── Render vídeos ────────────────────────────────────────
         function renderVideos(videos) {
-            var gridContainer = document.getElementById('videosGridContainer');
-            var countSpan = document.getElementById('videoCount');
-            
+            const grid      = document.getElementById('videosGridContainer');
+            const countSpan = document.getElementById('videoCount');
+
             if (!videos || videos.length === 0) {
-                gridContainer.innerHTML = '<div class="empty-state"><i class="fas fa-video"></i><p>Nenhum vídeo encontrado nesta página.</p></div>';
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-video"></i>
+                        <p>Nenhum vídeo encontrado com esses filtros.</p>
+                        <p style="margin-top:0.5rem;font-size:0.85rem;">
+                            <a href="#" id="emptyStateClear">Limpar filtros</a>
+                        </p>
+                    </div>`;
+                grid.querySelector('#emptyStateClear')?.addEventListener('click', (e) => {
+                    e.preventDefault(); clearFilters();
+                });
                 countSpan.textContent = '0 vídeos';
                 return;
             }
-            
+
             countSpan.textContent = totalVideos + ' vídeo' + (totalVideos !== 1 ? 's' : '');
-            
-            gridContainer.innerHTML = '';
-            for (var i = 0; i < videos.length; i++) {
-                var video = videos[i];
-                var embedUrl = getLoomEmbedUrl(video.link);
-                var card = document.createElement('div');
+            grid.innerHTML = '';
+
+            for (const video of videos) {
+                const card = document.createElement('div');
                 card.className = 'video-card';
                 card.setAttribute('data-id', video.id);
-                card.innerHTML = `
-                    <div class="player-wrapper">
-                        <iframe class="loom-iframe" src="${embedUrl}" frameborder="0" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
-                    </div>
+                card.innerHTML = buildThumbnailHtml(video.link) + `
                     <div class="card-content">
                         <div class="card-header">
                             <span class="video-title">${escapeHtml(video.title)}</span>
@@ -908,329 +458,238 @@
                         <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>
                         <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
                         <div class="card-actions">
-                            <button class="icon-btn edit-video" data-id="${video.id}" title="Editar"><i class="fas fa-pen"></i></button>
-                            <button class="icon-btn danger delete-video" data-id="${video.id}" title="Excluir"><i class="fas fa-trash-alt"></i></button>
+                            <button class="icon-btn edit-btn" data-id="${escapeHtml(video.id)}" title="Editar">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="icon-btn danger delete-btn" data-id="${escapeHtml(video.id)}" title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </div>
                     </div>
                 `;
-                
-                card.addEventListener('click', function(e) {
-                    if (e.target.closest('.icon-btn') || e.target.closest('.card-actions')) {
-                        return;
-                    }
-                    var videoId = this.getAttribute('data-id');
-                    openVideoPlayer(videoId);
+
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.card-actions')) return;
+                    window.open('player.html?id=' + encodeURIComponent(video.id), '_blank');
                 });
-                
-                gridContainer.appendChild(card);
+
+                card.querySelector('.edit-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEditModal(video);
+                });
+
+                card.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    confirmDelete(video.id, video.title);
+                });
+
+                grid.appendChild(card);
             }
-            
-            document.querySelectorAll('.edit-video').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    openEditModal(btn.getAttribute('data-id'));
-                });
-            });
-            
-            document.querySelectorAll('.delete-video').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (confirm('Tem certeza que deseja excluir este vídeo permanentemente?')) {
-                        deleteVideo(btn.getAttribute('data-id')).then(function() {
-                            loadVideos(currentPage);
-                        });
-                    }
-                });
-            });
         }
 
+        // ── Paginação ────────────────────────────────────────────
         function renderPagination() {
-            var paginationContainer = document.getElementById('paginationContainer');
-            var paginationInfo = document.getElementById('paginationInfo');
-            
-            if (totalPages <= 1) {
-                paginationContainer.innerHTML = '';
-                paginationInfo.innerHTML = '';
-                return;
-            }
-            
-            var paginationHTML = '';
-            paginationHTML += '<button onclick="window.goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i> Anterior</button>';
-            
-            var maxVisible = 5;
-            var startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            var endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            
-            if (endPage - startPage + 1 < maxVisible) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-            }
-            
-            if (startPage > 1) {
-                paginationHTML += '<button onclick="window.goToPage(1)">1</button>';
-                if (startPage > 2) paginationHTML += '<button disabled>...</button>';
-            }
-            
-            for (var i = startPage; i <= endPage; i++) {
-                paginationHTML += '<button onclick="window.goToPage(' + i + ')" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
-            }
-            
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) paginationHTML += '<button disabled>...</button>';
-                paginationHTML += '<button onclick="window.goToPage(' + totalPages + ')">' + totalPages + '</button>';
-            }
-            
-            paginationHTML += '<button onclick="window.goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Próximo <i class="fas fa-chevron-right"></i></button>';
-            
-            paginationContainer.innerHTML = paginationHTML;
-            
-            var start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
-            var end = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
-            paginationInfo.innerHTML = 'Mostrando ' + start + ' - ' + end + ' de ' + totalVideos + ' vídeos';
+            const container = document.getElementById('paginationContainer');
+            const info      = document.getElementById('paginationInfo');
+
+            if (totalPages <= 1) { container.innerHTML = ''; info.innerHTML = ''; return; }
+
+            container.innerHTML = '';
+            container.appendChild(buildPagination(currentPage, totalPages, (page) => {
+                loadVideos(page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }));
+
+            const start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
+            const end   = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
+            info.textContent = `Mostrando ${start}–${end} de ${totalVideos} vídeos`;
         }
 
-        window.goToPage = function(page) {
-            if (page < 1 || page > totalPages) return;
-            loadVideos(page);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
+        // ── Carrega vídeos ───────────────────────────────────────
         async function loadVideos(page) {
             page = page || 1;
-            var gridContainer = document.getElementById('videosGridContainer');
-            gridContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
-            
-            var searchTerm = document.getElementById('searchInput').value;
-            var categoryFilter = document.getElementById('filterCategory').value;
-            var subFilter = document.getElementById('filterSubcategory').value;
-            
-            var url = API_URL + '/videos?page=' + page + '&limit=' + VIDEOS_PER_PAGE;
-            if (searchTerm) url += '&search=' + encodeURIComponent(searchTerm);
-            if (categoryFilter !== 'all') url += '&category=' + encodeURIComponent(categoryFilter);
-            if (subFilter !== 'all') url += '&subcategory=' + encodeURIComponent(subFilter);
-            
+            const grid = document.getElementById('videosGridContainer');
+            grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
+
+            const search = document.getElementById('searchInput').value.trim();
+            const cat    = document.getElementById('filterCategory').value;
+            const sub    = document.getElementById('filterSubcategory').value;
+
+            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
+            if (search)        url += '&search='      + encodeURIComponent(search);
+            if (cat !== 'all') url += '&category='    + encodeURIComponent(cat);
+            if (sub !== 'all') url += '&subcategory=' + encodeURIComponent(sub);
+
             try {
-                var response = await fetch(url);
-                if (!response.ok) throw new Error('Erro ao carregar vídeos');
-                
-                var result = await response.json();
-                var videosData = result.data || result;
-                totalVideos = result.total || videosData.length;
-                totalPages = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
+                const result    = await apiGet(url);
+                const videosData = result.data || result;
+                totalVideos = result.total      || videosData.length;
+                totalPages  = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
                 currentPage = page;
-                
                 renderVideos(videosData);
                 renderPagination();
-                updateURLHash(page);
+                updateClearButton();
+                window.location.hash = 'page=' + page;
             } catch (error) {
-                console.error('Erro ao carregar vídeos:', error);
-                gridContainer.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao conectar com o servidor.</p></div>';
-            }
-        }
-
-        // ===== CRUD =====
-        async function addVideo(videoData) {
-            try {
-                var response = await fetch(API_URL + '/videos', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: Date.now().toString(), ...videoData })
-                });
-                if (!response.ok) throw new Error('Erro ao adicionar vídeo');
-                await loadVideos(currentPage);
-            } catch (error) {
-                console.error('Erro ao adicionar vídeo:', error);
-                alert('Erro ao salvar vídeo.');
-            }
-        }
-
-        async function updateVideo(videoId, videoData) {
-            try {
-                var response = await fetch(API_URL + '/videos/' + videoId, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(videoData)
-                });
-                if (!response.ok) throw new Error('Erro ao atualizar vídeo');
-                await loadVideos(currentPage);
-            } catch (error) {
-                console.error('Erro ao atualizar vídeo:', error);
-                alert('Erro ao atualizar vídeo.');
-            }
-        }
-
-        async function deleteVideo(videoId) {
-            try {
-                var response = await fetch(API_URL + '/videos/' + videoId, { method: 'DELETE' });
-                if (!response.ok) throw new Error('Erro ao deletar vídeo');
-            } catch (error) {
-                console.error('Erro ao deletar vídeo:', error);
-                alert('Erro ao deletar vídeo.');
-            }
-        }
-
-        // ===== FILTROS =====
-        function updateFilterSubcategories(selectedCategory) {
-            var subFilter = document.getElementById('filterSubcategory');
-            if (!selectedCategory || selectedCategory === 'all') {
-                subFilter.disabled = true;
-                subFilter.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
-                return;
-            }
-            var subcategories = categoriesData[selectedCategory];
-            if (subcategories && subcategories.length > 0) {
-                subFilter.disabled = false;
-                subFilter.innerHTML = '<option value="all">Todas subcategorias</option>';
-                for (var i = 0; i < subcategories.length; i++) {
-                    subFilter.innerHTML += '<option value="' + escapeHtml(subcategories[i]) + '">' + escapeHtml(subcategories[i]) + '</option>';
+                console.error(error);
+                // Se 401, sessão expirou
+                if (error.message.includes('401') || error.message.toLowerCase().includes('autorizado')) {
+                    clearToken();
+                    window.location.reload();
+                    return;
                 }
-            } else {
-                subFilter.disabled = true;
-                subFilter.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Erro ao conectar com o servidor.</p>
+                    </div>`;
             }
         }
 
-        function updateModalSubcategories(selectedCategory) {
-            var subcategorySelect = document.getElementById('videoSubcategory');
-            subcategorySelect.innerHTML = '<option value="">Selecione uma subcategoria</option>';
-            if (selectedCategory && categoriesData[selectedCategory]) {
-                for (var i = 0; i < categoriesData[selectedCategory].length; i++) {
-                    subcategorySelect.innerHTML += '<option value="' + escapeHtml(categoriesData[selectedCategory][i]) + '">' + escapeHtml(categoriesData[selectedCategory][i]) + '</option>';
-                }
-                subcategorySelect.disabled = false;
-            } else {
-                subcategorySelect.disabled = true;
+        // ── CRUD ─────────────────────────────────────────────────
+        async function confirmDelete(id, title) {
+            if (!confirm(`Excluir permanentemente o vídeo:\n"${title}"?`)) return;
+            try {
+                await apiDelete('/videos/' + encodeURIComponent(id));
+                loadVideos(currentPage);
+            } catch (e) {
+                if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
+                alert('Erro ao excluir: ' + e.message);
             }
         }
 
+        // ── Modal add/edit ────────────────────────────────────────
         function resetForm() {
-            document.getElementById('videoId').value = '';
-            document.getElementById('videoTitle').value = '';
-            document.getElementById('videoLink').value = '';
-            document.getElementById('videoCategory').value = '';
-            updateModalSubcategories('');
+            document.getElementById('videoId').value          = '';
+            document.getElementById('videoTitle').value       = '';
+            document.getElementById('videoLink').value        = '';
+            document.getElementById('videoCategory').value    = '';
             document.getElementById('videoDescription').value = '';
-            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar vídeo';
+            const subSel = document.getElementById('videoSubcategory');
+            subSel.innerHTML = '<option value="">Primeiro selecione uma categoria</option>';
+            subSel.disabled = true;
+            document.getElementById('modalTitle').innerHTML   = '<i class="fas fa-plus-circle"></i> Adicionar vídeo';
+            document.getElementById('submitBtn').innerHTML    = '<i class="fas fa-save"></i> Salvar vídeo';
+            // Limpa erros
+            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
         }
 
-        async function openEditModal(id) {
+        function openAddModal() {
+            resetForm();
+            document.getElementById('videoModal').classList.add('active');
+        }
+
+        function openEditModal(video) {
+            resetForm();
+            document.getElementById('videoId').value       = video.id;
+            document.getElementById('videoTitle').value    = video.title;
+            document.getElementById('videoLink').value     = video.link;
+            document.getElementById('videoCategory').value = video.category;
+            updateSubcategorySelect(document.getElementById('videoSubcategory'), video.category, true);
+            document.getElementById('videoSubcategory').value  = video.subcategory;
+            document.getElementById('videoDescription').value  = video.description || '';
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
+            document.getElementById('submitBtn').innerHTML  = '<i class="fas fa-save"></i> Atualizar vídeo';
+            document.getElementById('videoModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('videoModal').classList.remove('active');
+        }
+
+        function validateForm() {
+            const title    = document.getElementById('videoTitle').value.trim();
+            const link     = document.getElementById('videoLink').value.trim();
+            const category = document.getElementById('videoCategory').value;
+            const subcat   = document.getElementById('videoSubcategory').value;
+            let valid = true;
+
+            const setErr = (id, show) => {
+                document.getElementById(id).classList.toggle('visible', show);
+            };
+
+            setErr('errTitle',      !title);
+            setErr('errLink',       !link || !link.includes('loom.com'));
+            setErr('errCategory',   !category);
+            setErr('errSubcategory',!subcat);
+
+            if (!title || !link || !link.includes('loom.com') || !category || !subcat) valid = false;
+            return valid;
+        }
+
+        document.getElementById('videoForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Salvando...';
+
+            const payload = {
+                title:       document.getElementById('videoTitle').value.trim(),
+                link:        document.getElementById('videoLink').value.trim(),
+                category:    document.getElementById('videoCategory').value,
+                subcategory: document.getElementById('videoSubcategory').value,
+                description: document.getElementById('videoDescription').value.trim()
+            };
+
             try {
-                var response = await fetch(API_URL + '/videos?page=1&limit=1000');
-                var result = await response.json();
-                var videos = result.data || result;
-                var video = null;
-                for (var i = 0; i < videos.length; i++) {
-                    if (videos[i].id === id) {
-                        video = videos[i];
-                        break;
-                    }
+                const existingId = document.getElementById('videoId').value;
+                if (existingId) {
+                    await apiPut('/videos/' + encodeURIComponent(existingId), payload);
+                } else {
+                    await apiPost('/videos', payload);
                 }
-                
-                if (video) {
-                    document.getElementById('videoId').value = video.id;
-                    document.getElementById('videoTitle').value = video.title;
-                    document.getElementById('videoLink').value = video.link;
-                    document.getElementById('videoCategory').value = video.category;
-                    updateModalSubcategories(video.category);
-                    document.getElementById('videoSubcategory').value = video.subcategory;
-                    document.getElementById('videoDescription').value = video.description || '';
-                    document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
-                    document.getElementById('videoModal').classList.add('active');
-                }
-            } catch (error) {
-                console.error('Erro ao buscar vídeo:', error);
-                alert('Erro ao carregar dados do vídeo.');
+                closeModal();
+                loadVideos(currentPage);
+            } catch (e) {
+                if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
+                alert('Erro ao salvar: ' + e.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Salvar vídeo';
             }
-        }
+        });
 
-        function handleHashChange() {
-            var hash = window.location.hash;
-            var match = hash.match(/page=(\d+)/);
-            var page = match ? parseInt(match[1]) : 1;
-            if (page !== currentPage) {
-                loadVideos(page);
-            }
-        }
-
+        // ── Welcome modal ─────────────────────────────────────────
         function showWelcomeModal() {
             if (!localStorage.getItem('welcomeModalSeen')) {
                 document.getElementById('welcomeModal').classList.add('active');
             }
         }
 
-        // ===== EVENT LISTENERS =====
-        document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
+        // ── Event listeners ───────────────────────────────────────
+        document.getElementById('closeWelcomeBtn').addEventListener('click', () => {
             document.getElementById('welcomeModal').classList.remove('active');
             localStorage.setItem('welcomeModalSeen', 'true');
         });
 
-        document.getElementById('openAddModalBtn').addEventListener('click', function() {
-            resetForm();
-            document.getElementById('videoModal').classList.add('active');
+        document.getElementById('openAddModalBtn').addEventListener('click', openAddModal);
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+
+        document.getElementById('videoModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('videoModal')) closeModal();
         });
 
-        document.getElementById('closeModalBtn').addEventListener('click', function() {
-            document.getElementById('videoModal').classList.remove('active');
+        document.getElementById('videoCategory').addEventListener('change', function() {
+            updateSubcategorySelect(document.getElementById('videoSubcategory'), this.value, true);
         });
 
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === document.getElementById('videoModal')) {
-                document.getElementById('videoModal').classList.remove('active');
-            }
-        });
-
-        document.getElementById('videoForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var title = document.getElementById('videoTitle').value.trim();
-            var link = document.getElementById('videoLink').value.trim();
-            var category = document.getElementById('videoCategory').value;
-            var subcategory = document.getElementById('videoSubcategory').value;
-            
-            if (!title || !link || !category || !subcategory) {
-                alert('Preencha todos os campos obrigatórios.');
-                return;
-            }
-            
-            var videoData = {
-                title: title,
-                link: link,
-                category: category,
-                subcategory: subcategory,
-                description: document.getElementById('videoDescription').value.trim()
-            };
-            
-            var existingId = document.getElementById('videoId').value;
-            if (existingId) {
-                await updateVideo(existingId, videoData);
-            } else {
-                await addVideo(videoData);
-            }
-            document.getElementById('videoModal').classList.remove('active');
-        });
-
-        document.getElementById('filterCategory').addEventListener('change', function(e) {
-            updateFilterSubcategories(e.target.value);
+        document.getElementById('filterCategory').addEventListener('change', function() {
+            updateSubcategorySelect(document.getElementById('filterSubcategory'), this.value, false);
             loadVideos(1);
         });
 
-        document.getElementById('filterSubcategory').addEventListener('change', function() {
-            loadVideos(1);
-        });
+        document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos(1));
 
-        var searchTimeout;
+        let searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function() { loadVideos(1); }, 500);
+            searchTimeout = setTimeout(() => loadVideos(1), 500);
         });
 
-        document.getElementById('videoCategory').addEventListener('change', function(e) {
-            updateModalSubcategories(e.target.value);
-        });
+        document.getElementById('btnClearFilters').addEventListener('click', clearFilters);
 
-        window.addEventListener('hashchange', handleHashChange);
-        
-        loadVideos(1);
-        showWelcomeModal();
-        document.getElementById('filterSubcategory').disabled = true;
     })();
     </script>
 </body>

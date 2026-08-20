@@ -97,7 +97,7 @@ function buildPagination(currentPage, totalPages, onPageClick, maxVisible = 5) {
 }
 
 // ── API ────────────────────────────────────────────────────────
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'https://biblioteca-loom.onrender.com/api';
 
 async function apiFetch(endpoint, options = {}) {
     try {

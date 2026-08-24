@@ -169,21 +169,9 @@
         </div>
     </div>
 
-    <!-- VIDEOS -->
-    <div class="videos-container">
-        <div class="section-header">
-            <h3><i class="fas fa-video"></i> Vídeos Disponíveis</h3>
-            <span id="videoCount">Carregando...</span>
-        </div>
-        <div id="videosGridContainer" class="videos-grid">
-            <div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>
-        </div>
-    </div>
-
-    <!-- PAGINATION -->
-    <div class="pagination-wrapper">
-        <div id="paginationContainer"></div>
-        <div id="paginationInfo" class="pagination-info"></div>
+    <!-- CATEGORIAS (ROBLOX STYLE) -->
+    <div class="categories-container" id="categoriesContainer">
+        <div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando módulos...</div>
     </div>
 
     <!-- FOOTER -->
@@ -203,13 +191,25 @@
     <script src="js/utils.js"></script>
     <script>
     (function() {
-        const { escapeHtml, buildThumbnailHtml, buildPagination, apiGet, fetchCategories } = LoomLib;
+        const { escapeHtml, buildThumbnailHtml, apiGet, fetchCategories } = LoomLib;
 
-        const VIDEOS_PER_PAGE = 9;
-        let currentPage  = 1;
-        let totalPages   = 1;
-        let totalVideos  = 0;
+        const MAX_VIDEOS_PER_ROW = 15;
         let categoriesMap = {}; // { Categoria: [subcats] }
+        
+        const categoryIcons = {
+            'Clientes': 'fa-users',
+            'Financeiro': 'fa-coins',
+            'Fiscal': 'fa-file-invoice',
+            'Estoque': 'fa-boxes',
+            'Relatórios': 'fa-chart-bar',
+            'Administração': 'fa-building',
+            'Sistema': 'fa-cogs'
+        };
+
+        const categoryOrder = [
+            'Clientes', 'Financeiro', 'Fiscal', 'Estoque',
+            'Relatórios', 'Administração', 'Sistema'
+        ];
 
         // ── Carrega categorias dinamicamente da API ──────────────
         async function initCategories() {
@@ -254,7 +254,6 @@
             }
         }
 
-        // ── Limpar filtros ───────────────────────────────────────
         function updateClearButton() {
             const btn     = document.getElementById('btnClearFilters');
             const search  = document.getElementById('searchInput').value;
@@ -269,146 +268,157 @@
             document.getElementById('filterCategory').value = 'all';
             updateSubcategoryFilter('all');
             updateClearButton();
-            loadVideos(1);
+            loadVideos();
         }
 
-        // ── Renderiza grade de vídeos ────────────────────────────
-        function renderVideos(videos) {
-            const grid      = document.getElementById('videosGridContainer');
-            const countSpan = document.getElementById('videoCount');
+        function groupByCategory(videos) {
+            var groups = {};
+            videos.forEach(function(v) {
+                var cat = v.category || 'Sem categoria';
+                if (!groups[cat]) groups[cat] = [];
+                groups[cat].push(v);
+            });
+            return groups;
+        }
 
-            if (!videos || videos.length === 0) {
-                grid.innerHTML = `
+        // ── Renderização das Linhas (Roblox) ─────────────────────
+        function renderRows(groups, searchTerm, categoryFilter, subFilter) {
+            const container = document.getElementById('categoriesContainer');
+
+            // Aplica filtros
+            let filteredGroups = {};
+            Object.keys(groups).forEach(function(cat) {
+                if (categoryFilter !== 'all' && cat !== categoryFilter) return;
+
+                let videos = groups[cat];
+                if (subFilter !== 'all') {
+                    videos = videos.filter(v => v.subcategory === subFilter);
+                }
+                if (searchTerm && searchTerm.trim() !== '') {
+                    const term = searchTerm.toLowerCase().trim();
+                    videos = videos.filter(v => 
+                        (v.title && v.title.toLowerCase().includes(term)) ||
+                        (v.description && v.description.toLowerCase().includes(term)) ||
+                        (v.subcategory && v.subcategory.toLowerCase().includes(term))
+                    );
+                }
+                if (videos.length > 0) {
+                    filteredGroups[cat] = videos;
+                }
+            });
+
+            // Ordena as categorias
+            const sortedCategories = Object.keys(filteredGroups).sort(function(a, b) {
+                const indexA = categoryOrder.indexOf(a);
+                const indexB = categoryOrder.indexOf(b);
+                if (indexA === -1) return 1;
+                if (indexB === -1) return -1;
+                return indexA - indexB;
+            });
+
+            if (sortedCategories.length === 0) {
+                container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-video"></i>
-                        <p>Nenhum vídeo encontrado com esses filtros.</p>
+                        <i class="fas fa-video-slash text-4xl mb-4 text-brand/50"></i>
+                        <p class="text-lg">Nenhum vídeo encontrado com os filtros aplicados.</p>
                         <p style="margin-top:0.5rem;font-size:0.85rem;">
                             <a href="#" id="emptyStateClear">Limpar filtros</a>
                         </p>
-                    </div>`;
-                grid.querySelector('#emptyStateClear')?.addEventListener('click', (e) => {
-                    e.preventDefault(); clearFilters();
-                });
-                countSpan.textContent = '0 vídeos';
-                return;
-            }
-
-            countSpan.textContent = totalVideos + ' vídeo' + (totalVideos !== 1 ? 's' : '');
-            grid.innerHTML = '';
-
-            for (const video of videos) {
-                const card = document.createElement('div');
-                card.className = 'video-card';
-                card.setAttribute('data-id', video.id);
-                card.innerHTML = buildThumbnailHtml(video.link) + `
-                    <div class="card-content">
-                        <div class="card-header">
-                            <span class="video-title">${escapeHtml(video.title)}</span>
-                            <span class="badge-cat">${escapeHtml(video.category)}</span>
-                        </div>
-                        <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>
-                        <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
                     </div>
                 `;
-                card.addEventListener('click', () => {
-                    window.location.href = 'player.html?id=' + encodeURIComponent(video.id);
+                document.getElementById('emptyStateClear')?.addEventListener('click', (e) => {
+                    e.preventDefault(); clearFilters();
                 });
-                grid.appendChild(card);
-            }
-        }
-
-        // ── Paginação ────────────────────────────────────────────
-        function renderPagination() {
-            const container = document.getElementById('paginationContainer');
-            const info      = document.getElementById('paginationInfo');
-
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                info.textContent = '';
                 return;
             }
 
-            container.innerHTML = '';
-            container.appendChild(buildPagination(currentPage, totalPages, (page) => {
-                loadVideos(page);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }));
+            let html = '';
+            sortedCategories.forEach(function(cat) {
+                const videos = filteredGroups[cat];
+                if (videos.length === 0) return;
+                const icon = categoryIcons[cat] || 'fa-tag';
 
-            const start = (currentPage - 1) * VIDEOS_PER_PAGE + 1;
-            const end   = Math.min(currentPage * VIDEOS_PER_PAGE, totalVideos);
-            info.textContent = `Mostrando ${start}–${end} de ${totalVideos} vídeos`;
+                html += `<div class="category-row">`;
+                html += `<div class="category-header">
+                            <div class="title-group">
+                                <i class="fas ${icon}"></i>
+                                <h3>${escapeHtml(cat)} <span>(${videos.length})</span></h3>
+                            </div>
+                            <button class="more-btn" onclick="window.location.href='category.html?tag=${encodeURIComponent(cat)}'" title="Ver todos os vídeos desta categoria">
+                                <span>Ver mais</span> <i class="fas fa-chevron-right ml-1 text-sm"></i>
+                            </button>
+                        </div>`;
+                html += `<div class="video-row">`;
+
+                const displayVideos = videos.slice(0, MAX_VIDEOS_PER_ROW);
+                displayVideos.forEach(function(video) {
+                    const thumbHtml = buildThumbnailHtml(video.link, video.title);
+                    html += `
+                        <div class="video-card group" onclick="window.location.href='player.html?id=${encodeURIComponent(video.id)}'">
+                            ${thumbHtml}
+                            <div class="video-info">
+                                <h4 class="video-title" title="${escapeHtml(video.title)}">${escapeHtml(video.title)}</h4>
+                                <p class="video-desc" title="${escapeHtml(video.description)}">${escapeHtml(video.description)}</p>
+                                <div class="video-meta">
+                                    <span class="video-category"><i class="fas fa-folder"></i> ${escapeHtml(video.subcategory || cat)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
         }
 
-        // ── Carrega vídeos da API ────────────────────────────────
-        async function loadVideos(page) {
-            page = page || 1;
-            const grid = document.getElementById('videosGridContainer');
-            grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
+        // ── Busca de Vídeos (API) ────────────────────────────────
+        async function loadVideos() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando módulos...</div>';
 
-            const search = document.getElementById('searchInput').value.trim();
-            const cat    = document.getElementById('filterCategory').value;
-            const sub    = document.getElementById('filterSubcategory').value;
-
-            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
-            if (search)        url += '&search='      + encodeURIComponent(search);
-            if (cat !== 'all') url += '&category='    + encodeURIComponent(cat);
-            if (sub !== 'all') url += '&subcategory=' + encodeURIComponent(sub);
-
-            // Atualiza o título da aba
-            document.title = (cat !== 'all' ? cat + ' — ' : '') + 'SGP Library';
+            const searchTerm = document.getElementById('searchInput').value;
+            const categoryFilter = document.getElementById('filterCategory').value;
+            const subFilter = document.getElementById('filterSubcategory').value;
 
             try {
-                const result = await apiGet(url);
-                const videosData = result.data || result;
-                totalVideos = result.total   || videosData.length;
-                totalPages  = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
-                currentPage = page;
+                // Trazemos tudo para agrupar em faixas, por isso limit alto
+                const data = await apiGet('/videos?page=1&limit=500');
+                const videos = data.data || data;
 
-                renderVideos(videosData);
-                renderPagination();
+                const groups = groupByCategory(videos);
+                renderRows(groups, searchTerm, categoryFilter, subFilter);
                 updateClearButton();
-                window.location.hash = 'page=' + page;
-            } catch (error) {
-                console.error('Erro ao carregar vídeos:', error);
-                const isFirstLoad = currentPage === 1;
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Erro ao conectar com o servidor.</p>
-                        ${isFirstLoad ? '<p style="font-size:0.85rem;margin-top:0.5rem;">O servidor pode estar iniciando. Aguarde alguns segundos e <a href="#" id="retryBtn">tente novamente</a>.</p>' : ''}
-                    </div>`;
-                document.getElementById('retryBtn')?.addEventListener('click', (e) => {
-                    e.preventDefault(); loadVideos(page);
-                });
+            } catch (err) {
+                console.error('Erro ao carregar vídeos:', err);
+                container.innerHTML = '<div class="error-msg">Ocorreu um erro ao carregar os vídeos da API. Tente novamente.</div>';
             }
-        }
-
-        // ── Hash navigation ──────────────────────────────────────
-        function handleHash() {
-            const match = window.location.hash.match(/page=(\d+)/);
-            const page  = match ? parseInt(match[1]) : 1;
-            if (page !== currentPage) loadVideos(page);
         }
 
         // ── Event listeners ──────────────────────────────────────
         document.getElementById('filterCategory').addEventListener('change', function() {
             updateSubcategoryFilter(this.value);
-            loadVideos(1);
+            loadVideos();
         });
 
-        document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos(1));
+        document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos());
 
         let searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => loadVideos(1), 500);
+            searchTimeout = setTimeout(() => loadVideos(), 500);
         });
 
         document.getElementById('btnClearFilters').addEventListener('click', clearFilters);
-        window.addEventListener('hashchange', handleHash);
 
-        // ── Init ─────────────────────────────────────────────────
-        initCategories().then(() => loadVideos(1));
+        // ── Inicialização ────────────────────────────────────────
+        async function init() {
+            await initCategories();
+            loadVideos();
+        }
+
+        init();
 
     })();
     </script>

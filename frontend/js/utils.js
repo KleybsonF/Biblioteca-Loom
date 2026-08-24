@@ -117,78 +117,86 @@ async function apiFetch(endpoint, options = {}) {
 }
 
 async function apiGet(path) {
-    if (path.startsWith('/videos?')) {
-        const urlParams = new URLSearchParams(path.split('?')[1]);
-        const page = parseInt(urlParams.get('page') || '1', 10);
-        const limit = parseInt(urlParams.get('limit') || '500', 10);
-        
-        let filtered = [...(typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])];
-        
-        // Ordena mais recentes primeiro
-        filtered.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
+    try {
+        const url = API_BASE_URL + path;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('API fetch failed');
+        return await res.json();
+    } catch (err) {
+        console.warn('Fallback local para GET', path);
+        if (path.startsWith('/videos?')) {
+            const urlParams = new URLSearchParams(path.split('?')[1]);
+            const page = parseInt(urlParams.get('page') || '1', 10);
+            const limit = parseInt(urlParams.get('limit') || '500', 10);
+            
+            let filtered = [...(typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])];
+            
+            // Ordena mais recentes primeiro
+            filtered.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
 
-        const search = urlParams.get('search');
-        if (search) {
-            const s = search.toLowerCase();
-            filtered = filtered.filter(v => 
-                (v.title && v.title.toLowerCase().includes(s)) || 
-                (v.description && v.description.toLowerCase().includes(s)) ||
-                (v.category && v.category.toLowerCase().includes(s)) ||
-                (v.subcategory && v.subcategory.toLowerCase().includes(s))
-            );
-        }
-        
-        const cat = urlParams.get('category');
-        if (cat) {
-            filtered = filtered.filter(v => v.category === cat);
-        }
-        
-        const sub = urlParams.get('subcategory');
-        if (sub) {
-            filtered = filtered.filter(v => v.subcategory === sub);
-        }
-        
-        const total = filtered.length;
-        const totalPages = Math.ceil(total / limit);
-        const start = (page - 1) * limit;
-        const data = filtered.slice(start, start + limit);
-        
-        return { data, total, page, totalPages };
-    }
-    
-    if (path.startsWith('/videos/')) {
-        const parts = path.split('/');
-        const id = parts[2].split('?')[0];
-        
-        const db = typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [];
-        const v = db.find(x => x.id === id);
-        
-        if (parts[3] && parts[3].startsWith('related')) {
-            if (!v) return [];
-            let related = db.filter(x => x.category === v.category && x.id !== id);
-            related.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
-            return related.slice(0, 10);
-        }
-        
-        if (v) return v;
-        throw new Error('Vídeo não encontrado');
-    }
-    
-    if (path === '/categories') {
-        const catMap = {};
-        for (const v of (typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])) {
-            if (!v.category) continue;
-            if (!catMap[v.category]) {
-                catMap[v.category] = { category: v.category, subcategories: [] };
+            const search = urlParams.get('search');
+            if (search) {
+                const s = search.toLowerCase();
+                filtered = filtered.filter(v => 
+                    (v.title && v.title.toLowerCase().includes(s)) || 
+                    (v.description && v.description.toLowerCase().includes(s)) ||
+                    (v.category && v.category.toLowerCase().includes(s)) ||
+                    (v.subcategory && v.subcategory.toLowerCase().includes(s))
+                );
             }
-            if (v.subcategory && !catMap[v.category].subcategories.includes(v.subcategory)) {
-                catMap[v.category].subcategories.push(v.subcategory);
+            
+            const cat = urlParams.get('category');
+            if (cat) {
+                filtered = filtered.filter(v => v.category === cat);
             }
+            
+            const sub = urlParams.get('subcategory');
+            if (sub) {
+                filtered = filtered.filter(v => v.subcategory === sub);
+            }
+            
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / limit);
+            const start = (page - 1) * limit;
+            const data = filtered.slice(start, start + limit);
+            
+            return { data, total, page, totalPages };
         }
-        return Object.values(catMap);
+        
+        if (path.startsWith('/videos/')) {
+            const parts = path.split('/');
+            const id = parts[2].split('?')[0];
+            
+            const db = typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [];
+            const v = db.find(x => x.id === id);
+            
+            if (parts[3] && parts[3].startsWith('related')) {
+                if (!v) return [];
+                let related = db.filter(x => x.category === v.category && x.id !== id);
+                related.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
+                return related.slice(0, 10);
+            }
+            
+            if (v) return v;
+            throw new Error('Vídeo não encontrado');
+        }
+        
+        if (path === '/categories') {
+            const catMap = {};
+            for (const v of (typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])) {
+                if (!v.category) continue;
+                if (!catMap[v.category]) {
+                    catMap[v.category] = { category: v.category, subcategories: [] };
+                }
+                if (v.subcategory && !catMap[v.category].subcategories.includes(v.subcategory)) {
+                    catMap[v.category].subcategories.push(v.subcategory);
+                }
+            }
+            return Object.values(catMap);
+        }
+        
+        throw new Error('Rota GET não mapeada: ' + path);
     }
-    
-    throw new Error('Rota GET não mapeada: ' + path);
 }
 
 async function apiPost(path, data) {

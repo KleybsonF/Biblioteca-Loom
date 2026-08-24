@@ -33,11 +33,18 @@ function getLoomThumbnailUrl(loomUrl) {
         : null;
 }
 
+// ── Remove Emojis ───────────────────────────────────────────
+function stripEmojis(str) {
+    if (!str) return '';
+    return str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim();
+}
+
 // ── Renderiza thumbnail dinâmica ─────────────────
 function buildThumbnailHtml(loomUrl, title = '') {
+    const cleanTitle = stripEmojis(title || 'Vídeo sem título');
     return `
         <div class="video-thumbnail dynamic-thumb">
-            <div class="thumb-title">${escapeHtml(title || 'Vídeo sem título')}</div>
+            <div class="thumb-title">${escapeHtml(cleanTitle)}</div>
             <div class="play-overlay"><i class="fas fa-play"></i></div>
         </div>
     `;

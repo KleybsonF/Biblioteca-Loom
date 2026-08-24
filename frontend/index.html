@@ -348,7 +348,9 @@
                                 <span>Ver mais</span> <i class="fas fa-chevron-right ml-1 text-sm"></i>
                             </button>
                         </div>`;
-                html += `<div class="video-row">`;
+                html += `<div class="video-carousel-wrapper">`;
+                html += `  <button class="carousel-arrow left-arrow" aria-label="Rolar para a esquerda" onclick="window.scrollCarousel(this, -1)"><i class="fas fa-chevron-left"></i></button>`;
+                html += `  <div class="video-row">`;
 
                 const displayVideos = videos.slice(0, MAX_VIDEOS_PER_ROW);
                 displayVideos.forEach(function(video) {
@@ -367,11 +369,22 @@
                     `;
                 });
 
-                html += `</div></div>`;
+                html += `  </div>`;
+                html += `  <button class="carousel-arrow right-arrow" aria-label="Rolar para a direita" onclick="window.scrollCarousel(this, 1)"><i class="fas fa-chevron-right"></i></button>`;
+                html += `</div>`;
+                html += `</div>`; // closes .category-row
             });
 
             container.innerHTML = html;
         }
+
+        window.scrollCarousel = function(btn, direction) {
+            const wrapper = btn.closest('.video-carousel-wrapper');
+            const row = wrapper.querySelector('.video-row');
+            // Scroll amount = roughly one card width + gap (340px + 24px)
+            const scrollAmount = 360 * direction;
+            row.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        };
 
         // ── Busca de Vídeos (API) ────────────────────────────────
         async function loadVideos() {

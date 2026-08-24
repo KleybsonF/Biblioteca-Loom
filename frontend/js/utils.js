@@ -44,8 +44,11 @@ function buildThumbnailHtml(loomUrl, title = '') {
     const cleanTitle = stripEmojis(title || 'Vídeo sem título');
     return `
         <div class="video-thumbnail dynamic-thumb">
+            <img class="thumb-logo-tsmx" src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX" loading="lazy">
+            <div class="thumb-title-container">
+                <div class="thumb-title">${escapeHtml(cleanTitle)}</div>
+            </div>
             <img class="thumb-deco-icon" src="https://sys.tsmx.net.br/public/files/REFJKME2TAG.png" alt="" loading="lazy">
-            <div class="thumb-title">${escapeHtml(cleanTitle)}</div>
             <div class="play-overlay"><i class="fas fa-play"></i></div>
         </div>
     `;

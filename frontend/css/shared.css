@@ -994,6 +994,15 @@ h1, h2, h3, h4, h5, h6 {
 
     .videos-container { padding: 0 1.2rem; margin-top: 2rem; }
     .videos-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    
+    .video-row {
+        gap: 1rem;
+    }
+    .video-row .video-card {
+        flex: 0 0 85vw;
+        max-width: 340px;
+    }
+
     .card-content { padding: 1.2rem; }
     
     .pagination-wrapper { padding: 0 1.2rem; }
@@ -1179,7 +1188,8 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     top: 1.2rem;
     left: 1.5rem;
-    height: 18px;
+    height: 18px !important;
+    width: auto !important;
     z-index: 2;
     opacity: 0.85;
 }
@@ -1220,11 +1230,11 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     right: -10px;
     bottom: -10px;
-    width: 90px;
-    height: 90px;
-    object-fit: contain;
+    width: 90px !important;
+    height: 90px !important;
+    object-fit: contain !important;
     opacity: 0.4;
-    transform: rotate(10deg);
+    transform: rotate(10deg) !important;
     z-index: 1;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;

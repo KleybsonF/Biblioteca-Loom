@@ -323,14 +323,7 @@
             btnLogin.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verificando...';
 
             try {
-                const res = await fetch(LoomLib.API_URL + '/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                const data = await res.json();
-
-                if (!res.ok) throw new Error(data.error || 'Senha incorreta.');
+                const data = await LoomLib.apiPost('/auth/login', { password });
 
                 saveToken(data.token);
                 document.getElementById('loginOverlay').style.display = 'none';

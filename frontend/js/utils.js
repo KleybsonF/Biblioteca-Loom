@@ -147,8 +147,19 @@ async function apiGet(path) {
     }
     
     if (path.startsWith('/videos/')) {
-        const id = path.split('/')[2];
-        const v = (typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : []).find(x => x.id === id);
+        const parts = path.split('/');
+        const id = parts[2].split('?')[0];
+        
+        const db = typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [];
+        const v = db.find(x => x.id === id);
+        
+        if (parts[3] && parts[3].startsWith('related')) {
+            if (!v) return [];
+            let related = db.filter(x => x.category === v.category && x.id !== id);
+            related.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
+            return related.slice(0, 10);
+        }
+        
         if (v) return v;
         throw new Error('Vídeo não encontrado');
     }

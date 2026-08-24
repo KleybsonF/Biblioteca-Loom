@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 6rem 2rem 8rem;
     position: relative;
     border-bottom: 1px solid var(--border-color);
-    background: radial-gradient(circle at top right, rgba(232, 100, 27, 0.05), transparent 50%), #171a22; /* Manter hero escuro conforme Roblox */
+    background: radial-gradient(circle at top right, rgba(232, 100, 27, 0.05), transparent 50%), #000000;
     overflow: hidden;
 }
 

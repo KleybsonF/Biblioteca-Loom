@@ -107,7 +107,13 @@ function buildPagination(currentPage, totalPages, onPageClick, maxVisible = 5) {
 const API_BASE_URL = 'https://biblioteca-loom.onrender.com/api';
 
 async function apiFetch(endpoint, options = {}) {
-    throw new Error('apiFetch chamado indevidamente no modo local.');
+    const url = API_BASE_URL + endpoint;
+    const res = await fetch(url, options);
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error || 'Erro ' + res.status);
+    }
+    return res.json();
 }
 
 async function apiGet(path) {
@@ -186,15 +192,52 @@ async function apiGet(path) {
 }
 
 async function apiPost(path, data) {
-    throw new Error('Biblioteca em modo Local. Edite data.js para alterar vídeos.');
+    const result = await apiFetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+        body: JSON.stringify(data)
+    });
+    
+    // Atualiza a memória local para o admin ver a mudança imediatamente
+    if (typeof VIDEOS_DB !== 'undefined' && path === '/videos') {
+        const newVideo = result.video || result;
+        if (newVideo && newVideo.id) VIDEOS_DB.unshift(newVideo);
+    }
+    return result;
 }
 
 async function apiPut(path, data) {
-    throw new Error('Biblioteca em modo Local. Edite data.js para alterar vídeos.');
+    const result = await apiFetch(path, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+        body: JSON.stringify(data)
+    });
+    
+    // Atualiza a memória local para o admin ver a mudança imediatamente
+    if (typeof VIDEOS_DB !== 'undefined' && path.startsWith('/videos/')) {
+        const updatedVideo = result.video || result || data;
+        const id = path.split('/')[2];
+        const index = VIDEOS_DB.findIndex(v => v.id === id);
+        if (index !== -1) {
+            VIDEOS_DB[index] = { ...VIDEOS_DB[index], ...updatedVideo };
+        }
+    }
+    return result;
 }
 
 async function apiDelete(path) {
-    throw new Error('Biblioteca em modo Local. Edite data.js para alterar vídeos.');
+    const result = await apiFetch(path, {
+        method: 'DELETE',
+        headers: { ...getAuthHeader() }
+    });
+    
+    // Atualiza a memória local para o admin ver a mudança imediatamente
+    if (typeof VIDEOS_DB !== 'undefined' && path.startsWith('/videos/')) {
+        const id = path.split('/')[2];
+        const index = VIDEOS_DB.findIndex(v => v.id === id);
+        if (index !== -1) VIDEOS_DB.splice(index, 1);
+    }
+    return result;
 }
 
 // ── Autenticação (Admin) ──────────────────────────────────────

@@ -1187,7 +1187,7 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-box-orient: vertical;
     overflow: hidden;
     position: relative;
-    width: 90%;
+    width: 80%; /* Deixa espaço pro ícone */
 }
 
 /* Detalhe laranjinha antes do título */
@@ -1201,18 +1201,16 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 2px;
 }
 
-/* Imagem decorativa de ladinho */
+/* Imagem decorativa no cantinho */
 .thumb-deco-icon {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 60%;
-    max-width: 200px;
-    height: 100%;
+    right: -10px;
+    bottom: -15px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
-    object-position: bottom right;
-    opacity: 0.45;
-    transform: none; /* Remove a rotação que deixou "torto" */
+    opacity: 0.6;
+    transform: rotate(15deg); /* De ladinho */
     z-index: 1;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;

@@ -175,17 +175,17 @@ async function apiGet(path) {
     }
     
     if (path === '/categories') {
-        const categories = {};
+        const catMap = {};
         for (const v of (typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])) {
             if (!v.category) continue;
-            if (!categories[v.category]) {
-                categories[v.category] = { subcategories: [] };
+            if (!catMap[v.category]) {
+                catMap[v.category] = { category: v.category, subcategories: [] };
             }
-            if (v.subcategory && !categories[v.category].subcategories.includes(v.subcategory)) {
-                categories[v.category].subcategories.push(v.subcategory);
+            if (v.subcategory && !catMap[v.category].subcategories.includes(v.subcategory)) {
+                catMap[v.category].subcategories.push(v.subcategory);
             }
         }
-        return categories;
+        return Object.values(catMap);
     }
     
     throw new Error('Rota GET não mapeada: ' + path);

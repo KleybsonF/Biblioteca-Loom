@@ -1233,8 +1233,8 @@ h1, h2, h3, h4, h5, h6 {
     width: 90px !important;
     height: 90px !important;
     object-fit: contain !important;
-    opacity: 0.4;
-    transform: rotate(10deg) !important;
+    opacity: 1 !important;
+    transform: none !important;
     z-index: 1;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;

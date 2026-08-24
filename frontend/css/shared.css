@@ -58,6 +58,67 @@ h1, h2, h3, h4, h5, h6 {
     overflow: hidden;
 }
 
+/* ── Admin Hero ── */
+.hero-admin {
+    padding: 6rem 2rem 8rem;
+    position: relative;
+    border-bottom: 1px solid var(--border-color);
+    background: radial-gradient(circle at top right, rgba(232, 100, 27, 0.05), transparent 50%), #000000;
+    overflow: hidden;
+}
+.hero-admin-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    position: relative;
+    z-index: 10;
+}
+.hero-admin .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hero-admin .logo-text h1 {
+    font-size: 2rem;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    margin: 0;
+}
+.hero-admin .logo-text h1 span {
+    color: var(--color-brand);
+}
+.hero-admin .logo-text p {
+    color: #a0aec0;
+    margin: 0;
+    font-size: 0.9rem;
+}
+.hero-admin .logo-icon {
+    width: 45px;
+    height: 45px;
+    background: var(--color-brand);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+.hero-admin .hero-title h2 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    margin-bottom: 0.5rem;
+}
+.hero-admin .hero-title p {
+    color: #a0aec0;
+    font-size: 1.1rem;
+}
+.hero-admin .btn-ghost {
+    color: #ffffff;
+}
+
 .hero-new::before {
     content: '';
     position: absolute;

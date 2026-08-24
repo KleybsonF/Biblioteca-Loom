@@ -1201,18 +1201,20 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 2px;
 }
 
-/* Ícone de ladinho */
+/* Imagem decorativa de ladinho */
 .thumb-deco-icon {
     position: absolute;
-    right: -15px;
-    bottom: -15px;
-    width: 85px;
-    height: auto;
-    opacity: 0.5;
-    transform: rotate(20deg);
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    max-width: 200px;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom right;
+    opacity: 0.45;
+    transform: none; /* Remove a rotação que deixou "torto" */
     z-index: 1;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
     pointer-events: none;
 }
 
@@ -1222,7 +1224,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .video-card:hover .thumb-deco-icon,
 .suggestion-item:hover .thumb-deco-icon {
-    transform: rotate(5deg) scale(1.15);
-    opacity: 0.85;
+    transform: scale(1.05);
+    opacity: 0.7;
 }
 

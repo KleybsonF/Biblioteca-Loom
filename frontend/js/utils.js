@@ -98,51 +98,88 @@ function buildPagination(currentPage, totalPages, onPageClick, maxVisible = 5) {
     return container;
 }
 
-// ── API ────────────────────────────────────────────────────────
+// ── API (Modo Local/Estático) ──────────────────────────────────
+// Lê diretamente de data.js (VIDEOS_DB) para velocidade máxima (sem delay de API)
 const API_BASE_URL = 'https://biblioteca-loom.onrender.com/api';
 
 async function apiFetch(endpoint, options = {}) {
-    try {
-        const response = await fetch(API_BASE_URL + endpoint, options);
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Erro HTTP: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('API Error:', error);
-        throw error;
-    }
+    throw new Error('apiFetch chamado indevidamente no modo local.');
 }
 
 async function apiGet(path) {
-    return apiFetch(path, {
-        method: 'GET',
-        headers: { ...getAuthHeader() }
-    });
+    if (path.startsWith('/videos?')) {
+        const urlParams = new URLSearchParams(path.split('?')[1]);
+        const page = parseInt(urlParams.get('page') || '1', 10);
+        const limit = parseInt(urlParams.get('limit') || '500', 10);
+        
+        let filtered = [...(typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])];
+        
+        // Ordena mais recentes primeiro
+        filtered.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
+
+        const search = urlParams.get('search');
+        if (search) {
+            const s = search.toLowerCase();
+            filtered = filtered.filter(v => 
+                (v.title && v.title.toLowerCase().includes(s)) || 
+                (v.description && v.description.toLowerCase().includes(s)) ||
+                (v.category && v.category.toLowerCase().includes(s)) ||
+                (v.subcategory && v.subcategory.toLowerCase().includes(s))
+            );
+        }
+        
+        const cat = urlParams.get('category');
+        if (cat) {
+            filtered = filtered.filter(v => v.category === cat);
+        }
+        
+        const sub = urlParams.get('subcategory');
+        if (sub) {
+            filtered = filtered.filter(v => v.subcategory === sub);
+        }
+        
+        const total = filtered.length;
+        const totalPages = Math.ceil(total / limit);
+        const start = (page - 1) * limit;
+        const data = filtered.slice(start, start + limit);
+        
+        return { data, total, page, totalPages };
+    }
+    
+    if (path.startsWith('/videos/')) {
+        const id = path.split('/')[2];
+        const v = (typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : []).find(x => x.id === id);
+        if (v) return v;
+        throw new Error('Vídeo não encontrado');
+    }
+    
+    if (path === '/categories') {
+        const categories = {};
+        for (const v of (typeof VIDEOS_DB !== 'undefined' ? VIDEOS_DB : [])) {
+            if (!v.category) continue;
+            if (!categories[v.category]) {
+                categories[v.category] = { subcategories: [] };
+            }
+            if (v.subcategory && !categories[v.category].subcategories.includes(v.subcategory)) {
+                categories[v.category].subcategories.push(v.subcategory);
+            }
+        }
+        return categories;
+    }
+    
+    throw new Error('Rota GET não mapeada: ' + path);
 }
 
 async function apiPost(path, data) {
-    return apiFetch(path, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify(data)
-    });
+    throw new Error('Biblioteca em modo Local. Edite data.js para alterar vídeos.');
 }
 
 async function apiPut(path, data) {
-    return apiFetch(path, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
-        body: JSON.stringify(data)
-    });
+    throw new Error('Biblioteca em modo Local. Edite data.js para alterar vídeos.');
 }
 
 async function apiDelete(path) {
-    return apiFetch(path, {
-        method: 'DELETE',
-        headers: { ...getAuthHeader() }
-    });
+    throw new Error('Biblioteca em modo Local. Edite data.js para alterar vídeos.');
 }
 
 // ── Autenticação (Admin) ──────────────────────────────────────

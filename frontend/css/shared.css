@@ -586,7 +586,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .video-row .video-card {
-    flex: 0 0 280px;
+    flex: 0 0 340px;
     flex-shrink: 0;
 }
 

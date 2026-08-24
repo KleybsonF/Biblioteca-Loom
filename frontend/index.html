@@ -356,12 +356,12 @@
                     html += `
                         <div class="video-card group" onclick="window.location.href='player.html?id=${encodeURIComponent(video.id)}'">
                             ${thumbHtml}
-                            <div class="video-info">
-                                <h4 class="video-title" title="${escapeHtml(video.title)}">${escapeHtml(video.title)}</h4>
-                                <p class="video-desc" title="${escapeHtml(video.description)}">${escapeHtml(video.description)}</p>
-                                <div class="video-meta">
-                                    <span class="video-category"><i class="fas fa-folder"></i> ${escapeHtml(video.subcategory || cat)}</span>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <span class="video-title" title="${escapeHtml(video.title)}">${escapeHtml(video.title)}</span>
                                 </div>
+                                <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory || cat)}</div>
+                                <div class="description" title="${escapeHtml(video.description)}">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
                             </div>
                         </div>
                     `;

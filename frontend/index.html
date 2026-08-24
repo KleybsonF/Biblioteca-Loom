@@ -376,6 +376,9 @@
             });
 
             container.innerHTML = html;
+            
+            // Atualiza visibilidade das setas após renderizar
+            setTimeout(window.updateCarouselArrows, 100);
         }
 
         window.scrollCarousel = function(btn, direction) {
@@ -385,6 +388,29 @@
             const scrollAmount = 360 * direction;
             row.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         };
+
+        window.updateCarouselArrows = function() {
+            const wrappers = document.querySelectorAll('.video-carousel-wrapper');
+            wrappers.forEach(wrapper => {
+                const row = wrapper.querySelector('.video-row');
+                const leftArrow = wrapper.querySelector('.left-arrow');
+                const rightArrow = wrapper.querySelector('.right-arrow');
+                if (row && leftArrow && rightArrow) {
+                    // Se o conteúdo for maior que o container, mostra setas. Senão, oculta.
+                    if (row.scrollWidth > row.clientWidth) {
+                        leftArrow.style.display = '';
+                        rightArrow.style.display = '';
+                    } else {
+                        leftArrow.style.display = 'none';
+                        rightArrow.style.display = 'none';
+                    }
+                }
+            });
+        };
+        
+        window.addEventListener('resize', () => {
+            if (window.updateCarouselArrows) window.updateCarouselArrows();
+        });
 
         // ── Busca de Vídeos (API) ────────────────────────────────
         async function loadVideos() {

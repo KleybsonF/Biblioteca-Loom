@@ -1147,3 +1147,34 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* ============================================================
+   Dynamic Thumbnails
+   ============================================================ */
+.dynamic-thumb {
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.thumb-title {
+    font-family: 'Clash Display', sans-serif;
+    color: var(--color-brand);
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    z-index: 2;
+    transition: transform 0.4s ease;
+    /* Limit the text to 3 lines just in case */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-card:hover .thumb-title {
+    transform: scale(1.05);
+}
+

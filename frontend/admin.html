@@ -537,9 +537,9 @@
 
             for (const video of videos) {
                 const card = document.createElement('div');
-                card.className = 'video-card';
+                card.className = 'video-card group';
                 card.setAttribute('data-id', video.id);
-                card.innerHTML = buildThumbnailHtml(video.link) + `
+                card.innerHTML = buildThumbnailHtml(video.link, video.title) + `
                     <div class="card-content">
                         <div class="card-header">
                             <span class="video-title">${escapeHtml(video.title)}</span>

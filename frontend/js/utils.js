@@ -33,16 +33,11 @@ function getLoomThumbnailUrl(loomUrl) {
         : null;
 }
 
-// ── Renderiza thumbnail estática com fallback ─────────────────
-function buildThumbnailHtml(loomUrl) {
-    const thumbUrl = getLoomThumbnailUrl(loomUrl);
-    const imgTag = thumbUrl
-        ? `<img src="${escapeHtml(thumbUrl)}" alt="Preview do vídeo" loading="lazy" onerror="this.classList.add('errored')">`
-        : '';
+// ── Renderiza thumbnail dinâmica ─────────────────
+function buildThumbnailHtml(loomUrl, title = '') {
     return `
-        <div class="video-thumbnail">
-            ${imgTag}
-            <div class="thumb-fallback"><i class="fas fa-play-circle"></i></div>
+        <div class="video-thumbnail dynamic-thumb">
+            <div class="thumb-title">${escapeHtml(title || 'Vídeo sem título')}</div>
             <div class="play-overlay"><i class="fas fa-play"></i></div>
         </div>
     `;

@@ -262,9 +262,9 @@
             grid.innerHTML = '';
             for (const v of videos) {
                 const card = document.createElement('div');
-                card.className = 'video-card';
+                card.className = 'video-card group';
                 card.setAttribute('data-id', v.id);
-                card.innerHTML = buildThumbnailHtml(v.link) + `
+                card.innerHTML = buildThumbnailHtml(v.link, v.title) + `
                     <div class="card-content">
                         <div class="video-title">${escapeHtml(v.title)}</div>
                         <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(v.subcategory)}</div>

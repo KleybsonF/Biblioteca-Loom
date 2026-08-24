@@ -477,7 +477,7 @@
                 const item = document.createElement('div');
                 item.className = 'suggestion-item' + (isActive ? ' active' : '');
                 item.setAttribute('data-id', video.id);
-                item.innerHTML = buildThumbnailHtml(video.link) + `
+                item.innerHTML = buildThumbnailHtml(video.link, video.title) + `
                     <div class="suggestion-info">
                         <div class="title">
                             ${escapeHtml(video.title)}

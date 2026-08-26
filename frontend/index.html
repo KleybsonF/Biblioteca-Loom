@@ -6,18 +6,19 @@
     <title>Central de Conteúdos - SGP — Início</title>
     <meta name="description" content="Biblioteca de vídeos tutoriais do SGP, organizada por categorias e subcategorias.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <!-- Clash Display via Fontshare -->
     <link rel="preconnect" href="https://api.fontshare.com">
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="">
-    <link rel="stylesheet" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap"></noscript>
-    
+    <link rel="stylesheet" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap"></noscript>
+
     <!-- Space Grotesk via Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link rel="stylesheet" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap"></noscript>
-    
+    <link rel="stylesheet" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"></noscript>
+
     <!-- Tailwind CDN & Config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -43,23 +44,219 @@
         }
       }
     </script>
+
     <style>
       .container-shell {
         width: min(1180px, 100vw - 2.5rem);
         margin-inline: auto;
       }
+
       .section-space {
         padding-block: clamp(3rem, 6vw, 7rem);
       }
+
+      /* ============================================================
+         Carousel responsivo
+         Mantém o desktop praticamente igual e adapta o mobile.
+         ============================================================ */
+      .video-carousel-wrapper {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .video-row {
+        width: 100%;
+        max-width: 100%;
+        scroll-snap-type: x proximity;
+        scroll-padding-inline: 0.25rem;
+        overscroll-behavior-x: contain;
+        touch-action: pan-x pan-y;
+        scrollbar-width: thin;
+      }
+
+      .video-row .video-card {
+        min-width: 0;
+        scroll-snap-align: start;
+      }
+
+      /* Protege o layout contra qualquer elemento horizontal maior que o viewport */
+      html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      @media (max-width: 768px) {
+        header [data-topbar-inner] {
+          padding-left: 1rem !important;
+          padding-right: 1rem !important;
+        }
+
+        .hero-new-content,
+        .hero-text-area,
+        .hero-image-area,
+        .search-wrapper {
+          min-width: 0;
+          max-width: 100%;
+        }
+
+        .hero-new img,
+        .hero-image-area img {
+          max-width: 100%;
+        }
+
+        .categories-container {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          margin-top: 1.25rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
+          padding-bottom: 1.5rem;
+        }
+
+        .category-row {
+          margin-bottom: 2rem;
+        }
+
+        .category-header {
+          gap: 0.75rem;
+        }
+
+        .category-header .title-group {
+          min-width: 0;
+        }
+
+        .category-header .title-group h3 {
+          font-size: 1.05rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .category-header .more-btn {
+          flex-shrink: 0;
+          padding: 0.25rem 0;
+          font-size: 1rem;
+        }
+
+        .category-header .more-btn span {
+          display: inline;
+        }
+
+        /* O wrapper é o viewport REAL do carrossel no celular.
+           Assim a rolagem nunca considera a largura do desktop. */
+        .video-carousel-wrapper {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          display: block;
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+
+        .video-row {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
+          gap: 0.85rem;
+          padding: 0.4rem 0.25rem 1rem;
+          padding-right: 1rem;
+          margin: 0;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          overflow-x: auto;
+          overflow-y: hidden;
+          scroll-snap-type: x mandatory;
+          scroll-padding-left: 0.25rem;
+          scroll-padding-right: 1rem;
+          overscroll-behavior-x: contain;
+          touch-action: pan-x pan-y;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .video-row::-webkit-scrollbar {
+          display: none;
+        }
+
+        .video-row .video-card {
+          flex: 0 0 calc(100% - 2.15rem);
+          width: calc(100% - 2.15rem);
+          max-width: none;
+          min-width: 0;
+          scroll-snap-align: start;
+          scroll-snap-stop: always;
+        }
+
+        /* Garante que o último card possa parar completamente dentro do viewport. */
+        .video-row::after {
+          content: '';
+          display: block;
+          flex: 0 0 0.15rem;
+          width: 0.15rem;
+        }
+
+        .video-card:hover {
+          transform: none;
+          box-shadow: none;
+        }
+
+        .card-content {
+          min-width: 0;
+          padding: 1rem;
+        }
+
+        .card-header,
+        .video-title,
+        .subcat,
+        .description {
+          min-width: 0;
+        }
+
+        .card-header {
+          gap: 0.6rem;
+          margin-bottom: 0.65rem;
+        }
+
+        .video-title {
+          font-size: 1.05rem;
+          line-height: 1.3;
+        }
+
+        .subcat {
+          font-size: 0.8rem;
+          margin-bottom: 0.6rem;
+        }
+
+        .description {
+          font-size: 0.88rem;
+          line-height: 1.45;
+        }
+
+        .carousel-arrow {
+          display: none !important;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .categories-container {
+          padding-left: 0.85rem;
+          padding-right: 0.85rem;
+        }
+
+        .video-row .video-card {
+          flex-basis: calc(100% - 1.9rem);
+          width: calc(100% - 1.9rem);
+        }
+      }
     </style>
-    
+
     <link rel="stylesheet" href="css/shared.css">
 </head>
 <body>
-
     <!-- HEADER -->
     <header class="sticky top-0 z-20" data-topbar="">
-      <div class="border-b border-white/10 bg-black text-white  transition-all duration-300">
+      <div class="border-b border-white/10 bg-black text-white transition-all duration-300">
         <div class="max-w-[1400px] w-full mx-auto px-8 flex items-center justify-between gap-4 transition-all duration-300 min-h-20 lg:min-h-24 py-4 lg:py-0" data-topbar-inner="">
           <a href="/" class="flex items-center" aria-label="TSMX">
             <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" data-topbar-logo="true" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="w-auto transition-all duration-300 h-[2.3rem] sm:h-[2.59rem]">
@@ -68,10 +265,12 @@
             <nav aria-label="Navegação principal" class="hidden flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70 lg:flex md:text-[0.95rem]">
               <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="transition-colors duration-200 hover:text-white" style="font-family: var(--font-body);">Wiki</a>
             </nav>
+
             <div class="flex items-center gap-3 lg:hidden">
               <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5" style="font-family: var(--font-body);">
                 Fale com o time
               </a>
+
               <button type="button" aria-label="Abrir menu" aria-expanded="false" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer" data-menu-trigger="">
                 <span class="flex flex-col gap-1.5">
                   <span class="h-0.5 w-5 rounded-full bg-current"></span>
@@ -80,18 +279,22 @@
                 </span>
               </button>
             </div>
+
             <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex" style="font-family: var(--font-body);">
               Fale com o time
             </a>
           </div>
         </div>
       </div>
+
       <div class="pointer-events-none fixed inset-0 z-40 bg-black/50 opacity-0 transition-opacity duration-300" data-menu-overlay=""></div>
+
       <aside class="pointer-events-none fixed inset-y-0 right-0 z-50 flex w-full max-w-[24rem] translate-x-full flex-col overflow-y-auto bg-[#0d0d0d] text-white transition-transform duration-300" aria-hidden="true" inert="" data-menu-drawer="">
         <div class="flex items-center justify-between border-b border-white/8 px-5 py-5">
           <a href="/" class="flex items-center" aria-label="TSMX">
             <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-[2.3rem] w-auto">
           </a>
+
           <button type="button" aria-label="Fechar menu" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer" data-menu-close="">
             <span class="relative block h-4 w-4">
               <span class="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-current"></span>
@@ -99,8 +302,10 @@
             </span>
           </button>
         </div>
+
         <div class="border-b border-white/8 px-5 py-5">
           <p class="eyebrow mb-4 text-signal" style="font-family: var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; font-size: 0.74rem; font-weight: 600;">Suporte</p>
+
           <div class="grid gap-2">
             <a href="#contato" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/74 transition-colors duration-200 hover:bg-white/10 hover:text-white">Suporte</a>
             <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/74 transition-colors duration-200 hover:bg-white/10 hover:text-white">Wiki</a>
@@ -114,72 +319,138 @@
             <a href="https://tsmx.sgp.net.br/central/" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white px-4 py-3 text-sm font-semibold text-black transition-colors duration-200 hover:bg-white/90">Área do Cliente</a>
           </div>
         </div>
+
         <nav aria-label="Navegação principal" class="flex flex-col gap-3 px-5 py-5">
           <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10">Wiki</a>
         </nav>
       </aside>
-      <script type="module">const r=document.querySelector("[data-menu-trigger]"),s=document.querySelector("[data-menu-close]"),t=document.querySelector("[data-menu-drawer]"),a=document.querySelector("[data-menu-overlay]"),i=document.querySelectorAll("[data-menu-drawer] a");function n(e){!t||!a||!r||(t.classList.toggle("translate-x-full",!e),t.classList.toggle("pointer-events-none",!e),a.classList.toggle("opacity-0",!e),a.classList.toggle("pointer-events-none",!e),r.setAttribute("aria-expanded",String(e)),t.setAttribute("aria-hidden",String(!e)),t.toggleAttribute("inert",!e),document.body.classList.toggle("overflow-hidden",e),requestAnimationFrame(e?()=>s?.focus():()=>r?.focus()))}r?.addEventListener("click",()=>n(!0));s?.addEventListener("click",()=>n(!1));a?.addEventListener("click",()=>n(!1));i.forEach(e=>e.addEventListener("click",()=>n(!1)));window.addEventListener("keydown",e=>{e.key==="Escape"&&n(!1)});</script>
-      <script type="module">const o=document.querySelector("[data-topbar-inner]"),t=document.querySelector("[data-topbar-logo]");function e(){const s=window.scrollY>10;o&&(o.classList.toggle("py-4",!s),o.classList.toggle("lg:py-0",!s),o.classList.toggle("py-2",s)),t&&(t.classList.toggle("h-[2.3rem]",!s),t.classList.toggle("sm:h-[2.59rem]",!s),t.classList.toggle("h-[1.75rem]",s),t.classList.toggle("sm:h-[1.9rem]",s))}window.addEventListener("scroll",e,{passive:!0});e();</script>
+
+      <script type="module">
+        const r = document.querySelector("[data-menu-trigger]");
+        const s = document.querySelector("[data-menu-close]");
+        const t = document.querySelector("[data-menu-drawer]");
+        const a = document.querySelector("[data-menu-overlay]");
+        const i = document.querySelectorAll("[data-menu-drawer] a");
+
+        function n(e) {
+          if (!t || !a || !r) return;
+
+          t.classList.toggle("translate-x-full", !e);
+          t.classList.toggle("pointer-events-none", !e);
+          a.classList.toggle("opacity-0", !e);
+          a.classList.toggle("pointer-events-none", !e);
+          r.setAttribute("aria-expanded", String(e));
+          t.setAttribute("aria-hidden", String(!e));
+          t.toggleAttribute("inert", !e);
+          document.body.classList.toggle("overflow-hidden", e);
+
+          requestAnimationFrame(
+            e ? () => s?.focus() : () => r?.focus()
+          );
+        }
+
+        r?.addEventListener("click", () => n(!0));
+        s?.addEventListener("click", () => n(!1));
+        a?.addEventListener("click", () => n(!1));
+        i.forEach(e => e.addEventListener("click", () => n(!1)));
+
+        window.addEventListener("keydown", e => {
+          if (e.key === "Escape") n(!1);
+        });
+      </script>
+
+      <script type="module">
+        const o = document.querySelector("[data-topbar-inner]");
+        const t = document.querySelector("[data-topbar-logo]");
+
+        function e() {
+          const s = window.scrollY > 10;
+
+          o && (
+            o.classList.toggle("py-4", !s),
+            o.classList.toggle("lg:py-0", !s),
+            o.classList.toggle("py-2", s)
+          );
+
+          t && (
+            t.classList.toggle("h-[2.3rem]", !s),
+            t.classList.toggle("sm:h-[2.59rem]", !s),
+            t.classList.toggle("h-[1.75rem]", s),
+            t.classList.toggle("sm:h-[1.9rem]", s)
+          );
+        }
+
+        window.addEventListener("scroll", e, { passive: true });
+        e();
+      </script>
     </header>
 
     <!-- HERO -->
     <section class="hero-new">
-        <div class="hero-new-content">
-            <div class="hero-text-area">
-                <p class="hero-eyebrow">Treinamentos e Tutoriais</p>
-                <h1 class="hero-h1" style="color: #ffffff;">Central de Conteúdos <span class="text-brand">SGP</span></h1>
-                <p class="hero-p" style="color: #ffffff;">Extraia ainda mais do Ecossistema SGP. Tutoriais detalhados, dicas rápidas e materiais de apoio para impulsionar seu provedor.</p>
-                <div class="hero-actions">
-                    <button class="btn-primary pill" onclick="document.getElementById('searchInput').focus(); window.scrollBy({top: 300, behavior: 'smooth'});">
-                        Buscar vídeos
-                    </button>
-                    <a href="https://www.youtube.com/@SGPTSMX" target="_blank" class="btn-ghost pill">
-                        Canal no YouTube
-                    </a>
-                </div>
-            </div>
-            <div class="hero-image-area">
-                 <img src="https://tsmxmail.sgp.net.br/r3/bg/bg_1.png" alt="Plataforma SGP">
-                 <div class="hero-tag">Aprenda a usar esse material!</div>
-                 <div class="hero-play-btn" onclick="document.getElementById('searchInput').focus(); window.scrollBy({top: 300, behavior: 'smooth'});">
-                     <i class="fas fa-play"></i>
-                 </div>
-            </div>
+      <div class="hero-new-content">
+        <div class="hero-text-area">
+          <p class="hero-eyebrow">Treinamentos e Tutoriais</p>
+          <h1 class="hero-h1" style="color: #ffffff;">Central de Conteúdos <span class="text-brand">SGP</span></h1>
+          <p class="hero-p" style="color: #ffffff;">Extraia ainda mais do Ecossistema SGP. Tutoriais detalhados, dicas rápidas e materiais de apoio para impulsionar seu provedor.</p>
+
+          <div class="hero-actions">
+            <button class="btn-primary pill" onclick="document.getElementById('searchInput').focus(); window.scrollBy({top: 300, behavior: 'smooth'});">
+              Buscar vídeos
+            </button>
+            <a href="https://www.youtube.com/@SGPTSMX" target="_blank" class="btn-ghost pill">
+              Canal no YouTube
+            </a>
+          </div>
         </div>
+
+        <div class="hero-image-area">
+          <img src="https://tsmxmail.sgp.net.br/r3/bg/bg_1.png" alt="Plataforma SGP">
+          <div class="hero-tag">Aprenda a usar esse material!</div>
+          <div class="hero-play-btn" onclick="document.getElementById('searchInput').focus(); window.scrollBy({top: 300, behavior: 'smooth'});">
+            <i class="fas fa-play"></i>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- SEARCH -->
     <div class="search-section">
-        <div class="search-wrapper">
-            <div class="search-input-wrap">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por título ou descrição..." autocomplete="off">
-            </div>
-            <div class="filter-group">
-                <select id="filterCategory" class="filter-select">
-                    <option value="all">Todas categorias</option>
-                </select>
-                <select id="filterSubcategory" class="filter-select" disabled>
-                    <option value="all">Primeiro selecione uma categoria</option>
-                </select>
-                <button id="btnClearFilters" class="btn-clear-filters hidden">
-                    <i class="fas fa-times"></i> Limpar filtros
-                </button>
-            </div>
+      <div class="search-wrapper">
+        <div class="search-input-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Buscar por título ou descrição..." autocomplete="off">
         </div>
+
+        <div class="filter-group">
+          <select id="filterCategory" class="filter-select">
+            <option value="all">Todas categorias</option>
+          </select>
+
+          <select id="filterSubcategory" class="filter-select" disabled>
+            <option value="all">Primeiro selecione uma categoria</option>
+          </select>
+
+          <button id="btnClearFilters" class="btn-clear-filters hidden">
+            <i class="fas fa-times"></i> Limpar filtros
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- CATEGORIAS (ROBLOX STYLE) -->
     <div class="categories-container" id="categoriesContainer">
-        <div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando módulos...</div>
+      <div class="loading">
+        <i class="fas fa-spinner fa-pulse"></i> Carregando módulos...
+      </div>
     </div>
 
     <!-- FOOTER -->
     <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
       <div class="max-w-[1400px] mx-auto px-8 py-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
         <a href="/" aria-label="TSMX">
-            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
+          <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
         </a>
+
         <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[0.85rem] text-white/50" style="font-family: var(--font-body);">
           <p>Todos os direitos reservados.</p>
           <p>TSMX. Ecossistema de tecnologia para provedores.</p>
@@ -189,277 +460,399 @@
 
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
+
     <script>
-    (function() {
+      (function() {
         const { escapeHtml, buildThumbnailHtml, apiGet, fetchCategories } = LoomLib;
 
         const MAX_VIDEOS_PER_ROW = 15;
-        let categoriesMap = {}; // { Categoria: [subcats] }
-        
+        let categoriesMap = {};
+
         const categoryIcons = {
-            'Clientes': 'fa-users',
-            'Financeiro': 'fa-coins',
-            'Fiscal': 'fa-file-invoice',
-            'Estoque': 'fa-boxes',
-            'Relatórios': 'fa-chart-bar',
-            'Administração': 'fa-building',
-            'Sistema': 'fa-cogs'
+          'Clientes': 'fa-users',
+          'Financeiro': 'fa-coins',
+          'Fiscal': 'fa-file-invoice',
+          'Estoque': 'fa-boxes',
+          'Relatórios': 'fa-chart-bar',
+          'Administração': 'fa-building',
+          'Sistema': 'fa-cogs'
         };
 
         const categoryOrder = [
-            'Clientes', 'Financeiro', 'Fiscal', 'Estoque',
-            'Relatórios', 'Administração', 'Sistema'
+          'Clientes',
+          'Financeiro',
+          'Fiscal',
+          'Estoque',
+          'Relatórios',
+          'Administração',
+          'Sistema'
         ];
 
-        // ── Carrega categorias dinamicamente da API ──────────────
         async function initCategories() {
-            try {
-                const data = await fetchCategories();
-                const catSelect = document.getElementById('filterCategory');
-                catSelect.innerHTML = '<option value="all">Todas categorias</option>';
+          try {
+            const data = await fetchCategories();
+            const catSelect = document.getElementById('filterCategory');
 
-                for (const item of data) {
-                    categoriesMap[item.category] = item.subcategories;
-                    const opt = document.createElement('option');
-                    opt.value = item.category;
-                    opt.textContent = item.category;
-                    catSelect.appendChild(opt);
-                }
-            } catch (e) {
-                console.warn('Não foi possível carregar categorias da API:', e);
+            catSelect.innerHTML = '<option value="all">Todas categorias</option>';
+
+            for (const item of data) {
+              categoriesMap[item.category] = item.subcategories;
+
+              const opt = document.createElement('option');
+              opt.value = item.category;
+              opt.textContent = item.category;
+              catSelect.appendChild(opt);
             }
+          } catch (e) {
+            console.warn('Não foi possível carregar categorias da API:', e);
+          }
         }
 
-        // ── Subcategorias ────────────────────────────────────────
         function updateSubcategoryFilter(category) {
-            const subSelect = document.getElementById('filterSubcategory');
-            if (!category || category === 'all') {
-                subSelect.disabled = true;
-                subSelect.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
-                return;
-            }
-            const subs = categoriesMap[category] || [];
-            if (subs.length > 0) {
-                subSelect.disabled = false;
-                subSelect.innerHTML = '<option value="all">Todas subcategorias</option>';
-                subs.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s;
-                    opt.textContent = s;
-                    subSelect.appendChild(opt);
-                });
-            } else {
-                subSelect.disabled = true;
-                subSelect.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
-            }
+          const subSelect = document.getElementById('filterSubcategory');
+
+          if (!category || category === 'all') {
+            subSelect.disabled = true;
+            subSelect.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
+            return;
+          }
+
+          const subs = categoriesMap[category] || [];
+
+          if (subs.length > 0) {
+            subSelect.disabled = false;
+            subSelect.innerHTML = '<option value="all">Todas subcategorias</option>';
+
+            subs.forEach(s => {
+              const opt = document.createElement('option');
+              opt.value = s;
+              opt.textContent = s;
+              subSelect.appendChild(opt);
+            });
+          } else {
+            subSelect.disabled = true;
+            subSelect.innerHTML = '<option value="all">Nenhuma subcategoria disponível</option>';
+          }
         }
 
         function updateClearButton() {
-            const btn     = document.getElementById('btnClearFilters');
-            const search  = document.getElementById('searchInput').value;
-            const cat     = document.getElementById('filterCategory').value;
-            const sub     = document.getElementById('filterSubcategory').value;
-            const hasFilter = search || cat !== 'all' || sub !== 'all';
-            btn.classList.toggle('hidden', !hasFilter);
+          const btn = document.getElementById('btnClearFilters');
+          const search = document.getElementById('searchInput').value;
+          const cat = document.getElementById('filterCategory').value;
+          const sub = document.getElementById('filterSubcategory').value;
+
+          const hasFilter = search || cat !== 'all' || sub !== 'all';
+          btn.classList.toggle('hidden', !hasFilter);
         }
 
         function clearFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('filterCategory').value = 'all';
-            updateSubcategoryFilter('all');
-            updateClearButton();
-            loadVideos();
+          document.getElementById('searchInput').value = '';
+          document.getElementById('filterCategory').value = 'all';
+          document.getElementById('filterSubcategory').value = 'all';
+          updateSubcategoryFilter('all');
+          updateClearButton();
+          loadVideos();
         }
 
         function groupByCategory(videos) {
-            var groups = {};
-            videos.forEach(function(v) {
-                var cat = v.category || 'Sem categoria';
-                if (!groups[cat]) groups[cat] = [];
-                groups[cat].push(v);
-            });
-            return groups;
-        }
+          const groups = {};
 
-        // ── Renderização das Linhas (Roblox) ─────────────────────
-        function renderRows(groups, searchTerm, categoryFilter, subFilter) {
-            const container = document.getElementById('categoriesContainer');
+          videos.forEach(function(v) {
+            const cat = v.category || 'Sem categoria';
 
-            // Aplica filtros
-            let filteredGroups = {};
-            Object.keys(groups).forEach(function(cat) {
-                if (categoryFilter !== 'all' && cat !== categoryFilter) return;
-
-                let videos = groups[cat];
-                if (subFilter !== 'all') {
-                    videos = videos.filter(v => v.subcategory === subFilter);
-                }
-                if (searchTerm && searchTerm.trim() !== '') {
-                    const term = searchTerm.toLowerCase().trim();
-                    videos = videos.filter(v => 
-                        (v.title && v.title.toLowerCase().includes(term)) ||
-                        (v.description && v.description.toLowerCase().includes(term)) ||
-                        (v.subcategory && v.subcategory.toLowerCase().includes(term))
-                    );
-                }
-                if (videos.length > 0) {
-                    filteredGroups[cat] = videos;
-                }
-            });
-
-            // Ordena as categorias
-            const sortedCategories = Object.keys(filteredGroups).sort(function(a, b) {
-                const indexA = categoryOrder.indexOf(a);
-                const indexB = categoryOrder.indexOf(b);
-                if (indexA === -1) return 1;
-                if (indexB === -1) return -1;
-                return indexA - indexB;
-            });
-
-            if (sortedCategories.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-video-slash text-4xl mb-4 text-brand/50"></i>
-                        <p class="text-lg">Nenhum vídeo encontrado com os filtros aplicados.</p>
-                        <p style="margin-top:0.5rem;font-size:0.85rem;">
-                            <a href="#" id="emptyStateClear">Limpar filtros</a>
-                        </p>
-                    </div>
-                `;
-                document.getElementById('emptyStateClear')?.addEventListener('click', (e) => {
-                    e.preventDefault(); clearFilters();
-                });
-                return;
+            if (!groups[cat]) {
+              groups[cat] = [];
             }
 
-            let html = '';
-            sortedCategories.forEach(function(cat) {
-                const videos = filteredGroups[cat];
-                if (videos.length === 0) return;
-                const icon = categoryIcons[cat] || 'fa-tag';
+            groups[cat].push(v);
+          });
 
-                html += `<div class="category-row">`;
-                html += `<div class="category-header">
-                            <div class="title-group">
-                                <i class="fas ${icon}"></i>
-                                <h3>${escapeHtml(cat)} <span>(${videos.length})</span></h3>
-                            </div>
-                            <button class="more-btn" onclick="window.location.href='category.html?tag=${encodeURIComponent(cat)}'" title="Ver todos os vídeos desta categoria">
-                                <span>Ver mais</span> <i class="fas fa-chevron-right ml-1 text-sm"></i>
-                            </button>
-                        </div>`;
-                html += `<div class="video-carousel-wrapper">`;
-                html += `  <button class="carousel-arrow left-arrow" aria-label="Rolar para a esquerda" onclick="window.scrollCarousel(this, -1)"><i class="fas fa-chevron-left"></i></button>`;
-                html += `  <div class="video-row">`;
+          return groups;
+        }
 
-                const displayVideos = videos.slice(0, MAX_VIDEOS_PER_ROW);
-                displayVideos.forEach(function(video) {
-                    const thumbHtml = buildThumbnailHtml(video.link, video.title);
-                    html += `
-                        <div class="video-card group" onclick="window.location.href='player.html?id=${encodeURIComponent(video.id)}'">
-                            ${thumbHtml}
-                            <div class="card-content">
-                                <div class="card-header">
-                                    <span class="video-title" title="${escapeHtml(video.title)}">${escapeHtml(video.title)}</span>
-                                </div>
-                                <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory || cat)}</div>
-                                <div class="description" title="${escapeHtml(video.description)}">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
-                            </div>
-                        </div>
-                    `;
-                });
+        function renderRows(groups, searchTerm, categoryFilter, subFilter) {
+          const container = document.getElementById('categoriesContainer');
 
-                html += `  </div>`;
-                html += `  <button class="carousel-arrow right-arrow" aria-label="Rolar para a direita" onclick="window.scrollCarousel(this, 1)"><i class="fas fa-chevron-right"></i></button>`;
-                html += `</div>`;
-                html += `</div>`; // closes .category-row
+          let filteredGroups = {};
+
+          Object.keys(groups).forEach(function(cat) {
+            if (categoryFilter !== 'all' && cat !== categoryFilter) return;
+
+            let videos = groups[cat];
+
+            if (subFilter !== 'all') {
+              videos = videos.filter(v => v.subcategory === subFilter);
+            }
+
+            if (searchTerm && searchTerm.trim() !== '') {
+              const term = searchTerm.toLowerCase().trim();
+
+              videos = videos.filter(v =>
+                (v.title && v.title.toLowerCase().includes(term)) ||
+                (v.description && v.description.toLowerCase().includes(term)) ||
+                (v.subcategory && v.subcategory.toLowerCase().includes(term))
+              );
+            }
+
+            if (videos.length > 0) {
+              filteredGroups[cat] = videos;
+            }
+          });
+
+          const sortedCategories = Object.keys(filteredGroups).sort(function(a, b) {
+            const indexA = categoryOrder.indexOf(a);
+            const indexB = categoryOrder.indexOf(b);
+
+            if (indexA === -1) return 1;
+            if (indexB === -1) return -1;
+
+            return indexA - indexB;
+          });
+
+          if (sortedCategories.length === 0) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-video-slash text-4xl mb-4 text-brand/50"></i>
+                <p class="text-lg">Nenhum vídeo encontrado com os filtros aplicados.</p>
+                <p style="margin-top:0.5rem;font-size:0.85rem;">
+                  <a href="#" id="emptyStateClear">Limpar filtros</a>
+                </p>
+              </div>
+            `;
+
+            document.getElementById('emptyStateClear')?.addEventListener('click', (e) => {
+              e.preventDefault();
+              clearFilters();
             });
 
-            container.innerHTML = html;
-            
-            // Atualiza visibilidade das setas após renderizar
-            setTimeout(window.updateCarouselArrows, 100);
+            return;
+          }
+
+          let html = '';
+
+          sortedCategories.forEach(function(cat) {
+            const videos = filteredGroups[cat];
+            if (videos.length === 0) return;
+
+            const icon = categoryIcons[cat] || 'fa-tag';
+
+            html += `<div class="category-row">`;
+
+            html += `
+              <div class="category-header">
+                <div class="title-group">
+                  <i class="fas ${icon}"></i>
+                  <h3>${escapeHtml(cat)} <span>(${videos.length})</span></h3>
+                </div>
+
+                <button class="more-btn" onclick="window.location.href='category.html?tag=${encodeURIComponent(cat)}'" title="Ver todos os vídeos desta categoria">
+                  <span>Ver mais</span>
+                  <i class="fas fa-chevron-right ml-1 text-sm"></i>
+                </button>
+              </div>
+            `;
+
+            html += `<div class="video-carousel-wrapper">`;
+
+            html += `
+              <button
+                class="carousel-arrow left-arrow"
+                aria-label="Rolar para a esquerda"
+                onclick="window.scrollCarousel(this, -1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            `;
+
+            html += `<div class="video-row">`;
+
+            const displayVideos = videos.slice(0, MAX_VIDEOS_PER_ROW);
+
+            displayVideos.forEach(function(video) {
+              const thumbHtml = buildThumbnailHtml(video.link, video.title);
+
+              html += `
+                <div class="video-card group" onclick="window.location.href='player.html?id=${encodeURIComponent(video.id)}'">
+                  ${thumbHtml}
+
+                  <div class="card-content">
+                    <div class="card-header">
+                      <span class="video-title" title="${escapeHtml(video.title)}">${escapeHtml(video.title)}</span>
+                    </div>
+
+                    <div class="subcat">
+                      <i class="fas fa-tag"></i>
+                      ${escapeHtml(video.subcategory || cat)}
+                    </div>
+
+                    <div class="description" title="${escapeHtml(video.description)}">
+                      ${escapeHtml(video.description || 'Sem descrição adicional')}
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+
+            html += `</div>`;
+
+            html += `
+              <button
+                class="carousel-arrow right-arrow"
+                aria-label="Rolar para a direita"
+                onclick="window.scrollCarousel(this, 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            `;
+
+            html += `</div>`;
+            html += `</div>`;
+          });
+
+          container.innerHTML = html;
+
+          bindCarouselScrollListeners();
+          setTimeout(window.updateCarouselArrows, 100);
+        }
+
+        function getCarouselMetrics(row) {
+          const firstCard = row?.querySelector('.video-card');
+
+          if (!row || !firstCard) {
+            return {
+              cardWidth: 0,
+              gap: 0,
+              scrollAmount: 0
+            };
+          }
+
+          const cardWidth = firstCard.getBoundingClientRect().width;
+          const computedStyle = window.getComputedStyle(row);
+          const gap = parseFloat(computedStyle.columnGap || computedStyle.gap || 0);
+          const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+          /*
+           * No mobile o próprio .video-row já é o viewport.
+           * Um avanço = largura do card + gap, fazendo cada gesto/
+           * clique parar exatamente no próximo card e permitindo
+           * que o último seja exibido inteiro.
+           */
+          const scrollAmount = cardWidth + gap;
+
+          return {
+            cardWidth,
+            gap,
+            scrollAmount: isMobile ? scrollAmount : scrollAmount
+          };
         }
 
         window.scrollCarousel = function(btn, direction) {
-            const wrapper = btn.closest('.video-carousel-wrapper');
-            const row = wrapper.querySelector('.video-row');
-            // Scroll amount = roughly one card width + gap (340px + 24px)
-            const scrollAmount = 360 * direction;
-            row.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+          const wrapper = btn?.closest('.video-carousel-wrapper');
+          const row = wrapper?.querySelector('.video-row');
+
+          if (!row) return;
+
+          const { scrollAmount } = getCarouselMetrics(row);
+
+          row.scrollBy({
+            left: scrollAmount * direction,
+            behavior: 'smooth'
+          });
         };
 
         window.updateCarouselArrows = function() {
-            const wrappers = document.querySelectorAll('.video-carousel-wrapper');
-            wrappers.forEach(wrapper => {
-                const row = wrapper.querySelector('.video-row');
-                const leftArrow = wrapper.querySelector('.left-arrow');
-                const rightArrow = wrapper.querySelector('.right-arrow');
-                if (row && leftArrow && rightArrow) {
-                    // Se o conteúdo for maior que o container, mostra setas. Senão, oculta.
-                    if (row.scrollWidth > row.clientWidth) {
-                        leftArrow.style.display = '';
-                        rightArrow.style.display = '';
-                    } else {
-                        leftArrow.style.display = 'none';
-                        rightArrow.style.display = 'none';
-                    }
-                }
-            });
-        };
-        
-        window.addEventListener('resize', () => {
-            if (window.updateCarouselArrows) window.updateCarouselArrows();
-        });
+          const wrappers = document.querySelectorAll('.video-carousel-wrapper');
+          const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-        // ── Busca de Vídeos (API) ────────────────────────────────
-        async function loadVideos() {
-            const container = document.getElementById('categoriesContainer');
-            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando módulos...</div>';
+          wrappers.forEach(wrapper => {
+            const row = wrapper.querySelector('.video-row');
+            const leftArrow = wrapper.querySelector('.left-arrow');
+            const rightArrow = wrapper.querySelector('.right-arrow');
 
-            const searchTerm = document.getElementById('searchInput').value;
-            const categoryFilter = document.getElementById('filterCategory').value;
-            const subFilter = document.getElementById('filterSubcategory').value;
+            if (!row || !leftArrow || !rightArrow) return;
 
-            try {
-                // Trazemos tudo para agrupar em faixas, por isso limit alto
-                const data = await apiGet('/videos?page=1&limit=500');
-                const videos = data.data || data;
-
-                const groups = groupByCategory(videos);
-                renderRows(groups, searchTerm, categoryFilter, subFilter);
-                updateClearButton();
-            } catch (err) {
-                console.error('Erro ao carregar vídeos:', err);
-                container.innerHTML = '<div class="error-msg">Ocorreu um erro ao carregar os vídeos da API. Tente novamente.</div>';
+            if (isMobile) {
+              // No mobile, o controle principal é o gesto de arrastar.
+              leftArrow.style.display = 'none';
+              rightArrow.style.display = 'none';
+              return;
             }
+
+            const hasOverflow = row.scrollWidth > row.clientWidth + 2;
+
+            leftArrow.style.display = hasOverflow ? '' : 'none';
+            rightArrow.style.display = hasOverflow ? '' : 'none';
+          });
+        };
+
+        function bindCarouselScrollListeners() {
+          document.querySelectorAll('.video-row').forEach(row => {
+            row.addEventListener('scroll', () => {
+              requestAnimationFrame(() => window.updateCarouselArrows?.());
+            }, { passive: true });
+          });
         }
 
-        // ── Event listeners ──────────────────────────────────────
+        window.addEventListener('resize', () => {
+          if (window.updateCarouselArrows) {
+            window.updateCarouselArrows();
+          }
+        }, { passive: true });
+
+        window.addEventListener('orientationchange', () => {
+          setTimeout(() => window.updateCarouselArrows?.(), 150);
+        }, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden && window.updateCarouselArrows) {
+            window.updateCarouselArrows();
+          }
+        });
+
+        async function loadVideos() {
+          const container = document.getElementById('categoriesContainer');
+
+          container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando módulos...</div>';
+
+          const searchTerm = document.getElementById('searchInput').value;
+          const categoryFilter = document.getElementById('filterCategory').value;
+          const subFilter = document.getElementById('filterSubcategory').value;
+
+          try {
+            const data = await apiGet('/videos?page=1&limit=500');
+            const videos = data.data || data;
+            const groups = groupByCategory(videos);
+
+            renderRows(groups, searchTerm, categoryFilter, subFilter);
+            updateClearButton();
+          } catch (err) {
+            console.error('Erro ao carregar vídeos:', err);
+
+            container.innerHTML = '<div class="error-msg">Ocorreu um erro ao carregar os vídeos da API. Tente novamente.</div>';
+          }
+        }
+
         document.getElementById('filterCategory').addEventListener('change', function() {
-            updateSubcategoryFilter(this.value);
-            loadVideos();
+          updateSubcategoryFilter(this.value);
+          loadVideos();
         });
 
         document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos());
 
         let searchTimeout;
+
         document.getElementById('searchInput').addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => loadVideos(), 500);
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => loadVideos(), 500);
         });
 
         document.getElementById('btnClearFilters').addEventListener('click', clearFilters);
 
-        // ── Inicialização ────────────────────────────────────────
         async function init() {
-            await initCategories();
-            loadVideos();
+          await initCategories();
+          loadVideos();
         }
 
         init();
-
-    })();
+      })();
     </script>
 </body>
 </html>

@@ -266,98 +266,12 @@
               <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="transition-colors duration-200 hover:text-white" style="font-family: var(--font-body);">Wiki</a>
             </nav>
 
-            <div class="flex items-center gap-3 lg:hidden">
-              <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5" style="font-family: var(--font-body);">
-                Fale com o time
-              </a>
-
-              <button type="button" aria-label="Abrir menu" aria-expanded="false" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer" data-menu-trigger="">
-                <span class="flex flex-col gap-1.5">
-                  <span class="h-0.5 w-5 rounded-full bg-current"></span>
-                  <span class="h-0.5 w-5 rounded-full bg-current"></span>
-                  <span class="h-0.5 w-5 rounded-full bg-current"></span>
-                </span>
-              </button>
-            </div>
-
             <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex" style="font-family: var(--font-body);">
               Fale com o time
             </a>
           </div>
         </div>
       </div>
-
-      <div class="pointer-events-none fixed inset-0 z-40 bg-black/50 opacity-0 transition-opacity duration-300" data-menu-overlay=""></div>
-
-      <aside class="pointer-events-none fixed inset-y-0 right-0 z-50 flex w-full max-w-[24rem] translate-x-full flex-col overflow-y-auto bg-[#0d0d0d] text-white transition-transform duration-300" aria-hidden="true" inert="" data-menu-drawer="">
-        <div class="flex items-center justify-between border-b border-white/8 px-5 py-5">
-          <a href="/" class="flex items-center" aria-label="TSMX">
-            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-[2.3rem] w-auto">
-          </a>
-
-          <button type="button" aria-label="Fechar menu" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer" data-menu-close="">
-            <span class="relative block h-4 w-4">
-              <span class="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-current"></span>
-              <span class="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-current"></span>
-            </span>
-          </button>
-        </div>
-
-        <div class="border-b border-white/8 px-5 py-5">
-          <p class="eyebrow mb-4 text-signal" style="font-family: var(--font-body); letter-spacing: 0.24em; text-transform: uppercase; font-size: 0.74rem; font-weight: 600;">Suporte</p>
-
-          <div class="grid gap-2">
-            <a href="#contato" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/74 transition-colors duration-200 hover:bg-white/10 hover:text-white">Suporte</a>
-            <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/74 transition-colors duration-200 hover:bg-white/10 hover:text-white">Wiki</a>
-            <a href="#status" class="inline-flex items-center gap-2 rounded-[1rem] bg-white/6 px-4 py-3 text-sm text-white/88 transition-colors duration-200 hover:bg-white/10 hover:text-white">
-              <span class="relative flex h-2.5 w-2.5 items-center justify-center">
-                <span class="absolute inline-flex h-2.5 w-2.5 rounded-full animate-ping bg-emerald-400/60" style="background-color: #00d29499;"></span>
-                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" style="background-color: #34d399;"></span>
-              </span>
-              <span>Status</span>
-            </a>
-            <a href="https://tsmx.sgp.net.br/central/" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white px-4 py-3 text-sm font-semibold text-black transition-colors duration-200 hover:bg-white/90">Área do Cliente</a>
-          </div>
-        </div>
-
-        <nav aria-label="Navegação principal" class="flex flex-col gap-3 px-5 py-5">
-          <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="rounded-[1rem] bg-white/6 px-4 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10">Wiki</a>
-        </nav>
-      </aside>
-
-      <script type="module">
-        const r = document.querySelector("[data-menu-trigger]");
-        const s = document.querySelector("[data-menu-close]");
-        const t = document.querySelector("[data-menu-drawer]");
-        const a = document.querySelector("[data-menu-overlay]");
-        const i = document.querySelectorAll("[data-menu-drawer] a");
-
-        function n(e) {
-          if (!t || !a || !r) return;
-
-          t.classList.toggle("translate-x-full", !e);
-          t.classList.toggle("pointer-events-none", !e);
-          a.classList.toggle("opacity-0", !e);
-          a.classList.toggle("pointer-events-none", !e);
-          r.setAttribute("aria-expanded", String(e));
-          t.setAttribute("aria-hidden", String(!e));
-          t.toggleAttribute("inert", !e);
-          document.body.classList.toggle("overflow-hidden", e);
-
-          requestAnimationFrame(
-            e ? () => s?.focus() : () => r?.focus()
-          );
-        }
-
-        r?.addEventListener("click", () => n(!0));
-        s?.addEventListener("click", () => n(!1));
-        a?.addEventListener("click", () => n(!1));
-        i.forEach(e => e.addEventListener("click", () => n(!1)));
-
-        window.addEventListener("keydown", e => {
-          if (e.key === "Escape") n(!1);
-        });
-      </script>
 
       <script type="module">
         const o = document.querySelector("[data-topbar-inner]");

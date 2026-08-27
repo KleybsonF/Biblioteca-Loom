@@ -1021,6 +1021,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+    .hero-actions {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .hero-actions .pill {
+        flex: 0 0 auto;
+    }
     .hero-new { padding: 3rem 1.2rem 4rem; }
     .hero-h1 { font-size: 2rem; margin-bottom: 1rem; }
     .hero-p { font-size: 0.95rem; }
@@ -1302,4 +1313,29 @@ h1, h2, h3, h4, h5, h6 {
 .suggestion-item:hover .thumb-deco-icon {
     transform: scale(1.05);
     opacity: 0.7;
+}
+
+/* Mobile header: keep direct actions visible; no hamburger menu. */
+@media (max-width: 1023px) {
+    header [data-menu-trigger] {
+        display: none !important;
+    }
+    header [data-menu-overlay],
+    header [data-menu-drawer] {
+        display: none !important;
+    }
+    header [data-topbar-inner] {
+        justify-content: space-between;
+    }
+    header [data-topbar-inner] > div:last-child {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    header [data-topbar-inner] nav {
+        display: flex !important;
+    }
+    header [data-topbar-inner] a[href*="wa.me"] {
+        display: inline-flex !important;
+    }
 }

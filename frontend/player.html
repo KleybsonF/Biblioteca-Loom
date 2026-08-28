@@ -72,7 +72,7 @@
             margin: 0 auto;
             padding: 2rem;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 400px;
+            grid-template-columns: minmax(0, 1fr) 360px;
             gap: 2.5rem;
             align-items: start;
             box-sizing: border-box;
@@ -91,10 +91,9 @@
         }
 
         .player-sidebar {
-            height: 820px;
+            height: auto;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
         .player-wrapper {
@@ -295,141 +294,65 @@
             scrollbar-width: thin;
         }
 
-        .suggestion-item {
-            display: flex;
-            gap: 1rem;
-            min-width: 0;
-            background: var(--bg-surface);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0.6rem;
-            border: 1px solid var(--border-color);
-            flex: 0 0 auto;
-        }
-
-        .suggestion-item:hover {
-            background: var(--bg-surface-hover);
-            transform: translateX(4px);
-            border-color: var(--color-brand);
-            box-shadow: 0 4px 15px rgba(232, 100, 27, 0.15);
-        }
-
-        .suggestion-item.active {
-            background: var(--color-brand-muted);
+        .video-card.active {
+            background: var(--color-brand-muted, rgba(232, 100, 27, 0.1));
             border-color: var(--color-brand);
             cursor: default;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
-        .suggestion-item.active:hover {
-            transform: none;
-            box-shadow: none;
+        .suggestions-list .video-card {
+            height: max-content !important;
+            min-height: 0 !important;
         }
+
+        .suggestions-list .video-card .card-content {
+            padding-top: 0.6rem;
+            padding-bottom: 0.8rem;
+            flex: none !important;
+            height: max-content !important;
+        }
+
+        .suggestions-list .video-card .video-title {
+            flex: none !important;
+            height: max-content !important;
+        }
+
+        .suggestions-list .video-card .subcat {
+            margin-bottom: 0.4rem;
+        }
+
+        
+
+        
+
+        
+
+        
 
         /* Miniatura limpa e estável */
-        .suggestion-item .video-thumbnail {
-            width: 140px;
-            height: 78px;
-            min-width: 140px;
-            min-height: 78px;
-            flex: 0 0 140px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+        
 
-        .suggestion-item .dynamic-thumb {
-            padding: 0.65rem;
-            padding-top: 0.65rem;
-            justify-content: center;
-            background:
-                radial-gradient(circle at 80% 20%, rgba(232, 100, 27, 0.12), transparent 45%),
-                linear-gradient(135deg, #181818 0%, #050505 100%);
-        }
+        
 
-        .suggestion-item .thumb-logo-tsmx,
-        .suggestion-item .thumb-deco-icon {
-            display: none !important;
-        }
+        
 
-        .suggestion-item .thumb-title-container {
-            padding: 0;
-            width: 100%;
-            z-index: 2;
-        }
+        
 
-        .suggestion-item .thumb-title {
-            font-size: 0.72rem;
-            line-height: 1.25;
-            letter-spacing: 0.01em;
-            -webkit-line-clamp: 2;
-        }
+        
 
-        .suggestion-item .thumb-title::before {
-            width: 16px;
-            height: 2px;
-            margin-bottom: 0.3rem;
-        }
+        
 
-        .suggestion-item .play-overlay {
-            opacity: 1;
-            background: transparent;
-            backdrop-filter: none;
-            z-index: 3;
-            pointer-events: none;
-        }
+        
 
-        .suggestion-item .play-overlay i {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            color: #fff;
-            background: var(--color-brand);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
-            filter: none;
-            transform: none;
-            padding-left: 2px;
-        }
+        
 
-        .suggestion-item .suggestion-info {
-            flex: 1 1 auto;
-            min-width: 0;
-            padding: 0.2rem 0.2rem 0.2rem 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        
 
-        .suggestion-item .suggestion-info .title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-main);
-            font-family: var(--font-heading);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            overflow-wrap: anywhere;
-            line-height: 1.3;
-            transition: color 0.3s;
-        }
+        
 
-        .suggestion-item:hover .suggestion-info .title {
-            color: var(--color-brand);
-        }
-
-        .suggestion-item .suggestion-info .meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.4rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        
 
         .previous-tag {
             font-size: 0.65rem;
@@ -585,59 +508,23 @@
                 padding: 0;
             }
 
-            .suggestion-item {
-                width: 100%;
-                min-height: 82px;
-                padding: 0.55rem;
-                gap: 0.7rem;
-                border-radius: 10px;
-                transform: none !important;
-            }
+            
 
-            .suggestion-item .video-thumbnail {
-                width: 112px;
-                height: 63px;
-                min-width: 112px;
-                min-height: 63px;
-                flex-basis: 112px;
-                align-self: center;
-                border-radius: 7px;
-            }
+            
 
-            .suggestion-item .dynamic-thumb {
-                padding: 0.5rem;
-            }
+            
 
-            .suggestion-item .thumb-title {
-                font-size: 0.68rem;
-                line-height: 1.18;
-                -webkit-line-clamp: 2;
-            }
+            
 
-            .suggestion-item .thumb-title::before {
-                width: 13px;
-                margin-bottom: 0.25rem;
-            }
+            
 
-            .suggestion-item .play-overlay i {
-                width: 28px;
-                height: 28px;
-                font-size: 0.68rem;
-            }
+            
 
-            .suggestion-item .suggestion-info {
-                padding: 0.1rem 0.1rem 0.1rem 0;
-            }
+            
 
-            .suggestion-item .suggestion-info .title {
-                font-size: 0.88rem;
-                line-height: 1.25;
-            }
+            
 
-            .suggestion-item .suggestion-info .meta {
-                font-size: 0.72rem;
-                margin-top: 0.25rem;
-            }
+            
 
             .previous-tag {
                 font-size: 0.58rem;
@@ -658,25 +545,13 @@
                 font-size: 1.18rem;
             }
 
-            .suggestion-item {
-                min-height: 78px;
-            }
+            
 
-            .suggestion-item .video-thumbnail {
-                width: 100px;
-                height: 56px;
-                min-width: 100px;
-                min-height: 56px;
-                flex-basis: 100px;
-            }
+            
 
-            .suggestion-item .suggestion-info .title {
-                font-size: 0.82rem;
-            }
+            
 
-            .suggestion-item .suggestion-info .meta {
-                font-size: 0.68rem;
-            }
+            
         }
 
         /* =========================================================
@@ -713,69 +588,47 @@
 <body>
     <!-- HEADER -->
     <header class="sticky top-0 z-20" data-topbar="">
-        <div class="border-b border-white/10 bg-black text-white transition-all duration-300">
-            <div class="max-w-[1400px] w-full mx-auto px-8 flex items-center justify-between gap-4 transition-all duration-300 min-h-20 lg:min-h-24 py-4 lg:py-0"
-                 data-topbar-inner="">
-                <a href="/" class="flex items-center" aria-label="TSMX">
-                    <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png"
-                         alt="TSMX Tecnologia Viva"
-                         data-topbar-logo="true"
-                         loading="lazy"
-                         decoding="async"
-                         fetchpriority="auto"
-                         width="240"
-                         height="52"
-                         class="w-auto transition-all duration-300 h-[2.3rem] sm:h-[2.59rem]">
-                </a>
+      <div class="border-b border-white/10 bg-black text-white transition-all duration-300">
+        <div class="max-w-[1400px] w-full mx-auto px-8 flex items-center justify-between gap-4 transition-all duration-300 min-h-20 lg:min-h-24 py-4 lg:py-0" data-topbar-inner="">
+          <a href="/" class="flex items-center" aria-label="TSMX">
+            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" data-topbar-logo="true" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="w-auto transition-all duration-300 h-[2.3rem] sm:h-[2.59rem]">
+          </a>
+          <div class="flex items-center gap-6">
+            <nav aria-label="Navegação principal" class="hidden flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70 lg:flex md:text-[0.95rem]">
+              <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="transition-colors duration-200 hover:text-white" style="font-family: var(--font-body);">Wiki</a>
+            </nav>
 
-                <div class="flex items-center gap-6">
-                    <nav aria-label="Navegação principal"
-                         class="hidden flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70 lg:flex md:text-[0.95rem]">
-                        <a href="https://wiki.sgp.net.br"
-                           target="_blank"
-                           rel="noreferrer"
-                           class="transition-colors duration-200 hover:text-white"
-                           style="font-family: var(--font-body);">
-                            Wiki
-                        </a>
-                    </nav>
-
-                        <a href="https://wa.me/558431137050"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex"
-                       style="font-family: var(--font-body);">
-                        Fale com o time
-                    </a>
-                </div>
-            </div>
+            <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex" style="font-family: var(--font-body);">
+              Fale com o time
+            </a>
+          </div>
         </div>
+      </div>
 
+      <script type="module">
+        const o = document.querySelector("[data-topbar-inner]");
+        const t = document.querySelector("[data-topbar-logo]");
 
-        <script>
-            const topbarInner = document.querySelector("[data-topbar-inner]");
-            const topbarLogo = document.querySelector("[data-topbar-logo]");
+        function e() {
+          const s = window.scrollY > 10;
 
-            function updateTopbar() {
-                const scrolled = window.scrollY > 10;
+          o && (
+            o.classList.toggle("py-4", !s),
+            o.classList.toggle("lg:py-0", !s),
+            o.classList.toggle("py-2", s)
+          );
 
-                if (topbarInner) {
-                    topbarInner.classList.toggle("py-4", !scrolled);
-                    topbarInner.classList.toggle("lg:py-0", !scrolled);
-                    topbarInner.classList.toggle("py-2", scrolled);
-                }
+          t && (
+            t.classList.toggle("h-[2.3rem]", !s),
+            t.classList.toggle("sm:h-[2.59rem]", !s),
+            t.classList.toggle("h-[1.75rem]", s),
+            t.classList.toggle("sm:h-[1.9rem]", s)
+          );
+        }
 
-                if (topbarLogo) {
-                    topbarLogo.classList.toggle("h-[2.3rem]", !scrolled);
-                    topbarLogo.classList.toggle("sm:h-[2.59rem]", !scrolled);
-                    topbarLogo.classList.toggle("h-[1.75rem]", scrolled);
-                    topbarLogo.classList.toggle("sm:h-[1.9rem]", scrolled);
-                }
-            }
-
-            window.addEventListener("scroll", updateTopbar, { passive: true });
-            updateTopbar();
-        </script>
+        window.addEventListener("scroll", e, { passive: true });
+        e();
+      </script>
     </header>
 
     <!-- CONTEÚDO -->
@@ -935,48 +788,55 @@
                 }
 
                 list.innerHTML = '';
+                
+                let limit = 5;
+                const renderItems = (items) => {
+                    for (const video of items) {
+                        const isActive = video.id === currentId;
+                        const isPrevious = previousId && video.id === previousId;
 
-                for (const video of videos) {
-                    const isActive = video.id === currentId;
-                    const isPrevious = previousId && video.id === previousId;
+                        const item = document.createElement('div');
 
-                    const item = document.createElement('div');
+                        item.className = 'video-card group' + (isActive ? ' active' : '');
+                        item.setAttribute('data-id', video.id);
 
-                    item.className =
-                        'suggestion-item' +
-                        (isActive ? ' active' : '');
-
-                    item.setAttribute('data-id', video.id);
-
-                    item.innerHTML = `
-                        ${buildThumbnailHtml(video.link, video.title)}
-                        <div class="suggestion-info">
-                            <div class="title">
-                                ${escapeHtml(video.title || 'Sem título')}
-                                ${isPrevious ? '<span class="previous-tag">← Anterior</span>' : ''}
+                        item.innerHTML = buildThumbnailHtml(video.link, video.title) + `
+                            <div class="card-content">
+                                <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory || video.category || 'Sem categoria')}</div>
+                                <h3 class="video-title" title="${escapeHtml(video.title)}">${escapeHtml(video.title || 'Sem título')}</h3>
                             </div>
-                            <div class="meta">
-                                ${escapeHtml(video.category || 'Sem categoria')}
-                                &bull;
-                                ${escapeHtml(video.subcategory || 'Sem subcategoria')}
-                            </div>
-                        </div>
-                    `;
+                        `;
 
-                    if (!isActive) {
-                        item.addEventListener('click', () => {
-                            const from = getParam('id');
+                        if (!isActive) {
+                            item.addEventListener('click', () => {
+                                const from = getParam('id');
+                                window.location.href = 'player.html?id=' + encodeURIComponent(video.id) + (from ? '&previous=' + encodeURIComponent(from) : '');
+                            });
+                        }
 
-                            window.location.href =
-                                'player.html?id=' +
-                                encodeURIComponent(video.id) +
-                                (from
-                                    ? '&previous=' + encodeURIComponent(from)
-                                    : '');
-                        });
+                        list.appendChild(item);
                     }
+                };
 
-                    list.appendChild(item);
+                renderItems(videos.slice(0, limit));
+
+                if (videos.length > limit) {
+                    const btnContainer = document.createElement('div');
+                    btnContainer.style.textAlign = 'center';
+                    btnContainer.style.marginTop = '1rem';
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-primary pill';
+                    btn.style.width = '100%';
+                    btn.innerHTML = '<span>Ver mais</span> <i class="fas fa-chevron-down ml-2"></i>';
+                    
+                    btn.onclick = () => {
+                        renderItems(videos.slice(limit));
+                        btnContainer.remove();
+                    };
+                    
+                    btnContainer.appendChild(btn);
+                    list.parentElement.appendChild(btnContainer);
                 }
             }
 
@@ -1042,3 +902,5 @@
     </script>
 </body>
 </html>
+
+

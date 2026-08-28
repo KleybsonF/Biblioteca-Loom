@@ -669,20 +669,20 @@ h1, h2, h3, h4, h5, h6 {
 /* Cards da grade do Admin com tamanho uniforme */
 .videos-grid .video-card {
     width: 100%;
-    height: 360px;
-    min-height: 360px;
-    max-height: 360px;
+    height: 100%; /* Stretch to grid row height naturally */
 }
 
 .videos-grid .video-card .video-thumbnail {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    flex-shrink: 0;
+    aspect-ratio: 16 / 9 !important; /* Force strict 16:9 */
+    flex: 0 0 auto !important; /* Prevent it from stretching or shrinking vertically */
+    min-height: 0 !important;
 }
 
 .videos-grid .video-card .card-content {
     min-height: 0;
     overflow: hidden;
+    flex-grow: 1; /* White area absorbs extra height */
 }
 
 .videos-grid .video-card .video-title {
@@ -822,8 +822,9 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     color: #111111;
     line-height: 1.3;
-    flex: 1;
+    flex: none;
     transition: color 0.3s ease;
+    margin-bottom: 0.5rem;
 }
 
 .video-card:hover .video-title {
@@ -1059,12 +1060,17 @@ h1, h2, h3, h4, h5, h6 {
         max-height: none;
     }
     
+    header [data-topbar-inner] {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
     .video-row {
         gap: 1rem;
     }
     .video-row .video-card {
-        flex: 0 0 85vw;
-        max-width: 340px;
+        flex: 0 0 75vw;
+        max-width: 320px;
     }
 
     .card-content { padding: 1.2rem; }

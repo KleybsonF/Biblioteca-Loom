@@ -176,13 +176,20 @@
         }
 
         .video-row::-webkit-scrollbar {
-          display: none;
+          /* Exibe a barra de rolagem sutil no celular */
+          height: 4px;
+          display: block;
+        }
+        
+        .video-row::-webkit-scrollbar-thumb {
+          background: rgba(232, 100, 27, 0.5); /* Laranja da marca com transparência */
+          border-radius: 4px;
         }
 
         .video-row .video-card {
-          flex: 0 0 calc(100% - 2.15rem);
-          width: calc(100% - 2.15rem);
-          max-width: none;
+          flex: 0 0 75vw;
+          width: 75vw;
+          max-width: 320px;
           min-width: 0;
           scroll-snap-align: start;
           scroll-snap-stop: always;
@@ -245,8 +252,8 @@
         }
 
         .video-row .video-card {
-          flex-basis: calc(100% - 1.9rem);
-          width: calc(100% - 1.9rem);
+          flex-basis: 75vw;
+          width: 75vw;
         }
       }
     </style>

@@ -280,7 +280,7 @@
 
     <!-- HEADER -->
     <header class="sticky top-0 z-20" data-topbar="">
-      <div class="border-b border-white/10 bg-black text-white  transition-all duration-300">
+      <div class="border-b border-white/10 bg-black text-white transition-all duration-300">
         <div class="max-w-[1400px] w-full mx-auto px-8 flex items-center justify-between gap-4 transition-all duration-300 min-h-20 lg:min-h-24 py-4 lg:py-0" data-topbar-inner="">
           <a href="/" class="flex items-center" aria-label="TSMX">
             <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" data-topbar-logo="true" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="w-auto transition-all duration-300 h-[2.3rem] sm:h-[2.59rem]">
@@ -289,13 +289,38 @@
             <nav aria-label="Navegação principal" class="hidden flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70 lg:flex md:text-[0.95rem]">
               <a href="https://wiki.sgp.net.br" target="_blank" rel="noreferrer" class="transition-colors duration-200 hover:text-white" style="font-family: var(--font-body);">Wiki</a>
             </nav>
-<a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex" style="font-family: var(--font-body);">
+
+            <a href="https://wa.me/558431137050" target="_blank" rel="noopener noreferrer" class="hidden min-h-11 items-center justify-center rounded-full bg-signal px-4 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12 sm:px-5 lg:inline-flex" style="font-family: var(--font-body);">
               Fale com o time
             </a>
           </div>
         </div>
       </div>
-      <script type="module">const o=document.querySelector("[data-topbar-inner]"),t=document.querySelector("[data-topbar-logo]");function e(){const s=window.scrollY>10;o&&(o.classList.toggle("py-4",!s),o.classList.toggle("lg:py-0",!s),o.classList.toggle("py-2",s)),t&&(t.classList.toggle("h-[2.3rem]",!s),t.classList.toggle("sm:h-[2.59rem]",!s),t.classList.toggle("h-[1.75rem]",s),t.classList.toggle("sm:h-[1.9rem]",s))}window.addEventListener("scroll",e,{passive:!0});e();</script>
+
+      <script type="module">
+        const o = document.querySelector("[data-topbar-inner]");
+        const t = document.querySelector("[data-topbar-logo]");
+
+        function e() {
+          const s = window.scrollY > 10;
+
+          o && (
+            o.classList.toggle("py-4", !s),
+            o.classList.toggle("lg:py-0", !s),
+            o.classList.toggle("py-2", s)
+          );
+
+          t && (
+            t.classList.toggle("h-[2.3rem]", !s),
+            t.classList.toggle("sm:h-[2.59rem]", !s),
+            t.classList.toggle("h-[1.75rem]", s),
+            t.classList.toggle("sm:h-[1.9rem]", s)
+          );
+        }
+
+        window.addEventListener("scroll", e, { passive: true });
+        e();
+      </script>
     </header>
 
     <!-- BANNER -->
@@ -344,7 +369,7 @@
     (function() {
         const { escapeHtml, buildThumbnailHtml, buildPagination, apiGet } = LoomLib;
 
-        const VIDEOS_PER_PAGE = 12;
+        const VIDEOS_PER_PAGE = 10;
         let currentPage     = 1;
         let totalPages      = 1;
         let totalVideos     = 0;
@@ -388,12 +413,6 @@
         function renderPagination() {
             const container = document.getElementById('paginationContainer');
             const info      = document.getElementById('paginationInfo');
-
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                info.textContent = totalVideos + ' vídeo' + (totalVideos !== 1 ? 's' : '');
-                return;
-            }
 
             container.innerHTML = '';
             container.appendChild(buildPagination(currentPage, totalPages, (page) => {
@@ -458,3 +477,4 @@
     </script>
 </body>
 </html>
+

@@ -632,14 +632,21 @@
         }
 
         // ── CRUD ─────────────────────────────────────────────────
-        async function confirmDelete(id, title) {
-            if (!confirm(`Excluir permanentemente o vídeo:\n"${title}"?`)) return;
+        async function confirmArchive(video) {
+            if (!confirm(`Deseja arquivar o vídeo:\n"${video.title}"?\nEle ficará oculto da biblioteca principal.`)) return;
             try {
-                await apiDelete('/videos/' + encodeURIComponent(id));
+                const payload = {
+                    title: video.title,
+                    link: video.link,
+                    category: 'Arquivados',
+                    subcategory: (video.category + ' | ' + (video.subcategory || '')).trim().replace(/ \|$/, ''),
+                    description: video.description || ''
+                };
+                await apiPut('/videos/' + encodeURIComponent(video.id), payload);
                 loadVideos(currentPage);
             } catch (e) {
                 if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
-                alert('Erro ao excluir: ' + e.message);
+                alert('Erro ao arquivar: ' + e.message);
             }
         }
 
@@ -779,5 +786,6 @@
     </script>
 </body>
 </html>
+
 
 

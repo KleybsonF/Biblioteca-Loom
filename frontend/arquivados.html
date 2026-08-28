@@ -221,13 +221,10 @@
                     ÁREA ADMINISTRATIVA
                 </p>
                 <h1 class="hero-h1" style="color: #ffffff;">Central de Conteúdos <span class="text-brand">SGP</span></h1>
-                <p class="hero-p" style="color: #ffffff; text-align: center; margin-left: auto; margin-right: auto;">Gerencie tutoriais e materiais de apoio organizados por categoria.</p>
-                <div class="hero-actions" style="justify-content: center;">
-                    <button class="btn-ghost pill" onclick="window.location.href='arquivados.html'" style="color: #ffffff; border-color: rgba(255,255,255,0.2);">
-                        <i class="fas fa-archive"></i> Arquivados
-                    </button>
-                    <button class="btn-primary pill" id="openAddModalBtn">
-                        <i class="fas fa-plus"></i> Novo vídeo
+                <p class="hero-p" style="color: #ffffff; text-align: center; margin-left: auto; margin-right: auto;">Gerencie os v�deos que foram ocultados da biblioteca principal.</p>
+                                <div class="hero-actions" style="justify-content: center;">
+                    <button class="btn-ghost pill" onclick="window.location.href='admin.html'" style="color: #ffffff; border-color: rgba(255,255,255,0.2);">
+                        <i class="fas fa-arrow-left"></i> Voltar ao Admin
                     </button>
                     <button class="btn-ghost pill" id="btnLogout" style="color: #ffffff; border-color: rgba(255,255,255,0.2);">
                         <i class="fas fa-sign-out-alt"></i> Sair
@@ -244,17 +241,7 @@
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Buscar por título, descrição ou categoria..." autocomplete="off">
             </div>
-            <div class="filter-group">
-                <select id="filterCategory" class="filter-select">
-                    <option value="all">Todas categorias</option>
-                </select>
-                <select id="filterSubcategory" class="filter-select" disabled>
-                    <option value="all">Primeiro selecione uma categoria</option>
-                </select>
-                <button id="btnClearFilters" class="btn-clear-filters hidden">
-                    <i class="fas fa-times"></i> Limpar filtros
-                </button>
-            </div>
+            
         </div>
     </div>
 
@@ -484,19 +471,12 @@
         }
 
         function updateClearButton() {
-            const btn    = document.getElementById('btnClearFilters');
-            const search = document.getElementById('searchInput').value;
-            const cat    = document.getElementById('filterCategory').value;
-            const sub    = document.getElementById('filterSubcategory').value;
-            btn.classList.toggle('hidden', !(search || cat !== 'all' || sub !== 'all'));
+            const btn = document.getElementById('btnClearFilters');
+            if (btn) btn.classList.toggle('hidden', !document.getElementById('searchInput').value);
         }
 
         function clearFilters() {
             document.getElementById('searchInput').value = '';
-            document.getElementById('filterCategory').value = 'all';
-            const subSel = document.getElementById('filterSubcategory');
-            subSel.disabled = true;
-            subSel.innerHTML = '<option value="all">Primeiro selecione uma categoria</option>';
             updateClearButton();
             loadVideos(1);
         }
@@ -506,8 +486,7 @@
             const grid      = document.getElementById('videosGridContainer');
             const countSpan = document.getElementById('videoCount');
 
-            // FILTRA ARQUIVADOS ANTES DE VERIFICAR VAZIO
-            const visibleVideos = videos ? videos.filter(v => v.category !== 'Arquivados') : [];
+            const visibleVideos = videos || [];
 
             if (!visibleVideos || visibleVideos.length === 0) {
                 grid.innerHTML = `
@@ -543,11 +522,11 @@
 
                           <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
                         <div class="card-actions">
-                            <button class="icon-btn edit-btn" data-id="${escapeHtml(video.id)}" title="Editar">
-                                <i class="fas fa-pen"></i>
+                                                        <button class="icon-btn restore-btn" data-id="${escapeHtml(video.id)}" title="Restaurar">
+                                <i class="fas fa-undo"></i>
                             </button>
-                            <button class="icon-btn danger archive-btn" data-id="${escapeHtml(video.id)}" title="Arquivar">
-                                <i class="fas fa-archive"></i>
+                            <button class="icon-btn danger delete-btn" data-id="${escapeHtml(video.id)}" title="Excluir Definitivamente">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
                     </div>
@@ -558,15 +537,8 @@
                     window.open('player.html?id=' + encodeURIComponent(video.id), '_blank');
                 });
 
-                card.querySelector('.edit-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openEditModal(video);
-                });
-
-                card.querySelector('.archive-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    confirmArchive(video);
-                });
+                card.querySelector('.restore-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmRestore(video); });
+                card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmDelete(video.id, video.title); });
 
                 grid.appendChild(card);
             }
@@ -597,13 +569,12 @@
             grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando vídeos...</div>';
 
             const search = document.getElementById('searchInput').value.trim();
-            const cat    = document.getElementById('filterCategory').value;
-            const sub    = document.getElementById('filterSubcategory').value;
+            
+            
 
-            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
+            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}&category=Arquivados`;
             if (search)        url += '&search='      + encodeURIComponent(search);
-            if (cat !== 'all') url += '&category='    + encodeURIComponent(cat);
-            if (sub !== 'all') url += '&subcategory=' + encodeURIComponent(sub);
+            
 
             try {
                 const result    = await apiGet(url);
@@ -765,7 +736,7 @@
             loadVideos(1);
         });
 
-        document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos(1));
+        
 
         let searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
@@ -779,5 +750,15 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 

@@ -601,8 +601,8 @@ async function fetchCategories() {
         return _categoriesCache;
     }
 
-    const data =
-        await apiGet('/categories');
+    let data = await apiGet('/categories');
+    data = data.filter(c => c.name !== 'Arquivados' && c !== 'Arquivados');
 
     _categoriesCache = data;
 

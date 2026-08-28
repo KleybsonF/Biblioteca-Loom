@@ -480,6 +480,7 @@
 
           videos.forEach(function(v) {
             const cat = v.category || 'Sem categoria';
+            if (cat === 'Arquivados') return;
 
             if (!groups[cat]) {
               groups[cat] = [];
@@ -777,3 +778,4 @@
     </script>
 </body>
 </html>
+

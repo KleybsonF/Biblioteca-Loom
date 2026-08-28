@@ -522,7 +522,10 @@
 
                           <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
                         <div class="card-actions">
-                                                        <button class="icon-btn restore-btn" data-id="${escapeHtml(video.id)}" title="Restaurar">
+                              <button class="icon-btn edit-btn" data-id="${escapeHtml(video.id)}" title="Editar">
+                                  <i class="fas fa-pen"></i>
+                              </button>
+                              <button class="icon-btn restore-btn" data-id="${escapeHtml(video.id)}" title="Restaurar">
                                 <i class="fas fa-undo"></i>
                             </button>
                             <button class="icon-btn danger delete-btn" data-id="${escapeHtml(video.id)}" title="Excluir Definitivamente">
@@ -537,7 +540,8 @@
                     window.open('player.html?id=' + encodeURIComponent(video.id), '_blank');
                 });
 
-                card.querySelector('.restore-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmRestore(video); });
+                card.querySelector(".edit-btn").addEventListener("click", (e) => { e.stopPropagation(); openEditModal(video); });
+                card.querySelector(".restore-btn").addEventListener("click", (e) => { e.stopPropagation(); confirmRestore(video); });
                 card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmDelete(video.id, video.title); });
 
                 grid.appendChild(card);
@@ -615,13 +619,15 @@
                 } else if (video.subcategory) {
                     originalCategory = video.subcategory;
                 }
-                const payload = {
-                    title: video.title,
-                    link: video.link,
-                    category: originalCategory,
-                    subcategory: originalSubcategory,
-                    description: video.description || ""
-                };
+                const selectedCat = document.getElementById("videoCategory").value;
+            const selectedSub = document.getElementById("videoSubcategory").value;
+            const payload = {
+                title:       document.getElementById("videoTitle").value.trim(),
+                link:        document.getElementById("videoLink").value.trim(),
+                category:    "Arquivados",
+                subcategory: (selectedCat + " | " + selectedSub).trim().replace(/ \|$/, ""),
+                description: document.getElementById("videoDescription").value.trim()
+            };
                 await apiPut("/videos/" + encodeURIComponent(video.id), payload);
                 loadVideos(currentPage);
             } catch (e) {
@@ -664,16 +670,28 @@
 
         function openEditModal(video) {
             resetForm();
-            document.getElementById('videoId').value       = video.id;
-            document.getElementById('videoTitle').value    = video.title;
-            document.getElementById('videoLink').value     = video.link;
-            document.getElementById('videoCategory').value = video.category;
-            updateSubcategorySelect(document.getElementById('videoSubcategory'), video.category, true);
-            document.getElementById('videoSubcategory').value  = video.subcategory;
-            document.getElementById('videoDescription').value  = video.description || '';
-            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar vídeo';
-            document.getElementById('submitBtn').innerHTML  = '<i class="fas fa-save"></i> Atualizar vídeo';
-            document.getElementById('videoModal').classList.add('active');
+            document.getElementById("videoId").value       = video.id;
+            document.getElementById("videoTitle").value    = video.title;
+            document.getElementById("videoLink").value     = video.link;
+            
+            let originalCategory = "Geral";
+            let originalSubcategory = "";
+            if (video.subcategory && video.subcategory.includes(" | ")) {
+                const parts = video.subcategory.split(" | ");
+                originalCategory = parts[0];
+                originalSubcategory = parts[1];
+            } else if (video.subcategory) {
+                originalCategory = video.subcategory;
+            }
+            
+            document.getElementById("videoCategory").value = originalCategory;
+            updateSubcategorySelect(document.getElementById("videoSubcategory"), originalCategory, true);
+            document.getElementById("videoSubcategory").value  = originalSubcategory;
+            
+            document.getElementById("videoDescription").value  = video.description || "";
+            document.getElementById("modalTitle").innerHTML = "<i class='fas fa-edit'></i> Editar v�deo arquivado";
+            document.getElementById("submitBtn").innerHTML  = "<i class='fas fa-save'></i> Atualizar";
+            document.getElementById("videoModal").classList.add("active");
         }
 
         function closeModal() {
@@ -708,12 +726,14 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Salvando...';
 
+            const selectedCat = document.getElementById("videoCategory").value;
+            const selectedSub = document.getElementById("videoSubcategory").value;
             const payload = {
-                title:       document.getElementById('videoTitle').value.trim(),
-                link:        document.getElementById('videoLink').value.trim(),
-                category:    document.getElementById('videoCategory').value,
-                subcategory: document.getElementById('videoSubcategory').value,
-                description: document.getElementById('videoDescription').value.trim()
+                title:       document.getElementById("videoTitle").value.trim(),
+                link:        document.getElementById("videoLink").value.trim(),
+                category:    "Arquivados",
+                subcategory: (selectedCat + " | " + selectedSub).trim().replace(/ \|$/, ""),
+                description: document.getElementById("videoDescription").value.trim()
             };
 
             try {
@@ -777,6 +797,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 

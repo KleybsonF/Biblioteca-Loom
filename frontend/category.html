@@ -428,17 +428,30 @@
             grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando...</div>';
 
             const search = document.getElementById('searchInput').value.trim();
-            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
-            if (currentCategory) url += '&category=' + encodeURIComponent(currentCategory);
-            if (search)          url += '&search='   + encodeURIComponent(search);
+            // Paginação no frontend para evitar buracos dos Arquivados
+            let url = `/videos?page=1&limit=2000`;
+            if (currentCategory) url += "&category=" + encodeURIComponent(currentCategory);
+            if (search)          url += "&search="   + encodeURIComponent(search);
 
             try {
-                const result    = await apiGet(url);
-                const videos    = result.data || result;
-                totalVideos = result.total      || videos.length;
-                totalPages  = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
+                const result = await apiGet(url);
+                let allVideos = result.data || result;
+                
+                // Filtra os arquivados se não for uma busca específica pela categoria Arquivados
+                if (currentCategory !== "Arquivados") {
+                    allVideos = allVideos.filter(v => v.category !== "Arquivados");
+                }
+                
+                totalVideos = allVideos.length;
+                totalPages  = Math.ceil(totalVideos / VIDEOS_PER_PAGE);
                 currentPage = page;
-                renderVideos(videos);
+                if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+                
+                const start = (currentPage - 1) * VIDEOS_PER_PAGE;
+                const end = start + VIDEOS_PER_PAGE;
+                const paginatedVideos = allVideos.slice(start, end);
+
+                renderVideos(paginatedVideos);
                 renderPagination();
             } catch (error) {
                 console.error(error);
@@ -477,4 +490,5 @@
     </script>
 </body>
 </html>
+
 

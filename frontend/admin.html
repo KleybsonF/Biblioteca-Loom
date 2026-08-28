@@ -600,18 +600,30 @@
             const cat    = document.getElementById('filterCategory').value;
             const sub    = document.getElementById('filterSubcategory').value;
 
-            let url = `/videos?page=${page}&limit=${VIDEOS_PER_PAGE}`;
-            if (search)        url += '&search='      + encodeURIComponent(search);
-            if (cat !== 'all') url += '&category='    + encodeURIComponent(cat);
-            if (sub !== 'all') url += '&subcategory=' + encodeURIComponent(sub);
+            // Busca tudo e pagina no frontend para não deixar buracos dos Arquivados
+            let url = `/videos?page=1&limit=2000`;
+            if (search)        url += "&search="      + encodeURIComponent(search);
+            if (cat !== "all") url += "&category="    + encodeURIComponent(cat);
+            if (sub !== "all") url += "&subcategory=" + encodeURIComponent(sub);
 
             try {
-                const result    = await apiGet(url);
-                const videosData = result.data || result;
-                totalVideos = result.total      || videosData.length;
-                totalPages  = result.totalPages || Math.ceil(totalVideos / VIDEOS_PER_PAGE);
+                const result = await apiGet(url);
+                let allVideos = result.data || result;
+                
+                // Filtra os arquivados
+                allVideos = allVideos.filter(v => v.category !== "Arquivados");
+                
+                // Paginação manual no frontend
+                totalVideos = allVideos.length;
+                totalPages  = Math.ceil(totalVideos / VIDEOS_PER_PAGE);
                 currentPage = page;
-                renderVideos(videosData);
+                if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+                
+                const start = (currentPage - 1) * VIDEOS_PER_PAGE;
+                const end = start + VIDEOS_PER_PAGE;
+                const paginatedVideos = allVideos.slice(start, end);
+
+                renderVideos(paginatedVideos);
                 renderPagination();
                 updateClearButton();
                 window.location.hash = 'page=' + page;
@@ -786,6 +798,7 @@
     </script>
 </body>
 </html>
+
 
 
 

@@ -273,12 +273,18 @@
     </div>
 
     <!-- FOOTER -->
-    <div class="footer">
-        <div class="footer-content">
-            <p>Todos os direitos reservados.</p>
-            <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+    <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
+      <div class="max-w-[1400px] mx-auto px-8 py-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <a href="/" aria-label="TSMX">
+          <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
+        </a>
+
+        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[0.85rem] text-white/50" style="font-family: var(--font-body);">
+          <p>Todos os direitos reservados.</p>
+          <p>TSMX. Ecossistema de tecnologia para provedores.</p>
         </div>
-    </div>
+      </div>
+    </footer>
 
     <!-- WELCOME MODAL -->
     <div id="welcomeModal" class="modal-overlay">
@@ -521,13 +527,15 @@
                 card.className = 'video-card group';
                 card.setAttribute('data-id', video.id);
                 card.innerHTML = buildThumbnailHtml(video.link, video.title) + `
-                    <div class="card-content">
-                        <div class="card-header">
-                            <span class="video-title">${escapeHtml(video.title)}</span>
-                            <span class="badge-cat">${escapeHtml(video.category)}</span>
-                        </div>
-                        <div class="subcat"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>
-                        <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
+                      <div class="card-content">
+                          <div class="video-title">${escapeHtml(video.title)}</div>
+                          
+                          <div class="tags-container" style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap;">
+                              <span class="badge-cat">${escapeHtml(video.category)}</span>
+                              ${video.subcategory ? `<div class="subcat" style="margin-bottom: 0;"><i class="fas fa-tag"></i> ${escapeHtml(video.subcategory)}</div>` : ''}
+                          </div>
+
+                          <div class="description">${escapeHtml(video.description || 'Sem descrição adicional')}</div>
                         <div class="card-actions">
                             <button class="icon-btn edit-btn" data-id="${escapeHtml(video.id)}" title="Editar">
                                 <i class="fas fa-pen"></i>
@@ -765,3 +773,4 @@
     </script>
 </body>
 </html>
+

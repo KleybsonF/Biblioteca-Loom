@@ -375,26 +375,33 @@
                 return;
             }
 
-            grid.innerHTML = videos.map(v => buildArchivedCard(v)).join('');
+            grid.innerHTML = '';
+            for (const v of videos) {
+                const card = document.createElement('div');
+                card.className = 'video-card group';
+                card.setAttribute('data-id', v.id);
+                const subLabel = v.subcategory ? escapeHtml(v.subcategory) : '';
+                card.innerHTML = buildThumbnailHtml(v.link, v.title) + 
+                    <div class="card-content">
+                        <div class="video-title"></div>
+                        
+                        
+                        <div class="card-actions">
+                            <button class="icon-btn edit-btn" title="Editar"><i class="fas fa-pen"></i></button>
+                            <button class="icon-btn restore-btn" title="Reativar na biblioteca" style="color:#22c55e;"><i class="fas fa-undo"></i></button>
+                            <button class="icon-btn danger delete-btn" title="Excluir permanentemente"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>;
+                const videoData = v;
+                card.querySelector('.edit-btn').addEventListener('click', (e) => { e.stopPropagation(); openEditModal(videoData); });
+                card.querySelector('.restore-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmRestore(videoData); });
+                card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmDelete(v.id, v.title); });
+                grid.appendChild(card);
+            }
 
-            grid.querySelectorAll('.btn-edit').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const v = JSON.parse(decodeURIComponent(btn.dataset.video));
-                    openEditModal(v);
-                });
-            });
-            grid.querySelectorAll('.btn-restore').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const v = JSON.parse(decodeURIComponent(btn.dataset.video));
-                    confirmRestore(v);
-                });
-            });
-            grid.querySelectorAll('.btn-delete').forEach(btn => {
-                btn.addEventListener('click', () => confirmDelete(btn.dataset.id, btn.dataset.title));
-            });
-
-            document.getElementById('paginationContainer').innerHTML =
-                buildPagination(currentPage, totalPages, p => loadVideos(p));
+            const paginationEl = document.getElementById('paginationContainer');
+            paginationEl.innerHTML = '';
+            if (totalPages > 1) paginationEl.appendChild(buildPagination(currentPage, totalPages, p => loadVideos(p)));
             document.getElementById('paginationInfo').textContent =
                 totalPages > 1 ? 'Pagina ' + currentPage + ' de ' + totalPages + ' - ' + totalVideos + ' videos' : '';
 
@@ -617,5 +624,6 @@
 </script>
 </body>
 </html>
+
 
 

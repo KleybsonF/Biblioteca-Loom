@@ -1,5 +1,14 @@
 const VIDEOS_DB = [
     {
+        "id": "c680b83b28b04aadbe1f3b542e9982a9",
+        "title": "Aprenda a usar esse material!",
+        "link": "https://www.loom.com/share/c680b83b28b04aadbe1f3b542e9982a9",
+        "category": "Sistema",
+        "subcategory": "Tutoriais",
+        "description": "Tutorial oficial de orientação da plataforma.",
+        "created_at": "2026-09-11T12:00:00.000000+00:00"
+    },
+    {
         "id": "1780065173440",
         "title": "Copia de usuário",
         "link": "https://www.loom.com/share/3257dd9b54d347dcae10b4bedb785a75",

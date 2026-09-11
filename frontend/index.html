@@ -308,7 +308,7 @@
 
     <!-- HERO -->
     <section class="hero-new">
-            <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute right-0 top-1/2 z-[1] w-1/2 max-w-[50vw] -translate-y-1/2 select-none ">
+      <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute right-0 top-1/2 z-[1] w-1/2 max-w-[50vw] -translate-y-1/2 select-none hidden md:block">
       <div class="hero-new-content">
         <div class="hero-text-area">
           <p class="hero-eyebrow">Treinamentos e Tutoriais</p>
@@ -325,40 +325,58 @@
           </div>
         </div>
 
-        <div class="hero-image-area">
-                                        <div class="hero-custom-thumb w-full h-full absolute inset-0 overflow-hidden flex flex-col justify-center" style="background: #080808; z-index: 0; border-radius: inherit;">
+        <div id="heroImageArea" class="hero-image-area cursor-pointer group" onclick="playHeroVideo();">
+          <div class="hero-custom-thumb w-full h-full absolute inset-0 overflow-hidden flex flex-col justify-center px-6 sm:px-10 pt-8 sm:pt-12" style="background: #080808; z-index: 0; border-radius: inherit;">
               
               <!-- Grid Pattern Background -->
               <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 30px 30px; background-position: center;"></div>
 
               <!-- Glowing Orbs (Brand Color: #e8641b) -->
-              <div class="absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full pointer-events-none" style="background: #e8641b; opacity: 0.25; filter: blur(100px);"></div>
-              <div class="absolute -bottom-32 -left-32 w-[300px] h-[300px] rounded-full pointer-events-none" style="background: #e8641b; opacity: 0.15; filter: blur(90px);"></div>
+              <div class="absolute -top-32 -right-32 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] rounded-full pointer-events-none" style="background: #e8641b; opacity: 0.22; filter: blur(100px);"></div>
+              <div class="absolute -bottom-32 -left-32 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] rounded-full pointer-events-none" style="background: #e8641b; opacity: 0.12; filter: blur(90px);"></div>
               
               <!-- Angled Accent Lines -->
               <div class="absolute top-0 right-0 w-[50%] h-full opacity-10 pointer-events-none" style="background: repeating-linear-gradient(45deg, #e8641b 0, #e8641b 1px, transparent 1px, transparent 16px); mask-image: linear-gradient(to left, black, transparent); -webkit-mask-image: linear-gradient(to left, black, transparent);"></div>
 
-              <!-- Top Left Branding -->
-              <div class="absolute top-8 left-10 flex items-center gap-4 z-10">
-                  <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX" loading="lazy" style="height: 24px;">
-                  <div class="h-4 w-[1px] bg-white/20"></div>
-                  <span class="text-white/70 text-xs font-semibold tracking-[0.2em] uppercase" style="font-family: var(--font-body);">Guia Rápido</span>
+              <!-- Top Left Branding (Logo & Guia Rápido ainda maiores) -->
+              <div class="absolute top-4 left-6 sm:top-7 sm:left-10 flex items-center gap-4 sm:gap-6 z-10">
+                  <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX" loading="lazy" style="height: 42px;" class="w-auto h-[28px] sm:h-[42px]">
+                  <div class="h-6 sm:h-8 w-[2px] bg-white/35"></div>
+                  <span class="text-white font-bold text-base sm:text-lg tracking-[0.2em] uppercase" style="font-family: var(--font-body);">Guia Rápido</span>
               </div>
 
-              <!-- Typography -->
-              <div class="relative z-10 max-w-lg -mt-10 px-10">
-                  <div class="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full border border-[#e8641b]/30 bg-[#e8641b]/10 backdrop-blur-md">
-                      <div class="w-1.5 h-1.5 rounded-full bg-[#e8641b] animate-pulse"></div>
-                      <span class="text-[#e8641b] text-[10px] font-bold tracking-[0.2em] uppercase">Tutorial Oficial</span>
+              <!-- Typography & Pulsing Interactive Play Button -->
+              <div class="relative z-10 flex items-center justify-between gap-4 max-w-full mt-4 sm:mt-0">
+                  <div>
+                      <div class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 mb-2 sm:mb-4 rounded-full border border-[#e8641b]/30 bg-[#e8641b]/10 backdrop-blur-md">
+                          <div class="w-1.5 h-1.5 rounded-full bg-[#e8641b] animate-pulse"></div>
+                          <span class="text-[#e8641b] text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase">Tutorial Oficial</span>
+                      </div>
+
+                      <h2 class="hero-custom-thumb-title text-white font-bold leading-[1.05] tracking-tight" style="font-family: var(--font-heading); text-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+                          Aprenda a usar<br>
+                          <span style="color: #e8641b;">esse material!</span>
+                      </h2>
                   </div>
-                  <h2 class="text-white font-bold leading-[1.05] tracking-tight" style="font-family: var(--font-heading); font-size: 3.6rem; text-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-                      Aprenda a usar<br>
-                      <span style="color: #e8641b;">esse material!</span>
-                  </h2>
+
+                  <!-- Pulsing Interactive Play Symbol (Maior & Mais destacado) -->
+                  <div class="relative flex items-center justify-center flex-shrink-0 mr-2 sm:mr-6 select-none">
+                      <!-- Expanding Ping Ring -->
+                      <div class="absolute w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#e8641b]/40 animate-ping pointer-events-none"></div>
+                      <!-- Soft Ambient Glow -->
+                      <div class="absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-[#e8641b]/30 blur-xl pointer-events-none"></div>
+                      
+                      <!-- Main Glowing Play Button (80px no PC / 56px no Mobile) -->
+                      <div class="relative w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#e8641b] to-[#b8420b] flex items-center justify-center text-white shadow-[0_0_30px_rgba(232,100,27,0.9)] group-hover:scale-110 group-hover:from-[#f97316] group-hover:to-[#e8641b] transition-all duration-300">
+                          <i class="fas fa-play text-lg sm:text-2xl ml-1"></i>
+                      </div>
+                  </div>
               </div>
-          </div>
-          <div class="hero-play-btn" onclick="document.getElementById('searchInput').focus(); window.scrollBy({top: 300, behavior: 'smooth'});">
-            <i class="fas fa-play"></i>
+
+              <!-- Play Overlay on Hover -->
+              <div class="play-overlay">
+                  <i class="fas fa-play"></i>
+              </div>
           </div>
         </div>
       </div>
@@ -397,7 +415,7 @@
 
               <!-- FOOTER -->
       <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
-        <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute left-0 top-0 z-0 w-1/2 max-w-[50vw] -translate-x-[60%] translate-y-[10%] scale-x-[-1] select-none">
+        <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute left-0 top-0 z-0 w-1/2 max-w-[50vw] -translate-x-[60%] translate-y-[10%] scale-x-[-1] select-none hidden md:block ">
         <div class="container-shell section-space relative z-10">
           
           <div class="flex flex-col lg:flex-row justify-between gap-12">
@@ -458,6 +476,22 @@
     <script src="js/utils.js"></script>
 
     <script>
+      function playHeroVideo() {
+        const area = document.getElementById('heroImageArea');
+        if (!area) return;
+        area.onclick = null;
+        area.innerHTML = `
+          <div class="w-full h-full relative rounded-[24px] overflow-hidden bg-black">
+            <iframe src="https://www.loom.com/embed/c680b83b28b04aadbe1f3b542e9982a9?autoplay=1" 
+                    frameborder="0" 
+                    webkitallowfullscreen 
+                    mozallowfullscreen 
+                    allowfullscreen 
+                    class="w-full h-full absolute inset-0 z-30"></iframe>
+          </div>
+        `;
+      }
+
       (function() {
         const { escapeHtml, buildThumbnailHtml, apiGet, fetchCategories } = LoomLib;
 

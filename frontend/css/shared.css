@@ -1084,6 +1084,46 @@ h1, h2, h3, h4, h5, h6 {
     
     .pagination-wrapper { padding: 0 1.2rem; }
     .footer { padding: 2rem 1.2rem; }
+
+    /* Esconde background laranja do hero e do rodapé no celular */
+    .hero-new > img[src*="bg_hero.svg"],
+    footer img[src*="bg_hero.svg"] {
+        display: none !important;
+    }
+
+    /* Thumbnail responsiva no celular — elegante e proporcional */
+    .hero-custom-thumb-title {
+        font-size: 1.75rem !important;
+        line-height: 1.1 !important;
+    }
+
+    /* Melhores espaçamentos do rodapé no celular */
+    footer .section-space {
+        padding-block: 2.2rem 1.6rem !important;
+    }
+
+    footer .mt-14 {
+        margin-top: 1.8rem !important;
+        padding-top: 1.25rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+}
+
+.hero-custom-thumb-title {
+    font-size: 3.2rem;
+}
+
+@media (max-width: 1024px) {
+    .hero-custom-thumb-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-custom-thumb-title {
+        font-size: 1.45rem !important;
+        line-height: 1.15 !important;
+    }
 }
 
 /* ============================================================

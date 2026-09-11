@@ -338,15 +338,31 @@
         const catFilter = document.getElementById('filterCategory').value;
         const subFilter = document.getElementById('filterSubcategory').value;
         try {
-            let url = '/videos?category=Arquivados&page=' + page + '&limit=' + VIDEOS_PER_PAGE;
-            if (search)                          url += '&search=' + encodeURIComponent(search);
-            if (catFilter && catFilter !== 'all') url += '&subcategory_prefix=' + encodeURIComponent(catFilter);
-            if (subFilter && subFilter !== 'all') url += '&subcategory_suffix=' + encodeURIComponent(subFilter);
+            // Busca todos e filtra Arquivados no frontend (mesmo padrao do admin.html)
+            let url = '/videos?page=1&limit=2000';
+            if (search) url += '&search=' + encodeURIComponent(search);
 
-            const data = await apiGet(url);
-            totalVideos = data.total ?? (data.videos ? data.videos.length : 0);
-            totalPages  = data.totalPages ?? Math.ceil(totalVideos / VIDEOS_PER_PAGE);
-            const videos = data.videos ?? data;
+            const result = await apiGet(url);
+            let allVideos = result.data || result.videos || (Array.isArray(result) ? result : []);
+
+            // Filtra somente arquivados
+            allVideos = allVideos.filter(v => v.category === 'Arquivados');
+
+            // Filtra por categoria original (guardada no campo subcategory como 'Cat | Sub')
+            if (catFilter && catFilter !== 'all') {
+                allVideos = allVideos.filter(v => v.subcategory && v.subcategory.startsWith(catFilter + ' |'));
+            }
+            if (subFilter && subFilter !== 'all') {
+                allVideos = allVideos.filter(v => v.subcategory && v.subcategory.includes('| ' + subFilter));
+            }
+
+            // Paginacao manual no frontend
+            totalVideos = allVideos.length;
+            totalPages  = Math.ceil(totalVideos / VIDEOS_PER_PAGE) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIdx = (currentPage - 1) * VIDEOS_PER_PAGE;
+            const videos = allVideos.slice(startIdx, startIdx + VIDEOS_PER_PAGE);
 
             document.getElementById('videoCount').textContent =
                 totalVideos === 1 ? '1 video arquivado' : totalVideos + ' videos arquivados';
@@ -601,3 +617,5 @@
 </script>
 </body>
 </html>
+
+

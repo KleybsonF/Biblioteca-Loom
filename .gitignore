@@ -1,0 +1,16 @@
+﻿# Credenciais e variaveis de ambiente
+backend/supabase.env
+*.env
+.env
+.env.*
+
+# Node
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

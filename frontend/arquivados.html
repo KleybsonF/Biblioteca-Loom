@@ -21,15 +21,7 @@
     </script>
     <link rel="stylesheet" href="css/shared.css">
     <style>
-        #loginOverlay { position: fixed; inset: 0; background: #111111; z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: #fff; border-radius: 20px; padding: 2.5rem 2rem; width: 90%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,0.4); text-align: center; }
-        .login-icon { width: 64px; height: 64px; background: linear-gradient(135deg, #e8590c, #aa502a); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; margin: 0 auto 1.2rem; box-shadow: 0 8px 24px rgba(232,89,12,0.35); }
-        .login-card h2 { font-size: 1.4rem; font-weight: 800; color: #333333; margin-bottom: 0.3rem; }
-        .login-card p { font-size: 0.85rem; color: #888888; margin-bottom: 1.5rem; }
-        #loginError { background: #fde8e8; color: #c53030; border-radius: 10px; padding: 0.6rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
-        #loginError.visible { display: block; }
-        .login-card .form-group { text-align: left; }
-        #btnLogin { width: 100%; margin-top: 0.5rem; justify-content: center; }
+
         .welcome-content { text-align: left; line-height: 1.7; }
         .welcome-content p { margin-bottom: 1rem; color: #333333; }
         .welcome-content ul { margin: 1rem 0; padding-left: 1.5rem; }
@@ -69,25 +61,7 @@
       </script>
     </header>
 
-    <!-- LOGIN OVERLAY -->
-    <div id="loginOverlay">
-        <div class="login-card">
-            <div class="login-icon"><i class="fas fa-lock"></i></div>
-            <h2>Area Administrativa</h2>
-            <p>Insira a senha para acessar os videos arquivados.</p>
-            <div id="loginError">Senha incorreta. Tente novamente.</div>
-            <div class="form-group" style="text-align: left; margin-bottom: 1rem;">
-                <label for="adminPassword" style="display:block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; color: #333;">Senha de Acesso</label>
-                <input type="password" id="adminPassword" placeholder="Senha" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit;">
-            </div>
-            <button class="btn-primary" id="btnLogin" style="width: 100%; justify-content: center;">
-                <i class="fas fa-sign-in-alt"></i> Entrar
-            </button>
-            <button class="btn-ghost" onclick="window.location.href='index.html'" style="width: 100%; justify-content: center; margin-top: 1rem;">
-                <i class="fas fa-arrow-left"></i> Voltar para a Biblioteca
-            </button>
-        </div>
-    </div>
+
 
     <!-- HERO -->
     <section class="hero-new">
@@ -249,36 +223,10 @@
     let totalVideos  = 0;
     let categoriesMap = {};
 
-    // LOGIN
-    async function tryLogin() {
-        const password = document.getElementById('adminPassword').value;
-        const errEl    = document.getElementById('loginError');
-        const btnLogin = document.getElementById('btnLogin');
-        if (!password) { errEl.classList.add('visible'); return; }
-        btnLogin.disabled = true;
-        btnLogin.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verificando...';
-        try {
-            const result = await apiPost('/auth/login', { password });
-            if (result && result.token) {
-                saveToken(result.token);
-                document.getElementById('loginOverlay').style.display = 'none';
-                initApp();
-            } else {
-                errEl.classList.add('visible');
-            }
-        } catch (e) {
-            errEl.classList.add('visible');
-        } finally {
-            btnLogin.disabled = false;
-            btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
-        }
-    }
-
-    document.getElementById('btnLogin').addEventListener('click', tryLogin);
-    document.getElementById('adminPassword').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
-
-    if (isLoggedIn()) {
-        document.getElementById('loginOverlay').style.display = 'none';
+    // Sem login proprio: redireciona para admin.html se nao autenticado
+    if (!isLoggedIn()) {
+        window.location.href = 'admin.html';
+    } else {
         initApp();
     }
 
@@ -624,6 +572,7 @@
 </script>
 </body>
 </html>
+
 
 
 

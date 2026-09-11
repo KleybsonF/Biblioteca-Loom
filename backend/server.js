@@ -13,14 +13,16 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
     : ['http://localhost', 'http://127.0.0.1', 'https://biblioteca-loom.vercel.app'];
 
-app.use(cors({
-    origin: function (origin, callback) {
-        // Permite chamadas sem origin (ex: curl, Postman em dev)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) return callback(null, true);
-        callback(new Error('Origem não permitida pelo CORS: ' + origin));
-    }
-}));
+app.use(cors({ origin: true }));
+
+//app.use(cors({
+//    origin: function (origin, callback) {
+//        // Permite chamadas sem origin (ex: curl, Postman em dev)
+//        if (!origin) return callback(null, true);
+//        if (allowedOrigins.includes(origin)) return callback(null, true);
+//        callback(new Error('Origem não permitida pelo CORS: ' + origin));
+//    }
+//}));
 
 app.use(express.json());
 

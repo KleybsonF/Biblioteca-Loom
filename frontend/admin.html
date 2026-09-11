@@ -214,7 +214,7 @@
 
     <!-- â”€â”€ HERO â”€â”€ -->
     <section class="hero-new">
-        <div class="hero-new-content" style="grid-template-columns: 1fr; max-width: 900px; text-align: center;">
+      <div class="hero-new-content" style="grid-template-columns: 1fr; max-width: 900px; text-align: center;">
             <div class="hero-text-area" style="align-items: center;">
                 <p class="hero-eyebrow">
                     <span style="background: rgba(232, 89, 12, 0.15); color: #e8590c; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px; margin-right: 0.5rem;"><i class="fas fa-shield-alt"></i> ADMIN</span>
@@ -275,19 +275,69 @@
         <div id="paginationInfo" class="pagination-info"></div>
     </div>
 
-    <!-- FOOTER -->
-    <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
-      <div class="max-w-[1400px] mx-auto px-8 py-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <a href="/" aria-label="TSMX">
-          <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
-        </a>
+                                          <!-- FOOTER -->
+      <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
+        <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute left-0 top-0 z-0 w-1/2 max-w-[50vw] -translate-x-[60%] translate-y-[10%] scale-x-[-1] select-none">
+        <div class="container-shell section-space relative z-10">
+          
+          <div class="flex flex-col lg:flex-row justify-between gap-12">
+            
+            <!-- Left Column: TSMX Box (max-w-sm) -->
+            <div class="flex flex-col justify-between max-w-sm w-full">
+              <div>
+                <div class="flex h-12 items-start">
+                  <a href="/" aria-label="TSMX">
+                    <img src="https://www.tsmx.net.br/images/tsmx.svg" alt="TSMX" loading="lazy" decoding="async" fetchpriority="auto" width="160" height="48" class="h-[2.4rem] w-auto">
+                  </a>
+                </div>
+                <p class="mt-4 text-sm leading-7 text-white">
+                  Tecnologia Viva para provedores de<br>
+                  internet que precisam de software,<br>
+                  infraestrutura e suporte operando no<br>
+                  mesmo ritmo.
+                </p>
+                <div class="mt-8 flex gap-4">
+                  <a href="https://www.instagram.com/tsmxoficial/" aria-label="Instagram" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-instagram text-xl"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/company/tsmontenegro" aria-label="LinkedIn" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-linkedin text-xl"></i>
+                  </a>
+                  <a href="https://www.youtube.com/@SGPTSMX" aria-label="YouTube" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-youtube text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
 
-        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[0.85rem] text-white/50" style="font-family: var(--font-body);">
-          <p>Todos os direitos reservados.</p>
-          <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+            <!-- Right Column: Contato & Text -->
+            <div class="flex flex-col justify-between lg:max-w-[320px]">
+              <div class="w-full">
+                <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/50">Contato</h2>
+                <div class="mt-4 space-y-4 text-sm leading-7 text-white/70">
+                  <p>Av. Amintas Barros, 3700<br>Lagoa Nova, Natal/RN<br>CEP 59075-810</p>
+                  <p>WhatsApp: (84) 3113-7050<br>comercial@tsmx.net.br</p>
+                  <p>Seg a sex: 8h Ã s 18h</p>
+                </div>
+              </div>
+
+              <div class="mt-14 text-xs text-white/50 w-full">
+                <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </footer>
+      </footer>
+
+
+
+
+
+
+
+
 
     <!-- WELCOME MODAL -->
     <div id="welcomeModal" class="modal-overlay">
@@ -600,7 +650,7 @@
             const cat    = document.getElementById('filterCategory').value;
             const sub    = document.getElementById('filterSubcategory').value;
 
-            // Busca tudo e pagina no frontend para não deixar buracos dos Arquivados
+            // Busca tudo e pagina no frontend para nï¿½o deixar buracos dos Arquivados
             let url = `/videos?page=1&limit=2000`;
             if (search)        url += "&search="      + encodeURIComponent(search);
             if (cat !== "all") url += "&category="    + encodeURIComponent(cat);
@@ -613,7 +663,7 @@
                 // Filtra os arquivados
                 allVideos = allVideos.filter(v => v.category !== "Arquivados");
                 
-                // Paginação manual no frontend
+                // Paginaï¿½ï¿½o manual no frontend
                 totalVideos = allVideos.length;
                 totalPages  = Math.ceil(totalVideos / VIDEOS_PER_PAGE);
                 currentPage = page;

@@ -1405,3 +1405,13 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #ef4444;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.18);
 }
+
+/* Layout classes added for global Footer support */
+.container-shell {
+  width: min(1180px, 100vw - 2.5rem);
+  margin-inline: auto;
+}
+
+.section-space {
+  padding-block: clamp(3rem, 6vw, 7rem);
+}

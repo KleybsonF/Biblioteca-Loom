@@ -59,12 +59,12 @@
          Carousel responsivo
          Mantém o desktop praticamente igual e adapta o mobile.
          ============================================================ */
-      .video-carousel-wrapper {
+      .video-carousel-wrapper { justify-content: flex-start !important; text-align: left !important; margin-left: 0 !important; 
         width: 100%;
         min-width: 0;
       }
 
-      .video-row {
+      .video-row { justify-content: flex-start !important; text-align: left !important; 
         width: 100%;
         max-width: 100%;
         scroll-snap-type: x proximity;
@@ -114,11 +114,11 @@
           padding-bottom: 1.5rem;
         }
 
-        .category-row {
+        .category-row { width: 100% !important; display: block !important; 
           margin-bottom: 2rem;
         }
 
-        .category-header {
+        .category-header { width: 100% !important; display: flex !important; 
           gap: 0.75rem;
         }
 
@@ -145,7 +145,7 @@
 
         /* O wrapper é o viewport REAL do carrossel no celular.
            Assim a rolagem nunca considera a largura do desktop. */
-        .video-carousel-wrapper {
+        .video-carousel-wrapper { justify-content: flex-start !important; text-align: left !important; margin-left: 0 !important; 
           width: 100%;
           max-width: 100%;
           min-width: 0;
@@ -154,7 +154,7 @@
           box-sizing: border-box;
         }
 
-        .video-row {
+        .video-row { justify-content: flex-start !important; text-align: left !important; 
           width: 100%;
           max-width: 100%;
           min-width: 0;
@@ -308,6 +308,7 @@
 
     <!-- HERO -->
     <section class="hero-new">
+            <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute right-0 top-1/2 z-[1] w-1/2 max-w-[50vw] -translate-y-1/2 select-none ">
       <div class="hero-new-content">
         <div class="hero-text-area">
           <p class="hero-eyebrow">Treinamentos e Tutoriais</p>
@@ -325,8 +326,37 @@
         </div>
 
         <div class="hero-image-area">
-          <img src="https://tsmxmail.sgp.net.br/r3/bg/bg_1.png" alt="Plataforma SGP">
-          <div class="hero-tag">Aprenda a usar esse material!</div>
+                                        <div class="hero-custom-thumb w-full h-full absolute inset-0 overflow-hidden flex flex-col justify-center" style="background: #080808; z-index: 0; border-radius: inherit;">
+              
+              <!-- Grid Pattern Background -->
+              <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 30px 30px; background-position: center;"></div>
+
+              <!-- Glowing Orbs (Brand Color: #e8641b) -->
+              <div class="absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full pointer-events-none" style="background: #e8641b; opacity: 0.25; filter: blur(100px);"></div>
+              <div class="absolute -bottom-32 -left-32 w-[300px] h-[300px] rounded-full pointer-events-none" style="background: #e8641b; opacity: 0.15; filter: blur(90px);"></div>
+              
+              <!-- Angled Accent Lines -->
+              <div class="absolute top-0 right-0 w-[50%] h-full opacity-10 pointer-events-none" style="background: repeating-linear-gradient(45deg, #e8641b 0, #e8641b 1px, transparent 1px, transparent 16px); mask-image: linear-gradient(to left, black, transparent); -webkit-mask-image: linear-gradient(to left, black, transparent);"></div>
+
+              <!-- Top Left Branding -->
+              <div class="absolute top-8 left-10 flex items-center gap-4 z-10">
+                  <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX" loading="lazy" style="height: 24px;">
+                  <div class="h-4 w-[1px] bg-white/20"></div>
+                  <span class="text-white/70 text-xs font-semibold tracking-[0.2em] uppercase" style="font-family: var(--font-body);">Guia Rápido</span>
+              </div>
+
+              <!-- Typography -->
+              <div class="relative z-10 max-w-lg -mt-10 px-10">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full border border-[#e8641b]/30 bg-[#e8641b]/10 backdrop-blur-md">
+                      <div class="w-1.5 h-1.5 rounded-full bg-[#e8641b] animate-pulse"></div>
+                      <span class="text-[#e8641b] text-[10px] font-bold tracking-[0.2em] uppercase">Tutorial Oficial</span>
+                  </div>
+                  <h2 class="text-white font-bold leading-[1.05] tracking-tight" style="font-family: var(--font-heading); font-size: 3.6rem; text-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+                      Aprenda a usar<br>
+                      <span style="color: #e8641b;">esse material!</span>
+                  </h2>
+              </div>
+          </div>
           <div class="hero-play-btn" onclick="document.getElementById('searchInput').focus(); window.scrollBy({top: 300, behavior: 'smooth'});">
             <i class="fas fa-play"></i>
           </div>
@@ -365,19 +395,62 @@
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
-      <div class="max-w-[1400px] mx-auto px-8 py-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <a href="/" aria-label="TSMX">
-          <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
-        </a>
+              <!-- FOOTER -->
+      <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
+        <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute left-0 top-0 z-0 w-1/2 max-w-[50vw] -translate-x-[60%] translate-y-[10%] scale-x-[-1] select-none">
+        <div class="container-shell section-space relative z-10">
+          
+          <div class="flex flex-col lg:flex-row justify-between gap-12">
+            
+            <!-- Left Column: TSMX Box (max-w-sm) -->
+            <div class="flex flex-col justify-between max-w-sm w-full">
+              <div>
+                <div class="flex h-12 items-start">
+                  <a href="/" aria-label="TSMX">
+                    <img src="https://www.tsmx.net.br/images/tsmx.svg" alt="TSMX" loading="lazy" decoding="async" fetchpriority="auto" width="160" height="48" class="h-[2.4rem] w-auto">
+                  </a>
+                </div>
+                <p class="mt-4 text-sm leading-7 text-white">
+                  Tecnologia Viva para provedores de<br>
+                  internet que precisam de software,<br>
+                  infraestrutura e suporte operando no<br>
+                  mesmo ritmo.
+                </p>
+                <div class="mt-8 flex gap-4">
+                  <a href="https://www.instagram.com/tsmxoficial/" aria-label="Instagram" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-instagram text-xl"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/company/tsmontenegro" aria-label="LinkedIn" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-linkedin text-xl"></i>
+                  </a>
+                  <a href="https://www.youtube.com/@SGPTSMX" aria-label="YouTube" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-youtube text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
 
-        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[0.85rem] text-white/50" style="font-family: var(--font-body);">
-          <p>Todos os direitos reservados.</p>
-          <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+            <!-- Right Column: Contato & Text -->
+            <div class="flex flex-col justify-between lg:max-w-[320px]">
+              <div class="w-full">
+                <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/50">Contato</h2>
+                <div class="mt-4 space-y-4 text-sm leading-7 text-white/70">
+                  <p>Av. Amintas Barros, 3700<br>Lagoa Nova, Natal/RN<br>CEP 59075-810</p>
+                  <p>WhatsApp: (84) 3113-7050<br>comercial@tsmx.net.br</p>
+                  <p>Seg a sex: 8h às 18h</p>
+                </div>
+              </div>
+
+              <div class="mt-14 text-xs text-white/50 w-full">
+                <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </footer>
+      </footer>
+
 
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>

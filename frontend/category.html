@@ -330,12 +330,24 @@
     </div>
 
     <!-- SEARCH -->
-    <div class="search-section-inline">
-        <div class="search-wrapper-inline">
+        <div class="search-section">
+        <div class="search-wrapper">
+          <div class="search-input-wrap">
             <i class="fas fa-search"></i>
             <input type="text" id="searchInput" placeholder="Buscar nesta categoria..." autocomplete="off">
+          </div>
+  
+          <div class="filter-group">
+            <select id="filterSubcategory" class="filter-select" disabled>
+              <option value="all">Todas as subcategorias</option>
+            </select>
+  
+            <button id="btnClearFilters" class="btn-clear-filters hidden">
+              <i class="fas fa-times"></i> Limpar filtros
+            </button>
+          </div>
         </div>
-    </div>
+      </div>
 
     <!-- GRID -->
     <div class="videos-container">
@@ -350,18 +362,69 @@
         <div id="paginationInfo" class="pagination-info"></div>
     </div>
 
-    <!-- FOOTER -->
-    <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
-      <div class="max-w-[1400px] mx-auto px-8 py-8 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <a href="/" aria-label="TSMX">
-            <img src="https://tsmxmail.sgp.net.br/r2/logo/logo_sombra.png" alt="TSMX Tecnologia Viva" loading="lazy" decoding="async" fetchpriority="auto" width="240" height="52" class="h-8 w-auto">
-        </a>
-        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-[0.85rem] text-white/50" style="font-family: var(--font-body);">
-          <p>Todos os direitos reservados.</p>
-          <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+                                          <!-- FOOTER -->
+      <footer id="contato" class="relative overflow-hidden bg-[#060606] text-white border-t border-white/10">
+        <img src="https://www.tsmx.net.br/images/bg_hero.svg" alt aria-hidden="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="1200" class="pointer-events-none absolute left-0 top-0 z-0 w-1/2 max-w-[50vw] -translate-x-[60%] translate-y-[10%] scale-x-[-1] select-none">
+        <div class="container-shell section-space relative z-10">
+          
+          <div class="flex flex-col lg:flex-row justify-between gap-12">
+            
+            <!-- Left Column: TSMX Box (max-w-sm) -->
+            <div class="flex flex-col justify-between max-w-sm w-full">
+              <div>
+                <div class="flex h-12 items-start">
+                  <a href="/" aria-label="TSMX">
+                    <img src="https://www.tsmx.net.br/images/tsmx.svg" alt="TSMX" loading="lazy" decoding="async" fetchpriority="auto" width="160" height="48" class="h-[2.4rem] w-auto">
+                  </a>
+                </div>
+                <p class="mt-4 text-sm leading-7 text-white">
+                  Tecnologia Viva para provedores de<br>
+                  internet que precisam de software,<br>
+                  infraestrutura e suporte operando no<br>
+                  mesmo ritmo.
+                </p>
+                <div class="mt-8 flex gap-4">
+                  <a href="https://www.instagram.com/tsmxoficial/" aria-label="Instagram" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-instagram text-xl"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/company/tsmontenegro" aria-label="LinkedIn" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-linkedin text-xl"></i>
+                  </a>
+                  <a href="https://www.youtube.com/@SGPTSMX" aria-label="YouTube" target="_blank" class="text-white transition-colors duration-200 hover:text-brand-600">
+                    <i class="fab fa-youtube text-xl"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Contato & Text -->
+            <div class="flex flex-col justify-between lg:max-w-[320px]">
+              <div class="w-full">
+                <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/50">Contato</h2>
+                <div class="mt-4 space-y-4 text-sm leading-7 text-white/70">
+                  <p>Av. Amintas Barros, 3700<br>Lagoa Nova, Natal/RN<br>CEP 59075-810</p>
+                  <p>WhatsApp: (84) 3113-7050<br>comercial@tsmx.net.br</p>
+                  <p>Seg a sex: 8h Ã s 18h</p>
+                </div>
+              </div>
+
+              <div class="mt-14 text-xs text-white/50 w-full">
+                <p>TSMX. Ecossistema de tecnologia para provedores.</p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </footer>
+      </footer>
+
+
+
+
+
+
+
+
 
     <script src="js/data.js"></script>
     <script src="js/utils.js"></script>
@@ -428,7 +491,7 @@
             grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando...</div>';
 
             const search = document.getElementById('searchInput').value.trim();
-            // Paginação no frontend para evitar buracos dos Arquivados
+            // Paginaï¿½ï¿½o no frontend para evitar buracos dos Arquivados
             let url = `/videos?page=1&limit=2000`;
             if (currentCategory) url += "&category=" + encodeURIComponent(currentCategory);
             if (search)          url += "&search="   + encodeURIComponent(search);
@@ -437,9 +500,14 @@
                 const result = await apiGet(url);
                 let allVideos = result.data || result;
                 
-                // Filtra os arquivados se não for uma busca específica pela categoria Arquivados
-                if (currentCategory !== "Arquivados") {
+                // Filtra os arquivados se nï¿½o for uma busca especï¿½fica pela categoria Arquivados
+                                if (currentCategory !== "Arquivados") {
                     allVideos = allVideos.filter(v => v.category !== "Arquivados");
+                }
+                
+                const subFilter = document.getElementById('filterSubcategory').value;
+                if (subFilter && subFilter !== 'all') {
+                    allVideos = allVideos.filter(v => v.subcategory === subFilter);
                 }
                 
                 totalVideos = allVideos.length;
@@ -482,7 +550,50 @@
         let searchTimeout;
         document.getElementById('searchInput').addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => loadVideos(1), 400);
+                        searchTimeout = setTimeout(() => { loadVideos(1); updateClearButton(); }, 400);
+        });
+        
+        document.getElementById('filterSubcategory').addEventListener('change', () => {
+            loadVideos(1);
+            updateClearButton();
+        });
+        
+        document.getElementById('btnClearFilters').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterSubcategory').value = 'all';
+            loadVideos(1);
+            updateClearButton();
+        });
+        
+        function updateClearButton() {
+            const search = document.getElementById('searchInput').value;
+            const sub = document.getElementById('filterSubcategory').value;
+            const btn = document.getElementById('btnClearFilters');
+            if (search || sub !== 'all') {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+        
+        LoomLib.fetchCategories().then(allCategories => {
+            const subSelect = document.getElementById('filterSubcategory');
+            if (!currentCategory) return;
+
+            // fetchCategories returns an array: [{category, subcategories}]
+            const entry = allCategories.find(c => c.category === currentCategory);
+            const subs = entry ? entry.subcategories : [];
+
+            if (subs && subs.length > 0) {
+                subSelect.innerHTML = '<option value="all">Todas as subcategorias</option>';
+                subs.forEach(sub => {
+                    subSelect.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
+                });
+                subSelect.disabled = false;
+            } else {
+                subSelect.innerHTML = '<option value="all">Nenhuma subcategoria</option>';
+                subSelect.disabled = true;
+            }
         });
 
         loadVideos(1);

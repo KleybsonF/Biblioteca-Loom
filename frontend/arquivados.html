@@ -211,64 +211,72 @@
 <script src="js/utils.js"></script>
 <script>
 (function() {
-    const {
-        escapeHtml, buildThumbnailHtml, buildPagination,
-        apiGet, apiPost, apiPut, apiDelete,
-        fetchCategories, saveToken, clearToken, isLoggedIn
-    } = LoomLib;
+    var lib = LoomLib;
+    var escapeHtml       = lib.escapeHtml;
+    var buildThumbnailHtml = lib.buildThumbnailHtml;
+    var buildPagination  = lib.buildPagination;
+    var apiGet           = lib.apiGet;
+    var apiPost          = lib.apiPost;
+    var apiPut           = lib.apiPut;
+    var apiDelete        = lib.apiDelete;
+    var fetchCategories  = lib.fetchCategories;
+    var saveToken        = lib.saveToken;
+    var clearToken       = lib.clearToken;
+    var isLoggedIn       = lib.isLoggedIn;
 
-    const VIDEOS_PER_PAGE = 12;
-    let currentPage  = 1;
-    let totalPages   = 1;
-    let totalVideos  = 0;
-    let categoriesMap = {};
+    var VIDEOS_PER_PAGE = 12;
+    var currentPage  = 1;
+    var totalPages   = 1;
+    var totalVideos  = 0;
+    var categoriesMap = {};
 
     // Sem login proprio: redireciona para admin.html se nao autenticado
     if (!isLoggedIn()) {
         window.location.href = 'admin.html';
-    } else {
-        initApp();
+        return;
     }
 
-    // APP
+    initApp();
+
     function initApp() {
         loadCategories();
         loadVideos(1);
         showWelcomeModal();
-        document.getElementById('btnLogout').addEventListener('click', () => { clearToken(); window.location.reload(); });
+        document.getElementById('btnLogout').addEventListener('click', function() {
+            clearToken(); window.location.reload();
+        });
     }
 
     // Categorias
-    async function loadCategories() {
-        try {
-            const data = await fetchCategories();
-            const catSelect      = document.getElementById('filterCategory');
-            const modalCatSelect = document.getElementById('videoCategory');
+    function loadCategories() {
+        fetchCategories().then(function(data) {
+            var catSelect      = document.getElementById('filterCategory');
+            var modalCatSelect = document.getElementById('videoCategory');
             catSelect.innerHTML      = '<option value="all">Todas categorias</option>';
             modalCatSelect.innerHTML = '<option value="">Selecione uma categoria</option>';
-            for (const item of data) {
+            data.forEach(function(item) {
                 categoriesMap[item.category] = item.subcategories;
-                [catSelect, modalCatSelect].forEach(sel => {
-                    const opt = document.createElement('option');
+                [catSelect, modalCatSelect].forEach(function(sel) {
+                    var opt = document.createElement('option');
                     opt.value = item.category;
                     opt.textContent = item.category;
                     sel.appendChild(opt);
                 });
-            }
-        } catch (e) {
+            });
+        }).catch(function(e) {
             console.warn('Erro ao carregar categorias:', e);
-        }
+        });
     }
 
     function updateSubcategorySelect(selectEl, category, required) {
-        const subs = categoriesMap[category] || [];
+        var subs = categoriesMap[category] || [];
         selectEl.innerHTML = required
             ? '<option value="">Selecione uma subcategoria</option>'
             : '<option value="all">Todas subcategorias</option>';
         if (subs.length > 0) {
             selectEl.disabled = false;
-            subs.forEach(s => {
-                const opt = document.createElement('option');
+            subs.forEach(function(s) {
+                var opt = document.createElement('option');
                 opt.value = s; opt.textContent = s;
                 selectEl.appendChild(opt);
             });
@@ -278,44 +286,46 @@
     }
 
     // Carregar videos arquivados
-    async function loadVideos(page) {
+    function loadVideos(page) {
         currentPage = page;
-        const grid = document.getElementById('videosGridContainer');
+        var grid = document.getElementById('videosGridContainer');
         grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Carregando videos...</div>';
-        const search    = document.getElementById('searchInput').value.trim();
-        const catFilter = document.getElementById('filterCategory').value;
-        const subFilter = document.getElementById('filterSubcategory').value;
-        try {
-            // Busca todos e filtra Arquivados no frontend (mesmo padrao do admin.html)
-            let url = '/videos?page=1&limit=2000';
-            if (search) url += '&search=' + encodeURIComponent(search);
+        var search    = document.getElementById('searchInput').value.trim();
+        var catFilter = document.getElementById('filterCategory').value;
+        var subFilter = document.getElementById('filterSubcategory').value;
 
-            const result = await apiGet(url);
-            let allVideos = result.data || result.videos || (Array.isArray(result) ? result : []);
+        var url = '/videos?page=1&limit=2000';
+        if (search) url += '&search=' + encodeURIComponent(search);
+
+        apiGet(url).then(function(result) {
+            var allVideos = result.data || result.videos || (Array.isArray(result) ? result : []);
 
             // Filtra somente arquivados
-            allVideos = allVideos.filter(v => v.category === 'Arquivados');
+            allVideos = allVideos.filter(function(v) { return v.category === 'Arquivados'; });
 
-            // Filtra por categoria original (guardada no campo subcategory como 'Cat | Sub')
+            // Filtros por subcategory (armazenado como "Cat | Sub")
             if (catFilter && catFilter !== 'all') {
-                allVideos = allVideos.filter(v => v.subcategory && v.subcategory.startsWith(catFilter + ' |'));
+                allVideos = allVideos.filter(function(v) {
+                    return v.subcategory && v.subcategory.startsWith(catFilter + ' |');
+                });
             }
             if (subFilter && subFilter !== 'all') {
-                allVideos = allVideos.filter(v => v.subcategory && v.subcategory.includes('| ' + subFilter));
+                allVideos = allVideos.filter(function(v) {
+                    return v.subcategory && v.subcategory.includes('| ' + subFilter);
+                });
             }
 
-            // Paginacao manual no frontend
             totalVideos = allVideos.length;
             totalPages  = Math.ceil(totalVideos / VIDEOS_PER_PAGE) || 1;
             if (currentPage > totalPages) currentPage = totalPages;
 
-            const startIdx = (currentPage - 1) * VIDEOS_PER_PAGE;
-            const videos = allVideos.slice(startIdx, startIdx + VIDEOS_PER_PAGE);
+            var startIdx = (currentPage - 1) * VIDEOS_PER_PAGE;
+            var videos   = allVideos.slice(startIdx, startIdx + VIDEOS_PER_PAGE);
 
             document.getElementById('videoCount').textContent =
                 totalVideos === 1 ? '1 video arquivado' : totalVideos + ' videos arquivados';
 
-            if (!videos || videos.length === 0) {
+            if (videos.length === 0) {
                 grid.innerHTML = '<div class="empty-state"><i class="fas fa-archive"></i><p>Nenhum video arquivado encontrado.</p></div>';
                 document.getElementById('paginationContainer').innerHTML = '';
                 document.getElementById('paginationInfo').textContent = '';
@@ -324,115 +334,97 @@
             }
 
             grid.innerHTML = '';
-            for (const v of videos) {
-                const card = document.createElement('div');
+            videos.forEach(function(v) {
+                var card = document.createElement('div');
                 card.className = 'video-card group';
                 card.setAttribute('data-id', v.id);
-                const subLabel = v.subcategory ? escapeHtml(v.subcategory) : '';
-                card.innerHTML = buildThumbnailHtml(v.link, v.title) + 
-                    <div class="card-content">
-                        <div class="video-title"></div>
-                        
-                        
-                        <div class="card-actions">
-                            <button class="icon-btn edit-btn" title="Editar"><i class="fas fa-pen"></i></button>
-                            <button class="icon-btn restore-btn" title="Reativar na biblioteca" style="color:#22c55e;"><i class="fas fa-undo"></i></button>
-                            <button class="icon-btn danger delete-btn" title="Excluir permanentemente"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>;
-                const videoData = v;
-                card.querySelector('.edit-btn').addEventListener('click', (e) => { e.stopPropagation(); openEditModal(videoData); });
-                card.querySelector('.restore-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmRestore(videoData); });
-                card.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); confirmDelete(v.id, v.title); });
-                grid.appendChild(card);
-            }
 
-            const paginationEl = document.getElementById('paginationContainer');
+                var subLabel = v.subcategory ? escapeHtml(v.subcategory) : '';
+                var descHtml = v.description ? '<div class="description">' + escapeHtml(v.description) + '</div>' : '';
+                var subHtml  = subLabel ? '<div class="video-category" style="font-size:0.75rem;color:#888;margin-bottom:0.3rem;">' + subLabel + '</div>' : '';
+
+                card.innerHTML = buildThumbnailHtml(v.link, v.title)
+                    + '<div class="card-content">'
+                    + '<div class="video-title">' + escapeHtml(v.title) + '</div>'
+                    + subHtml
+                    + descHtml
+                    + '<div class="card-actions">'
+                    + '<button class="icon-btn edit-btn" title="Editar"><i class="fas fa-pen"></i></button>'
+                    + '<button class="icon-btn restore-btn" title="Reativar na biblioteca" style="color:#22c55e;"><i class="fas fa-undo"></i></button>'
+                    + '<button class="icon-btn danger delete-btn" title="Excluir permanentemente"><i class="fas fa-trash"></i></button>'
+                    + '</div>'
+                    + '</div>';
+
+                var vCopy = v;
+                card.querySelector('.edit-btn').addEventListener('click', function(e) { e.stopPropagation(); openEditModal(vCopy); });
+                card.querySelector('.restore-btn').addEventListener('click', function(e) { e.stopPropagation(); confirmRestore(vCopy); });
+                card.querySelector('.delete-btn').addEventListener('click', function(e) { e.stopPropagation(); confirmDelete(v.id, v.title); });
+                grid.appendChild(card);
+            });
+
+            var paginationEl = document.getElementById('paginationContainer');
             paginationEl.innerHTML = '';
-            if (totalPages > 1) paginationEl.appendChild(buildPagination(currentPage, totalPages, p => loadVideos(p)));
+            if (totalPages > 1) paginationEl.appendChild(buildPagination(currentPage, totalPages, function(p) { loadVideos(p); }));
             document.getElementById('paginationInfo').textContent =
                 totalPages > 1 ? 'Pagina ' + currentPage + ' de ' + totalPages + ' - ' + totalVideos + ' videos' : '';
 
             updateClearButton();
-        } catch (error) {
+
+        }).catch(function(error) {
             console.error('Erro ao carregar arquivados:', error);
             if (error && error.message && (error.message.includes('401') || error.message.toLowerCase().includes('autorizado'))) {
                 clearToken(); window.location.reload(); return;
             }
-            grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao conectar com o servidor: ' + (error && error.message ? error.message : String(error)) + '</p></div>';
-        }
-    }
-
-    function buildArchivedCard(v) {
-        const thumb = buildThumbnailHtml(v.link, v.title);
-        const subLabel = v.subcategory ? escapeHtml(v.subcategory) : '';
-        const videoData = encodeURIComponent(JSON.stringify(v));
-        return `<div class="video-card">
-            <div class="video-thumb-wrap">
-                ${thumb}
-                <div class="video-card-overlay">
-                    <button class="btn-outline pill btn-edit" data-video="${videoData}" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn-primary pill btn-restore" data-video="${videoData}" title="Reativar na biblioteca"><i class="fas fa-undo"></i> Reativar</button>
-                    <button class="btn-ghost pill btn-delete" data-id="${escapeHtml(v.id)}" data-title="${escapeHtml(v.title)}" title="Excluir permanentemente" style="color:#ef4444;border-color:#ef4444;"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-            <div class="video-info">
-                <span class="archive-badge"><i class="fas fa-archive"></i> Arquivado</span>
-                ${subLabel ? '<span class="video-category">' + subLabel + '</span>' : ''}
-                <h3 class="video-title">${escapeHtml(v.title)}</h3>
-                ${v.description ? '<p class="video-desc">' + escapeHtml(v.description) + '</p>' : ''}
-            </div>
-        </div>`;
+            grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro: ' + (error && error.message ? error.message : String(error)) + '</p></div>';
+        });
     }
 
     function updateClearButton() {
-        const search = document.getElementById('searchInput').value.trim();
-        const cat    = document.getElementById('filterCategory').value;
-        const sub    = document.getElementById('filterSubcategory').value;
-        const hasFilter = search || (cat && cat !== 'all') || (sub && sub !== 'all');
+        var search = document.getElementById('searchInput').value.trim();
+        var cat    = document.getElementById('filterCategory').value;
+        var sub    = document.getElementById('filterSubcategory').value;
+        var hasFilter = search || (cat && cat !== 'all') || (sub && sub !== 'all');
         document.getElementById('btnClearFilters').classList.toggle('hidden', !hasFilter);
     }
 
     function clearFilters() {
         document.getElementById('searchInput').value = '';
         document.getElementById('filterCategory').value = 'all';
-        const subSel = document.getElementById('filterSubcategory');
+        var subSel = document.getElementById('filterSubcategory');
         subSel.innerHTML = '<option value="all">Todas subcategorias</option>';
         subSel.disabled = true;
         loadVideos(1);
     }
 
     // CRUD
-    async function confirmRestore(video) {
+    function confirmRestore(video) {
         if (!confirm('Reativar o video:\n"' + video.title + '"?\nEle voltara a aparecer na biblioteca principal.')) return;
-        try {
-            let origCategory    = 'Geral';
-            let origSubcategory = '';
-            if (video.subcategory && video.subcategory.includes(' | ')) {
-                const parts = video.subcategory.split(' | ');
-                origCategory    = parts[0];
-                origSubcategory = parts.slice(1).join(' | ');
-            } else if (video.subcategory) {
-                origCategory = video.subcategory;
-            }
-            const payload = { title: video.title, link: video.link, category: origCategory, subcategory: origSubcategory, description: video.description || '' };
-            await apiPut('/videos/' + encodeURIComponent(video.id), payload);
+        var origCategory    = 'Geral';
+        var origSubcategory = '';
+        if (video.subcategory && video.subcategory.includes(' | ')) {
+            var parts = video.subcategory.split(' | ');
+            origCategory    = parts[0];
+            origSubcategory = parts.slice(1).join(' | ');
+        } else if (video.subcategory) {
+            origCategory = video.subcategory;
+        }
+        var payload = { title: video.title, link: video.link, category: origCategory, subcategory: origSubcategory, description: video.description || '' };
+        apiPut('/videos/' + encodeURIComponent(video.id), payload).then(function() {
             loadVideos(currentPage);
-        } catch (e) {
+        }).catch(function(e) {
             if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
             alert('Erro ao reativar: ' + e.message);
-        }
+        });
     }
 
-    async function confirmDelete(id, title) {
+    function confirmDelete(id, title) {
         if (!confirm('Excluir PERMANENTEMENTE o video:\n"' + title + '"?\nEsta acao nao pode ser desfeita.')) return;
-        try {
-            await apiDelete('/videos/' + encodeURIComponent(id));
+        apiDelete('/videos/' + encodeURIComponent(id)).then(function() {
             loadVideos(currentPage);
-        } catch (e) {
+        }).catch(function(e) {
             if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
             alert('Erro ao excluir: ' + e.message);
-        }
+        });
     }
 
     // Modal
@@ -442,12 +434,12 @@
         document.getElementById('videoLink').value        = '';
         document.getElementById('videoCategory').value    = '';
         document.getElementById('videoDescription').value = '';
-        const subSel = document.getElementById('videoSubcategory');
+        var subSel = document.getElementById('videoSubcategory');
         subSel.innerHTML = '<option value="">Primeiro selecione uma categoria</option>';
         subSel.disabled = true;
         document.getElementById('modalTitle').innerHTML   = '<i class="fas fa-plus-circle"></i> Arquivar video';
         document.getElementById('submitBtn').innerHTML    = '<i class="fas fa-save"></i> Salvar video';
-        document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
+        document.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('visible'); });
     }
 
     function openAddModal() {
@@ -461,10 +453,10 @@
         document.getElementById('videoTitle').value    = video.title;
         document.getElementById('videoLink').value     = video.link;
 
-        let origCategory    = '';
-        let origSubcategory = '';
+        var origCategory    = '';
+        var origSubcategory = '';
         if (video.subcategory && video.subcategory.includes(' | ')) {
-            const parts = video.subcategory.split(' | ');
+            var parts = video.subcategory.split(' | ');
             origCategory    = parts[0];
             origSubcategory = parts.slice(1).join(' | ');
         } else if (video.subcategory) {
@@ -473,7 +465,7 @@
 
         document.getElementById('videoCategory').value = origCategory;
         updateSubcategorySelect(document.getElementById('videoSubcategory'), origCategory, true);
-        setTimeout(() => { document.getElementById('videoSubcategory').value = origSubcategory; }, 0);
+        setTimeout(function() { document.getElementById('videoSubcategory').value = origSubcategory; }, 0);
 
         document.getElementById('videoDescription').value  = video.description || '';
         document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar video arquivado';
@@ -486,11 +478,11 @@
     }
 
     function validateForm() {
-        const title    = document.getElementById('videoTitle').value.trim();
-        const link     = document.getElementById('videoLink').value.trim();
-        const category = document.getElementById('videoCategory').value;
-        const subcat   = document.getElementById('videoSubcategory').value;
-        const setErr = (id, show) => document.getElementById(id).classList.toggle('visible', show);
+        var title    = document.getElementById('videoTitle').value.trim();
+        var link     = document.getElementById('videoLink').value.trim();
+        var category = document.getElementById('videoCategory').value;
+        var subcat   = document.getElementById('videoSubcategory').value;
+        var setErr = function(id, show) { document.getElementById(id).classList.toggle('visible', show); };
         setErr('errTitle',       !title);
         setErr('errLink',        !link || !link.includes('loom.com'));
         setErr('errCategory',    !category);
@@ -498,37 +490,35 @@
         return !(!title || !link || !link.includes('loom.com') || !category || !subcat);
     }
 
-    document.getElementById('videoForm').addEventListener('submit', async function(e) {
+    document.getElementById('videoForm').addEventListener('submit', function(e) {
         e.preventDefault();
         if (!validateForm()) return;
-        const submitBtn = document.getElementById('submitBtn');
+        var submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Salvando...';
-        const selectedCat = document.getElementById('videoCategory').value;
-        const selectedSub = document.getElementById('videoSubcategory').value;
-        const payload = {
+        var selectedCat = document.getElementById('videoCategory').value;
+        var selectedSub = document.getElementById('videoSubcategory').value;
+        var payload = {
             title:       document.getElementById('videoTitle').value.trim(),
             link:        document.getElementById('videoLink').value.trim(),
             category:    'Arquivados',
             subcategory: selectedCat + ' | ' + selectedSub,
             description: document.getElementById('videoDescription').value.trim()
         };
-        try {
-            const existingId = document.getElementById('videoId').value;
-            if (existingId) {
-                await apiPut('/videos/' + encodeURIComponent(existingId), payload);
-            } else {
-                await apiPost('/videos', payload);
-            }
+        var existingId = document.getElementById('videoId').value;
+        var promise = existingId
+            ? apiPut('/videos/' + encodeURIComponent(existingId), payload)
+            : apiPost('/videos', payload);
+        promise.then(function() {
             closeModal();
             loadVideos(currentPage);
-        } catch (e) {
+        }).catch(function(e) {
             if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
             alert('Erro ao salvar: ' + e.message);
-        } finally {
+        }).finally(function() {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-save"></i> Salvar video';
-        }
+        });
     });
 
     function showWelcomeModal() {
@@ -537,7 +527,7 @@
         }
     }
 
-    document.getElementById('closeWelcomeBtn').addEventListener('click', () => {
+    document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
         document.getElementById('welcomeModal').classList.remove('active');
         localStorage.setItem('arquivadosWelcomeSeen', 'true');
     });
@@ -545,7 +535,7 @@
     document.getElementById('openAddModalBtn').addEventListener('click', openAddModal);
     document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
-    document.getElementById('videoModal').addEventListener('click', (e) => {
+    document.getElementById('videoModal').addEventListener('click', function(e) {
         if (e.target === document.getElementById('videoModal')) closeModal();
     });
 
@@ -558,12 +548,12 @@
         loadVideos(1);
     });
 
-    document.getElementById('filterSubcategory').addEventListener('change', () => loadVideos(1));
+    document.getElementById('filterSubcategory').addEventListener('change', function() { loadVideos(1); });
 
-    let searchTimeout;
+    var searchTimeout;
     document.getElementById('searchInput').addEventListener('input', function() {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => loadVideos(1), 500);
+        searchTimeout = setTimeout(function() { loadVideos(1); }, 500);
     });
 
     document.getElementById('btnClearFilters').addEventListener('click', clearFilters);
@@ -572,8 +562,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-

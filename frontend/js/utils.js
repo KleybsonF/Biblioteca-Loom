@@ -593,7 +593,118 @@ function isLoggedIn() {
     return !!getAuthToken();
 }
 
-// ── Categorias (cache em memória) ─────────────────────────────
+// ── Categorias pré-definidas (fonte da verdade) ──────────────────────────────────────────────────────────────────────────
+const PREDEFINED_CATEGORIES = [
+    {
+        category: 'Clientes',
+        subcategories: [
+            'Consulta',
+            'Cadastrar',
+            'Viabilidade',
+            'Pré cadastro',
+            'CRM',
+            'Suspender em Lote',
+            'Ultimos Cadastros'
+        ]
+    },
+    {
+        category: 'Financeiro',
+        subcategories: [
+            'Cadastros',
+            'Títulos',
+            'Carnês',
+            'Protocolos',
+            'Caixas',
+            'Contas a Pagar',
+            'Contas a Receber',
+            'Declarações',
+            'Acréscimos/Descontos',
+            'Cobrança',
+            'Pix'
+        ]
+    },
+    {
+        category: 'Fiscal',
+        subcategories: [
+            'Cadastros',
+            'Arquivos Fiscais',
+            'NF 21/22',
+            'NF 55',
+            'CT-e',
+            'NFCom',
+            'Nota de Débito',
+            'Nota de Serviço',
+            'Código IBGE'
+        ]
+    },
+    {
+        category: 'Estoque',
+        subcategories: [
+            'Cadastros',
+            'Consultas',
+            'Movimentações',
+            'Veículo Lançamento'
+        ]
+    },
+    {
+        category: 'Relatórios',
+        subcategories: [
+            'Financeiro',
+            'Gráficos',
+            'Mapas',
+            'Contrato',
+            'Atendimento',
+            'Técnico',
+            'FTTH',
+            'Estoque',
+            'Sistema',
+            'Comissão'
+        ]
+    },
+    {
+        category: 'Administração',
+        subcategories: [
+            'Pops',
+            'Condomínios',
+            'Cadastros',
+            'Planos',
+            'Integrações',
+            'Aplicativos',
+            'Certificados',
+            'Vendedores',
+            'Assinaturas Eletrônicas',
+            'Importar Arquivo KML/KMZ',
+            'Autorização de Contato'
+        ]
+    },
+    {
+        category: 'Sistema',
+        subcategories: [
+            'Alterar senha',
+            'Autenticação 2FA',
+            'Alterar senha (Radius)',
+            'Configurações (Beta)',
+            'Configurações',
+            'Ferramentas',
+            'Gateways',
+            'Backup',
+            'SMS',
+            'Email',
+            'Monitoramento',
+            'Gerenciador de CPE',
+            'Usuários',
+            'Grupos',
+            'Dashboards',
+            'Imagens',
+            'SMTP',
+            'Arquivos Públicos',
+            'Manutenções',
+            'Log (Radius)'
+        ]
+    }
+];
+
+// ── Categorias (cache em memória) ──────────────────────────────────────────────────────────────────────────────────────
 let _categoriesCache = null;
 
 async function fetchCategories() {
@@ -601,12 +712,40 @@ async function fetchCategories() {
         return _categoriesCache;
     }
 
-    let data = await apiGet('/categories');
-    data = data.filter(c => c.name !== 'Arquivados' && c !== 'Arquivados');
+    // Usa as categorias pré-definidas como base garantida
+    const predefinedMap = {};
+    for (const item of PREDEFINED_CATEGORIES) {
+        predefinedMap[item.category] = [...item.subcategories];
+    }
 
-    _categoriesCache = data;
+    // Tenta mesclar com dados do banco (sem bloquear se falhar)
+    try {
+        const data = await apiGet('/categories');
+        for (const item of data) {
+            if (!item.category || item.category === 'Arquivados') continue;
+            if (!predefinedMap[item.category]) {
+                // Categoria nova que não está no pré-definido: adiciona
+                predefinedMap[item.category] = item.subcategories || [];
+            } else {
+                // Subcategorias extras do banco que não estão no pré-definido: adiciona
+                for (const sub of (item.subcategories || [])) {
+                    if (!predefinedMap[item.category].includes(sub)) {
+                        predefinedMap[item.category].push(sub);
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Categorias do banco indisponíveis, usando pré-definidas:', e);
+    }
 
-    return data;
+    const merged = Object.entries(predefinedMap).map(([category, subcategories]) => ({
+        category,
+        subcategories
+    }));
+
+    _categoriesCache = merged;
+    return merged;
 }
 
 // ── Exporta tudo no escopo global ─────────────────────────────

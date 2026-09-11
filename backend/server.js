@@ -239,7 +239,14 @@ app.post('/api/videos', requireAuth, async (req, res) => {
         return res.status(400).json({ error: 'O link deve ser uma URL válida do Loom.' });
     }
 
-    const payload = { title: title.trim(), link: link.trim(), category, subcategory, description: description?.trim() || '' };
+    const payload = {
+        id: crypto.randomUUID(),
+        title: title.trim(),
+        link: link.trim(),
+        category,
+        subcategory,
+        description: description?.trim() || ''
+    };
 
     const { data, error } = await supabase.from('videos').insert([payload]).select();
     if (error) return res.status(500).json({ error: error.message });

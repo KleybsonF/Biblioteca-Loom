@@ -355,11 +355,11 @@
 
             updateClearButton();
         } catch (error) {
-            console.error(error);
-            if (error.message.includes('401') || error.message.toLowerCase().includes('autorizado')) {
+            console.error('Erro ao carregar arquivados:', error);
+            if (error && error.message && (error.message.includes('401') || error.message.toLowerCase().includes('autorizado'))) {
                 clearToken(); window.location.reload(); return;
             }
-            grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao conectar com o servidor.</p></div>';
+            grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao conectar com o servidor: ' + (error && error.message ? error.message : String(error)) + '</p></div>';
         }
     }
 
@@ -572,6 +572,7 @@
 </script>
 </body>
 </html>
+
 
 
 

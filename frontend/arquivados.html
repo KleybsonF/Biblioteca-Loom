@@ -410,7 +410,8 @@
         }
         var payload = { title: video.title, link: video.link, category: origCategory, subcategory: origSubcategory, description: video.description || '' };
         apiPut('/videos/' + encodeURIComponent(video.id), payload).then(function() {
-            loadVideos(currentPage);
+            // Hard reload para limpar cache e recarregar lista
+            window.location.href = window.location.pathname + '?_=' + Date.now();
         }).catch(function(e) {
             if (e.message.includes('401')) { clearToken(); window.location.reload(); return; }
             alert('Erro ao reativar: ' + e.message);
@@ -562,3 +563,4 @@
 </script>
 </body>
 </html>
+
